@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ic_mapping"
+        android:icon="@drawable/ic_grid"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_alerts"
+        android:icon="@drawable/ic_alerts"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_home"
+        android:icon="@drawable/ic_home"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_analytics"
+        android:icon="@drawable/ic_analytics"
+        android:title="">
+    </item>
+
+    <item
+        android:id="@+id/ic_connect"
+        android:icon="@drawable/ic_connect"
+        android:title="">
+    </item>
+
+</menu>
