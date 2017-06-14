@@ -24,7 +24,7 @@ public class ConnectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_connect);
         Log.d(TAG, "onCreate: starting.");
 
         setupBottomNavigationView();

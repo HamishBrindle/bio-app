@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Until needed
     <item
         android:id="@+id/ic_hamburger"
         android:icon="@drawable/ic_logo"
@@ -20,6 +19,6 @@
         android:title="@string/appLogo">
     </item>
 
-    -->
+
 
 </menu>

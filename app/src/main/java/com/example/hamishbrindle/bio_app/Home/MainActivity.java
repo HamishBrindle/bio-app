@@ -1,5 +1,7 @@
 package com.example.hamishbrindle.bio_app.Home;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,38 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: Starting.");
 
         setupBottomNavigationView();
+        setupViewPager();
+    }
+
+    /**
+     * Adds menu, home, and settings fragments to the MainActivity.
+     */
+    private void setupViewPager() {
+        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new MenuFragment());
+        adapter.addFragment(new HomeFragment());
+        adapter.addFragment(new SettingsFragment());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
+        tabMenu.setIcon(R.drawable.ic_hamburger);
+
+        TabLayout.Tab tabBiomap = tabLayout.getTabAt(1);
+        // TODO: This tab doesnt need an icon
+        // tabBiomap.setIcon(R.drawable.ic_logo);
+
+        TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
+        tabSettings.setIcon(R.drawable.ic_settings);
+
+        // Starts the MainActivty HomeFragment when booted
+        TabLayout.Tab tabHome = tabLayout.getTabAt(1);
+        assert tabHome != null; // To get rid of a NullPointerException warning on next line
+        viewPager.setCurrentItem(tabHome.getPosition());
+
     }
 
     /**

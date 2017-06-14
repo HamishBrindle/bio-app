@@ -5,39 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hamishbrindle.bio_app.Home.MainActivity">
+    tools:context="com.example.hamishbrindle.bio_app.Analytics.AnalyticsActivity">
 
     <RelativeLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Top Toolbar -->
-        <RelativeLayout
-            android:id="@+id/toolbarTop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/layout_top_tabs"
-                android:id="@+id/include" />
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_biomap" />
-
         <!-- Body -->
         <RelativeLayout
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbarTop"
             android:layout_above="@+id/toolbarBottom">
             <include layout="@layout/layout_center_viewpager" />
         </RelativeLayout>
+
+        <!-- TODO: TextView - Page indication; for testing -->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="Analytics Activity"
+            android:textSize="20sp" />
 
         <!-- Bottom Toolbar -->
         <RelativeLayout
