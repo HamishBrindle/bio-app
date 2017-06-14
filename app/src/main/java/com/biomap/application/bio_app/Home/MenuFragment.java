@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Home;
+package com.biomap.application.bio_app.Home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.hamishbrindle.bio_app.R;
+import com.biomap.application.bio_app.R;
 
 /**
  * Created by hamis on 2017-06-13.

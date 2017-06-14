@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.example.hamishbrindle.bio_app.Login.LoginActivity">
+    tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar

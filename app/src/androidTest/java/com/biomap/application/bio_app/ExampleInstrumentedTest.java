@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app;
+package com.biomap.application.bio_app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

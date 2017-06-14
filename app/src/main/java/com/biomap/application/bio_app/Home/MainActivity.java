@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Home;
+package com.biomap.application.bio_app.Home;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.hamishbrindle.bio_app.R;
-import com.example.hamishbrindle.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {

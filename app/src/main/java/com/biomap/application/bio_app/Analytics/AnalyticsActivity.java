@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Connect;
+package com.biomap.application.bio_app.Analytics;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,24 +7,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.hamishbrindle.bio_app.R;
-import com.example.hamishbrindle.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 /**
  * Created by hamis on 2017-06-13.
  */
 
-public class ConnectActivity extends AppCompatActivity {
+public class AnalyticsActivity extends AppCompatActivity {
 
-    private static final String TAG = "ConnectActivity";
+    private static final String TAG = "AnalyticsActivity";
 
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUM = 3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connect);
+        setContentView(R.layout.activity_analytics);
         Log.d(TAG, "onCreate: starting.");
 
         setupBottomNavigationView();
@@ -40,7 +40,7 @@ public class ConnectActivity extends AppCompatActivity {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(ConnectActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(AnalyticsActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);

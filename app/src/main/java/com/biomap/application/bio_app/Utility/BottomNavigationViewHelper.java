@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Utility;
+package com.biomap.application.bio_app.Utility;
 
 
 import android.content.Context;
@@ -7,12 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
-import com.example.hamishbrindle.bio_app.Alerts.AlertsActivity;
-import com.example.hamishbrindle.bio_app.Analytics.AnalyticsActivity;
-import com.example.hamishbrindle.bio_app.Connect.ConnectActivity;
-import com.example.hamishbrindle.bio_app.Home.MainActivity;
-import com.example.hamishbrindle.bio_app.Mapping.MappingActivity;
-import com.example.hamishbrindle.bio_app.R;
+import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Home.MainActivity;
+import com.biomap.application.bio_app.Mapping.MappingActivity;
+import com.biomap.application.bio_app.R;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 /**
