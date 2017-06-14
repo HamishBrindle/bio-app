@@ -26,8 +26,8 @@
         <activity android:name=".Analytics.AnalyticsActivity" />
         <activity android:name=".Connect.ConnectActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".Login.LoginActivity"
+            android:label="@string/title_activity_login">
+        </activity>
     </application>
-
 </manifest>

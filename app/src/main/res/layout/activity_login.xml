@@ -60,7 +60,7 @@
         android:id="@+id/login_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/biomap_text_imageView"
         app:layout_constraintRight_toRightOf="@+id/biomap_text_imageView"
