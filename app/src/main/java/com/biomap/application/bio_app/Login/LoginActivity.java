@@ -3,6 +3,7 @@ package com.biomap.application.bio_app.Login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,8 @@ import java.util.List;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.biomap.application.bio_app.Home.MainActivity;
+import com.biomap.application.bio_app.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -56,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+
+    private static final String TAG = "LoginActivity";
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -364,8 +370,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
             if (success) {
+                MainActivity.SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", true).apply();
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
