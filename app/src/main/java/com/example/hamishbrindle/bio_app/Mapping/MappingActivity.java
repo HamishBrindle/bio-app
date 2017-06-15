@@ -17,9 +17,10 @@ import com.example.hamishbrindle.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 /**
+ * Draws the pressure map on the Mapping Activity.
+ *
  * Created by hamis on 2017-06-13.
  */
-
 public class MappingActivity extends AppCompatActivity implements MappingView.OnToggledListener {
 
     private static final String TAG = "MappingActivity";
