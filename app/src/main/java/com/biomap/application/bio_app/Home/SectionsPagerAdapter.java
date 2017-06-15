@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Home;
+package com.biomap.application.bio_app.Home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

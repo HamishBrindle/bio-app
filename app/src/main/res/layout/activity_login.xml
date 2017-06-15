@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.example.hamishbrindle.bio_app.Login.LoginActivity">
+    tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -39,13 +39,15 @@
         app:srcCompat="@drawable/ic_logo"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintHorizontal_bias="0.498"
+        android:layout_marginBottom="2dp"/>
 
     <ImageView
         android:id="@+id/biomap_text_imageView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="7dp"
         android:contentDescription="BioMap Text Logo"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/login_form"
@@ -54,13 +56,14 @@
         app:srcCompat="@drawable/ic_biomap"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintHorizontal_bias="0.0"/>
 
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_marginBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/biomap_text_imageView"
         app:layout_constraintRight_toRightOf="@+id/biomap_text_imageView"

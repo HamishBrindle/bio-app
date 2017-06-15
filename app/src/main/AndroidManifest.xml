@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hamishbrindle.bio_app">
+    package="com.biomap.application.bio_app">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -14,20 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home.MainActivity">
+        <activity android:name="com.biomap.application.bio_app.Home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Mapping.MappingActivity" />
-        <activity android:name=".Alerts.AlertsActivity" />
-        <activity android:name=".Analytics.AnalyticsActivity" />
-        <activity android:name=".Connect.ConnectActivity" />
+        <activity android:name="com.biomap.application.bio_app.Mapping.MappingActivity" />
+        <activity android:name="com.biomap.application.bio_app.Alerts.AlertsActivity" />
+        <activity android:name="com.biomap.application.bio_app.Analytics.AnalyticsActivity" />
+        <activity android:name="com.biomap.application.bio_app.Connect.ConnectActivity" />
         <activity
             android:name=".Login.LoginActivity"
-            android:label="@string/title_activity_login">
-        </activity>
+            android:label="@string/title_activity_login"></activity>
     </application>
 </manifest>
