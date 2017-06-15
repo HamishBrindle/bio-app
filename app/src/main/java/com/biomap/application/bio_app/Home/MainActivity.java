@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
      * Shared Preference: User has logged in and doesn't need to again.
      */
     public static Boolean MOBILE_REGISTER_FLAG;
+
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
+        mAuth = FirebaseAuth.getInstance();
+
+        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
+        mSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+
+            }
+        });
 
     }
 

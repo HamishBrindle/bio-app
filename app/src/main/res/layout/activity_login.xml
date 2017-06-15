@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
-    <!-- Login progress -->
+
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -41,13 +42,13 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         app:layout_constraintHorizontal_bias="0.498"
-        android:layout_marginBottom="2dp"/>
+        android:layout_marginBottom="7dp"/>
 
     <ImageView
         android:id="@+id/biomap_text_imageView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="6dp"
         android:contentDescription="BioMap Text Logo"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/login_form"
@@ -63,7 +64,7 @@
         android:id="@+id/login_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="181dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/biomap_text_imageView"
         app:layout_constraintRight_toRightOf="@+id/biomap_text_imageView"
@@ -75,8 +76,8 @@
             android:layout_width="344dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="8dp">
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -89,7 +90,7 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -97,19 +98,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
             </android.support.design.widget.TextInputLayout>
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"/>
 
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -117,9 +118,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:text="@string/action_sign_in_short"
+                android:textStyle="bold"/>
 
+            <!-- Login progress -->
+            <Button
+                android:id="@+id/email_register_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="118dp"
+                tools:layout_editor_absoluteY="342dp"/>
+
+            <Button
+                android:id="@+id/log_out_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Button"/>
         </LinearLayout>
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

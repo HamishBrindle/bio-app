@@ -21,10 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.biomap.application.bio_app.Mapping.MappingActivity" />
-        <activity android:name="com.biomap.application.bio_app.Alerts.AlertsActivity" />
-        <activity android:name="com.biomap.application.bio_app.Analytics.AnalyticsActivity" />
-        <activity android:name="com.biomap.application.bio_app.Connect.ConnectActivity" />
+        <activity android:name="com.biomap.application.bio_app.Mapping.MappingActivity"
+            android:launchMode="singleInstance"/>
+        <activity android:name="com.biomap.application.bio_app.Alerts.AlertsActivity"
+                  android:launchMode="singleInstance"/>
+        <activity android:name="com.biomap.application.bio_app.Analytics.AnalyticsActivity"
+                  android:launchMode="singleInstance"/>
+        <activity android:name="com.biomap.application.bio_app.Connect.ConnectActivity"
+                  android:launchMode="singleInstance"/>
         <activity
             android:name=".Login.LoginActivity"
             android:label="@string/title_activity_login"></activity>
