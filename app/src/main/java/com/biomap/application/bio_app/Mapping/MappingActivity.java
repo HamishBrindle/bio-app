@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Mapping;
+package com.biomap.application.bio_app.Mapping;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.hamishbrindle.bio_app.R;
-import com.example.hamishbrindle.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 /**

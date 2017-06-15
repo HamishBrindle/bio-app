@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hamishbrindle.bio_app.Connect.ConnectActivity">
+    tools:context="com.biomap.application.bio_app.Connect.ConnectActivity">
 
     <RelativeLayout
         android:id="@+id/mainContainer"

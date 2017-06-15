@@ -1,5 +1,8 @@
-package com.example.hamishbrindle.bio_app.Home;
+package com.biomap.application.bio_app.Home;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.hamishbrindle.bio_app.R;
-import com.example.hamishbrindle.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Login.LoginActivity;
+import com.biomap.application.bio_app.R;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,14 +23,46 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_NUM = 2;
 
+    public static Boolean MOBILE_REGISTER_FLAG;
+
+    public static SharedPreferences SHARED_PREFERENCES;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
 
+        // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
+        SHARED_PREFERENCES = this.getSharedPreferences(
+            "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
+        );
+
+
+        // Indicating whether user has registered/logged in or not.
+        MOBILE_REGISTER_FLAG = SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false);
+        Log.d(TAG, "MOBILE_REGISTER_FLAG: setting flag to FALSE.");
+
+        // Check if user has registered/logged in
+        checkForUser();
+
+        // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
+    }
+
+    /**
+     * Checks if a user has logged in.
+     */
+    private void checkForUser() {
+        // User has NOT logged in yet.
+        if (!MOBILE_REGISTER_FLAG) {
+            Intent intent = new Intent(this,
+                    LoginActivity.class);
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "User is already logged in.");
+        }
     }
 
     /**
