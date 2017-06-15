@@ -203,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -419,7 +419,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            Log.d(TAG, "SIGN IN PLSSS");
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -441,14 +440,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     });
             return true;
         }
-        protected void execute(){
 
-        }
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
             if (success) {
+
+                // We set the MOBILE_REGISTER_FLAG to true so we don't attempt to login again and again.
                 MainActivity.SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", true).apply();
                 Log.d(TAG, "MOBILE REGISTER FLAG SETTING TO TRUE");
                 finish();
@@ -463,10 +462,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
-    }
-
-    private void updateUI(Object o) {
-        //null
     }
 }
 

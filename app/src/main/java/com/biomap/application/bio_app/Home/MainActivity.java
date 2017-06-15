@@ -1,5 +1,6 @@
 package com.biomap.application.bio_app.Home;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,9 +24,15 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_NUM = 2;
 
-    public static Boolean MOBILE_REGISTER_FLAG;
-
+    /**
+     * Stores information about user's session.
+     */
     public static SharedPreferences SHARED_PREFERENCES;
+
+    /**
+     * Shared Preference: User has logged in and doesn't need to again.
+     */
+    public static Boolean MOBILE_REGISTER_FLAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +45,16 @@ public class MainActivity extends AppCompatActivity {
             "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
         );
 
+        // Executes only once upon start-up; signals for login
+        if (SHARED_PREFERENCES.getBoolean("FIRST_EXECUTE", true)) {
 
-        // Indicating whether user has registered/logged in or not.
-        MOBILE_REGISTER_FLAG = SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false);
-        Log.d(TAG, "MOBILE_REGISTER_FLAG: setting flag to FALSE.");
+            // Indicating whether user has registered/logged in or not.
+            MOBILE_REGISTER_FLAG = SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false);
+            Log.d(TAG, "MOBILE_REGISTER_FLAG: setting flag to FALSE.");
+
+            // Set FIRST_EXECUTE to false so not to trigger login screen again.
+            SHARED_PREFERENCES.edit().putBoolean("FIRST_EXECUTE", false).apply();
+        }
 
         // Check if user has registered/logged in
         checkForUser();
@@ -49,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
+
     }
 
     /**
@@ -56,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void checkForUser() {
         // User has NOT logged in yet.
-        if (!MOBILE_REGISTER_FLAG) {
+        if (!SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false)) {
             Intent intent = new Intent(this,
                     LoginActivity.class);
             startActivity(intent);
