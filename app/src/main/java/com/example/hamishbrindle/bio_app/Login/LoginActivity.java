@@ -333,7 +333,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
             if (success) {
-                MainActivity.SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", true).apply();
+
+                // We set the MOBILE_REGISTER_FLAG to true so we don't attempt to login again and again.
+                MainActivity.SHARED_PREFERENCES.edit().putBoolean("MOBILE_REGISTER_FLAG", true).apply();
+                Log.d(TAG, "MOBILE_REGISTER_FLAG: Setting to TRUE. ");
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
