@@ -1,25 +1,22 @@
 package com.biomap.application.bio_app.Home;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.biomap.application.bio_app.R;
-import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -40,11 +37,6 @@ public class MainActivity extends AppCompatActivity {
      * Stores information about user's session.
      */
     public static SharedPreferences SHARED_PREFERENCES;
-
-    /**
-     * Shared Preference: User has logged in and doesn't need to again.
-     */
-    public static Boolean MOBILE_REGISTER_FLAG;
 
     /**
      * User's login credentials.
@@ -141,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     *
+     * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
