@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     public static Boolean MOBILE_REGISTER_FLAG;
 
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private Button mSignOut;
+    private Intent logOutIntent;
 
 
     @Override
@@ -63,21 +69,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Check if user has registered/logged in
-        checkForUser();
+       // checkForUser();
 
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
-        mAuth = FirebaseAuth.getInstance();
 
-        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
+        mAuth = FirebaseAuth.getInstance();
+        mSignOut = (Button) findViewById(R.id.singoutbtn);
+        logOutIntent = new Intent(this, LoginActivity.class);
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    startActivity(logOutIntent);
+                    finish();
+                }
+
+            }
+        };
+
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: signed out button");
                 mAuth.signOut();
-
+                SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", false).apply();
+                mAuthListener.onAuthStateChanged(FirebaseAuth.getInstance());
             }
         });
+
+
 
     }
 
@@ -89,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
         if (!SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false)) {
             Intent intent = new Intent(this,
                     LoginActivity.class);
+            Log.d(TAG, "checkForUser:");
             startActivity(intent);
+            finish();
         } else {
             Log.d(TAG, "User is already logged in.");
         }

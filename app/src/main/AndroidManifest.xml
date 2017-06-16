@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.biomap.application.bio_app.Home.MainActivity">
+        <activity android:name="com.biomap.application.bio_app.Home.MainActivity" android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,6 +31,7 @@
                   android:launchMode="singleInstance"/>
         <activity
             android:name=".Login.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login"
+            android:launchMode="singleInstance"></activity>
     </application>
 </manifest>
