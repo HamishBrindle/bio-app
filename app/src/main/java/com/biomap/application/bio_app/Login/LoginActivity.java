@@ -92,7 +92,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_register_button);
+        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mSignOutBtn = (Button) findViewById(email_register_button);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         };
 
-        Button mSignOutBtn = (Button) findViewById(email_register_button);
+
         mSignOutBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,6 +268,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
+
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
@@ -415,7 +418,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
-            return true;
+            return false;
         }
 
         @Override
@@ -428,8 +431,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d(TAG, "MOBILE REGISTER FLAG SETTING TO TRUE");
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                // mPasswordView.setError(getString(R.string.error_incorrect_password));
+                // mPasswordView.requestFocus();
             }
         }
 
