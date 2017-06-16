@@ -26,8 +26,14 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Activity indicator.
+     */
     private static final String TAG = "MainActivity";
 
+    /**
+     * The corresponding activity number allowing for bottom toolbar to switch between activities.
+     */
     private static final int ACTIVITY_NUM = 2;
 
     /**
@@ -40,44 +46,31 @@ public class MainActivity extends AppCompatActivity {
      */
     public static Boolean MOBILE_REGISTER_FLAG;
 
+    /**
+     * User's login credentials.
+     */
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private Button mSignOut;
-    private Intent logOutIntent;
 
+    /**
+     * Listener for login/logout state changes.
+     */
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
-            "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
+                "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
         );
-
-        // Executes only once upon start-up; signals for login
-        /*if (SHARED_PREFERENCES.getBoolean("FIRST_EXECUTE", true)) {
-
-            // Indicating whether user has registered/logged in or not.
-            MOBILE_REGISTER_FLAG = SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false);
-            Log.d(TAG, "MOBILE_REGISTER_FLAG: setting flag to FALSE.");
-
-            // Set FIRST_EXECUTE to false so not to trigger login screen again.
-            SHARED_PREFERENCES.edit().putBoolean("FIRST_EXECUTE", false).apply();
-        }
-        */
-        // Check if user has registered/logged in
-       // checkForUser();
 
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
-
-        mAuth = FirebaseAuth.getInstance();
-        mSignOut = (Button) findViewById(R.id.singoutbtn);
-        logOutIntent = new Intent(this, LoginActivity.class);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -86,46 +79,35 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    // Create the logout activity intent.
+                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(logOutIntent);
                     finish();
                 }
-
             }
         };
-        mAuthListener.onAuthStateChanged(FirebaseAuth.getInstance());
 
+        // Get the user's authentication credentials and check if signed in or not.
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+
+        // Create Logout button on the main page for testing.
+        // TODO: Move logout button to settings fragment.
+        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: signed out button");
+                // Sign out the user.
                 mAuth.signOut();
-                SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", false).apply();
-                mAuthListener.onAuthStateChanged(FirebaseAuth.getInstance());
+                // Check if user is signed out.
+                // TODO: Preferably, we'd like to not call this manually.
+                mAuthListener.onAuthStateChanged(mAuth);
             }
         });
-
-
-
-    }
-
-    /**
-     * Checks if a user has logged in.
-     */
-    private void checkForUser() {
-        // User has NOT logged in yet.
-        if (!SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false)) {
-            Intent intent = new Intent(this,
-                    LoginActivity.class);
-            Log.d(TAG, "checkForUser:");
-            startActivity(intent);
-            finish();
-        } else {
-            Log.d(TAG, "User is already logged in.");
-        }
     }
 
     /**
@@ -161,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     *
+     * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */

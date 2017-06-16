@@ -122,16 +122,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Login:signed_in:" + user.getUid());
-                    SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", true).apply();
                     startActivity(mainIntent);
                     finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Login:signed_out");
                 }
-                // ...
             }
         };
+
         Button mSignOutBtn;
         mSignOutBtn = (Button) findViewById(email_register_button);
         mSignOutBtn.setOnClickListener(new OnClickListener() {
