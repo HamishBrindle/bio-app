@@ -51,19 +51,17 @@ import static com.biomap.application.bio_app.R.id.email_register_button;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    private static final String TAG = "LoginActivity";
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-
-    private static final String TAG = "LoginActivity";
-
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -73,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent mainIntent;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,12 +287,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with database verification logic
-        return email.contains("@");
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with database verification logic
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
     /**
