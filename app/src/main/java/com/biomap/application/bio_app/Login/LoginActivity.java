@@ -118,21 +118,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         };
 
-        Button mSignOutBtn;
-        mSignOutBtn = (Button) findViewById(email_register_button);
+        Button mSignOutBtn = (Button) findViewById(email_register_button);
         mSignOutBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
             }
         });
+
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 createAccount();
             }
         });
-
     }
 
     private void createAccount() {
@@ -177,10 +176,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
-
         }
-
-
     }
 
     @Override
@@ -196,7 +192,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -240,7 +235,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -363,9 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {}
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -403,16 +395,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-            // TODO: attempt authentication against a network service.
-        /*    try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-*/
-
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
