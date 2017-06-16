@@ -1,55 +1,63 @@
 language: android
-sudo: required
 jdk: oraclejdk8
+sudo: false
 
-android:
- components:
- - tools
- - platform-tools
- - build-tools-$ANDROID_BUILD_TOOLS
- - android-$ANDROID_API
- - android-$EMULATOR_API_LEVEL
- - extra-google-m2repository
- - extra-android-m2repository # for design library
- - addon-google_apis-google-19 # google play services
- - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
- - sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API_LEVEL
- licenses:
- - android-sdk-preview-license-.+
- - android-sdk-license-.+
- - google-gdk-license-.+
-
-script:
-   - ./gradlew build connectedCheck
+env:
+    matrix:
+        - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+        - ANDROID_TARGET=android-21 ANDROID_ABI=armeabi-v7a
+    global:
+        - ADB_INSTALL_TIMEOUT=10    #Time out to 10 mins
 
 before_cache:
- -rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
- -rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
 cache:
- directories:
- -$HOME/.gradle/caches/
- -$HOME/.gradle/wrapper/
+  directories:      #Cache all dirs under .gradle folder
+    - $HOME/.gradle/daemon      #Cache daemon logs
+    - $HOME/.gradle/native      #Cache library downloaded from the gradle dependency
+    - $HOME/.gradle/wrapper     #Cache the gradle
 
- env:
-  global:
-  - ANDROID_API=24
-  - EMULATOR_API=21
-  - ANDROID_BUILD_TOOLS=24.0.2
-  - ADB_INSTALL_TIMEOUT=5 # minutes
+android:
+    update_sdk: true
+    components:
+        - platform-tools
+        - tools
+        - build-tools-25.0.0
+        - android-25
 
-  before_install:
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >
-  "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-  - chmod +x gradlew
-  - ./gradlew dependencies || true
+        # Additional components
+        - extra-google-google_play_services
+        - extra-google-m2repository
+        - extra-android-m2repository
 
-  before_script:
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+        #system images
+        - sys-img-armeabi-v7a-android-19
+        - sys-img-armeabi-v7a-android-21
 
-  script:
-  - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_script:
+    - chmod +x gradlew      #Grand permissions
+    - android list targets
+    - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI    #Create AVD for given api
+    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
+
+script:
+    - echo "Travis branch is $TRAVIS_BRANCH"
+    - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"
+    - android-wait-for-emulator
+    - adb devices   #Display list of devices
+    - adb shell input keyevent 82 &
+    - ./gradlew connectedCheck -PdisablePreDex --stacktrace
+
+before_install:
+    - pip install --user codecov    #Install codecov
+
+after_success:
+    - codecov                       #Run codecov
+
+after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"
