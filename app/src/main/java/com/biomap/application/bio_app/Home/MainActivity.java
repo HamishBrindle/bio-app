@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // Executes only once upon start-up; signals for login
-        if (SHARED_PREFERENCES.getBoolean("FIRST_EXECUTE", true)) {
+        /*if (SHARED_PREFERENCES.getBoolean("FIRST_EXECUTE", true)) {
 
             // Indicating whether user has registered/logged in or not.
             MOBILE_REGISTER_FLAG = SHARED_PREFERENCES.getBoolean("MOBILE_REGISTER_FLAG", false);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             // Set FIRST_EXECUTE to false so not to trigger login screen again.
             SHARED_PREFERENCES.edit().putBoolean("FIRST_EXECUTE", false).apply();
         }
-
+        */
         // Check if user has registered/logged in
        // checkForUser();
 
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+        mAuthListener.onAuthStateChanged(FirebaseAuth.getInstance());
 
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
