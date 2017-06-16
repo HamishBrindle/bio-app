@@ -125,25 +125,23 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
+        assert tabMenu != null;
         tabMenu.setIcon(R.drawable.ic_hamburger);
 
-        TabLayout.Tab tabBiomap = tabLayout.getTabAt(1);
-        // TODO: This tab doesnt need an icon
-        // tabBiomap.setIcon(R.drawable.ic_logo);
-
         TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
+        assert tabSettings != null;
         tabSettings.setIcon(R.drawable.ic_settings);
 
-        // Starts the MainActivty HomeFragment when booted
+        // Starts the MainActivity HomeFragment when booted
         TabLayout.Tab tabHome = tabLayout.getTabAt(1);
-        assert tabHome != null; // To get rid of a NullPointerException warning on next line
+        assert tabHome != null;
         viewPager.setCurrentItem(tabHome.getPosition());
 
     }
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     * <p>
+     *
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
