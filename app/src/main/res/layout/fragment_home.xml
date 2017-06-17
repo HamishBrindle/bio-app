@@ -9,6 +9,6 @@
         android:text="Home Fragment"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:textSize="20dp"/>
+        android:textSize="20sp"/>
 
 </RelativeLayout>

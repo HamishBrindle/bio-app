@@ -20,4 +20,6 @@
         completions."
     </string>
     <string name="logout_button_main">Logout</string>
+    <string name="settings_fragment_title">Settings</string>
+    <string name="menu_fragment_title">Menu</string>
 </resources>

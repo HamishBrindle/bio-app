@@ -64,42 +64,43 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupViewPager();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-                    // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(logOutIntent);
-                    finish();
-                }
-            }
-        };
+//        mAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    // User is signed in
+//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+//                } else {
+//                    // User is signed out
+//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+//                    // Create the logout activity intent.
+//                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
+//                    startActivity(logOutIntent);
+//                    finish();
+//                }
+//            }
+//        };
+//
+//        // Get the user's authentication credentials and check if signed in or not.
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuthListener.onAuthStateChanged(mAuth);
+//
+//        // Create Logout button on the main page for testing.
+//        // TODO: Move logout button to settings fragment.
+//        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
+//        mSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(TAG, "onClick: signed out button");
+//                // Sign out the user.
+//                mAuth.signOut();
+//                // Check if user is signed out.
+//                // TODO: Preferably, we'd like to not call this manually.
+//                mAuthListener.onAuthStateChanged(mAuth);
+//            }
+//        });
 
-        // Get the user's authentication credentials and check if signed in or not.
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener.onAuthStateChanged(mAuth);
-
-        // Create Logout button on the main page for testing.
-        // TODO: Move logout button to settings fragment.
-        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
-        mSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: signed out button");
-                // Sign out the user.
-                mAuth.signOut();
-                // Check if user is signed out.
-                // TODO: Preferably, we'd like to not call this manually.
-                mAuthListener.onAuthStateChanged(mAuth);
-            }
-        });
     }
 
     /**
@@ -133,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
