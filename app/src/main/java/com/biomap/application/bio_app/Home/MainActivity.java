@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
@@ -27,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +63,44 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
+        TextView mUserId = (TextView) findViewById(R.id.userId);
+        //mUserId.setText(FirebaseAuth.getInstance().getCurrentUser().getUid()    );
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    // Create the logout activity intent.
+                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(logOutIntent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+
+        // Create Logout button on the main page for testing.
+        // TODO: Move logout button to settings fragment.
+        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
+        mSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: signed out button");
+                // Sign out the user.
+                mAuth.signOut();
+                // Check if user is signed out.
+                // TODO: Preferably, we'd like to not call this manually.
+                mAuthListener.onAuthStateChanged(mAuth);
+            }
+        });
     }
 
     /**
