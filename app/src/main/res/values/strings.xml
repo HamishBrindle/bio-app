@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bio-app</string>
+    <string name="app_name">BioMap</string>
     <string name="appLogo">BioMap Logo</string>
     <string name="gridButton">Grid Button</string>
     <string name="menuButton">Menu Button</string>

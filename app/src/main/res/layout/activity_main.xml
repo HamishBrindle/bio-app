@@ -17,8 +17,10 @@
             android:id="@+id/toolbarTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <include layout="@layout/layout_top_tabs"
-                android:id="@+id/include" />
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/layout_top_tabs"/>
         </RelativeLayout>
 
         <ImageView
@@ -27,16 +29,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_biomap" />
+            android:src="@drawable/ic_biomap"/>
 
         <!-- Body -->
         <RelativeLayout
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbarTop"
-            android:layout_above="@+id/toolbarBottom">
-            <include layout="@layout/layout_center_viewpager" />
+            android:layout_above="@+id/toolbarBottom"
+            android:layout_below="@+id/toolbarTop">
+
+            <include layout="@layout/layout_center_viewpager"/>
         </RelativeLayout>
 
         <!-- Bottom Toolbar -->
@@ -44,19 +47,26 @@
             android:id="@+id/toolbarBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <include layout="@layout/layout_bottom_navigation_view" />
+
+            <include layout="@layout/layout_bottom_navigation_view"/>
 
             <Button
                 android:id="@+id/singoutbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="189dp"
+                android:text="@string/logout_button_main"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/userId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="155dp"
-                android:layout_marginRight="155dp"
-                android:layout_marginTop="187dp"
-                android:text="@string/logout_button_main"/>
+                android:layout_below="@+id/singoutbtn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="76dp"
+                android:text="TextView"/>
         </RelativeLayout>
 
     </RelativeLayout>

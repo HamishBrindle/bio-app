@@ -148,6 +148,11 @@
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="118dp"
                     tools:layout_editor_absoluteY="342dp" />
+                <!--Google sign in button -->
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/google_signin_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </ScrollView>
