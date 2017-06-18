@@ -22,4 +22,8 @@
     <string name="logout_button_main">Logout</string>
     <string name="settings_fragment_title">Settings</string>
     <string name="menu_fragment_title">Menu</string>
+    <string name="menu_button_mapping">Mapping</string>
+    <string name="menu_button_alerts">Alerts</string>
+    <string name="menu_button_analytics">Analytics</string>
+    <string name="menu_button_connect">Connect</string>
 </resources>

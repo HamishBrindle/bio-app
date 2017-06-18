@@ -1,4 +1,4 @@
-package com.example.hamishbrindle.bio_app.Mapping;
+package com.biomap.application.bio_app.Mapping;
 
 import android.content.Context;
 import android.graphics.Canvas;
