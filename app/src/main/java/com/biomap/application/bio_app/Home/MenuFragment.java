@@ -22,14 +22,6 @@ import com.biomap.application.bio_app.R;
 
 public class MenuFragment extends Fragment {
 
-    /**
-     * Menu UI Buttons.
-     */
-    public Button mMenuButtonMapping;
-    public Button mMenuButtonAlerts;
-    public Button mMenuButtonAnalytics;
-    public Button mMenuButtonConnect;
-
     private static final String TAG = "MenuFragment";
 
     @Nullable
