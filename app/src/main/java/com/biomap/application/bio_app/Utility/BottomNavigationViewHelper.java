@@ -16,10 +16,14 @@ import com.biomap.application.bio_app.R;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 /**
+ * Creates and enables the bottom navigation toolbar. This toolbar is always visible and switches
+ * between the main activities.
+ *
  * Created by hamis on 2017-06-13.
  */
 
 public class BottomNavigationViewHelper {
+
     private static final String TAG = "BottomNavigationViewHelper";
 
     /**
@@ -32,6 +36,13 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.setTextVisibility(false);
     }
 
+    /**
+     * Enables the navigation for the bottom navigation bar; adds listeners to each button IN ORDER.
+     * Each button is labeled with the corresponding number to it's order.
+     *
+     * @param context The activity we're presently in.
+     * @param view The toolbar we're using.
+     */
     public static void enableNavigation(final Context context, BottomNavigationViewEx view) {
         view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

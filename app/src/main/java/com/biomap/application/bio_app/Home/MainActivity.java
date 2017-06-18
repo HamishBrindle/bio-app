@@ -8,18 +8,25 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginActivity;
+import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupViewPager();
 
+        /* TODO: Uncomment for login screen.
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -100,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 mAuthListener.onAuthStateChanged(mAuth);
             }
         });
+
+        */
+
     }
 
     /**
@@ -107,9 +119,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager() {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
         adapter.addFragment(new MenuFragment());
         adapter.addFragment(new HomeFragment());
         adapter.addFragment(new SettingsFragment());
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(adapter);
 
@@ -133,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
@@ -146,6 +159,5 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
-
 
 }

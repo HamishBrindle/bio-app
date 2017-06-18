@@ -48,6 +48,8 @@ import static com.biomap.application.bio_app.R.id.email_register_button;
 
 /**
  * A login screen that offers login via email/password.
+ *
+ * Created by hamis on 2017-06-13.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -116,7 +118,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
         };
-
 
         mSignOutBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -192,6 +193,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Puts email into phone for auto-complete.
+     */
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -200,6 +204,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         getLoaderManager().initLoader(0, null, this);
     }
 
+    /**
+     * Gets permission to access contacts on the Android device.
+     * @return permission granted or not.
+     */
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -288,11 +296,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Validates email.
+     * @param email User's email.
+     * @return email is valid.
+     */
     private boolean isEmailValid(String email) {
         //TODO: Replace this with database verification logic
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    /**
+     * Validates password.
+     * @param password User's password.
+     * @return password is valid.
+     */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with database verification logic
         return password.length() > 5;
@@ -359,6 +377,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {}
 
+    /**
+     * Add email(s) to autocomplete
+     * @param emailAddressCollection a collection of email addresses.
+     */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -367,7 +389,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView.setAdapter(adapter);
     }
-
 
     private interface ProfileQuery {
         String[] PROJECTION = {
