@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.R;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
-                "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
+                "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
         // Initialize the navigation bar (bottom) and the pager (top)
