@@ -37,10 +37,13 @@ dependencies {
     })
 
     // Design Library for Coordinator Layout and Toolbars
-    
 
     // Bottom Nav Ex
-    
+
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'jp.wasabeef:blurry:2.1.1'
+
 
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
