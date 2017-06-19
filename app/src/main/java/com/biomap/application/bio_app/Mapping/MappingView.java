@@ -9,7 +9,7 @@ import android.view.View;
 
 public class MappingView extends View {
 
-    public interface OnToggledListener {
+    interface OnToggledListener {
         void OnToggled(MappingView v, boolean touchOn);
     }
 
@@ -54,7 +54,7 @@ public class MappingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         if (touchOn) {
-            canvas.drawColor(Color.RED);
+            canvas.drawColor(Color.GREEN);
         } else {
             canvas.drawColor(Color.GRAY);
         }

@@ -28,7 +28,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_biomap" />
 
-        <!-- Middle section (body) -->
+        <!-- Body -->
         <RelativeLayout
             android:id="@+id/relLayout2"
             android:layout_width="match_parent"
@@ -36,7 +36,6 @@
             android:layout_below="@+id/relLayout1">
 
             <include layout="@layout/layout_center_viewpager" />
-
 
         </RelativeLayout>
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bio-app</string>
+    <string name="app_name">BioMap</string>
     <string name="appLogo">BioMap Logo</string>
     <string name="gridButton">Grid Button</string>
     <string name="menuButton">Menu Button</string>
@@ -26,4 +26,9 @@
     <string name="menu_button_alerts">Alerts</string>
     <string name="menu_button_analytics">Analytics</string>
     <string name="menu_button_connect">Connect</string>
+    <string name="home_fragment_title">Home</string>
+    <string name="mapping_activity_title">Mapping</string>
+    <string name="connect_activity_title">Connect</string>
+    <string name="analytics_activity_title">Analytics</string>
+    <string name="alerts_activity_title">Alerts</string>
 </resources>

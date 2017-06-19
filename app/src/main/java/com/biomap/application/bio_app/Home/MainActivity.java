@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
@@ -27,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,16 +48,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public static SharedPreferences SHARED_PREFERENCES;
 
-    /**
-     * User's login credentials.
-     */
-    private FirebaseAuth mAuth;
-
-    /**
-     * Listener for login/logout state changes.
-     */
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,15 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
-                "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
+                "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
-
-        /* TODO: Uncomment for login screen.
-
+        TextView mUserId = (TextView) findViewById(R.id.userId);
+        //mUserId.setText(FirebaseAuth.getInstance().getCurrentUser().getUid()    );
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -109,9 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 mAuthListener.onAuthStateChanged(mAuth);
             }
         });
-
-        */
-
     }
 
     /**
@@ -159,5 +148,4 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
-
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,8 +15,7 @@
         <RelativeLayout
             android:id="@+id/body"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/toolbarBottom">
+            android:layout_height="wrap_content">
 
             <include layout="@layout/layout_center_viewpager" />
 
@@ -29,17 +27,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="Alerts Activity"
+            android:layout_marginTop="30dp"
+            android:text="@string/alerts_activity_title"
             android:textSize="20sp" />
 
         <!-- Bottom Toolbar -->
-        <RelativeLayout
-            android:id="@+id/toolbarBottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/layout_bottom_navigation_view" />
-        </RelativeLayout>
+        <include layout="@layout/layout_bottom_navigation_view" />
 
     </RelativeLayout>
 
