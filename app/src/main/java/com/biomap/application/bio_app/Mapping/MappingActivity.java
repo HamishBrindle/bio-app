@@ -1,6 +1,5 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.biomap.application.bio_app.Home.HomeFragment;
 import com.biomap.application.bio_app.Home.MenuFragment;
 import com.biomap.application.bio_app.Home.SectionsPagerAdapter;
 import com.biomap.application.bio_app.Home.SettingsFragment;
@@ -23,6 +24,8 @@ import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Random;
+
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Draws the pressure map on the Mapping Activity.
@@ -38,6 +41,8 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
     private BitmapView[] myViews;
 
     private GridLayout mappingGridLayout;
+
+    private LinearLayout viewGroup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,6 +126,20 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
                     }
                 }
             });
+
+        /* TODO: The Blurring.
+        viewGroup = (LinearLayout) findViewById(R.id.mapping_viewGroup);
+        viewGroup.post(new Runnable() {
+            @Override
+            public void run() {
+                Blurry.with(MappingActivity.this)
+                        .radius(25)
+                        .sampling(2)
+                        .color(Color.TRANSPARENT)
+                        .onto((ViewGroup) viewGroup);
+            }
+        });
+        */
     }
 
     /**
