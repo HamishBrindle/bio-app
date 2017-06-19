@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,35 +42,27 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mapping_viewGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/pageTitle"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:layout_marginTop="20dp"
-            tools:context="com.example.androidtouchview.MainActivity"
             android:weightSum="1"
-            android:id="@+id/mapping_viewGroup">
+            tools:context="com.example.androidtouchview.MainActivity">
 
             <GridLayout
                 android:id="@+id/mappingGrid"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:columnCount="8"
-                android:rowCount="8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@color/darkColor"
-                android:layout_weight="0.84">
-            </GridLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/blur_overlay"
-                />
+                android:columnCount="24"
+                android:orientation="horizontal"
+                android:rowCount="24"/>
 
         </LinearLayout>
 

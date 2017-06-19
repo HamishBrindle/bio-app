@@ -1,38 +1,26 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.biomap.application.bio_app.Home.MenuFragment;
-import com.biomap.application.bio_app.Home.SectionsPagerAdapter;
-import com.biomap.application.bio_app.Home.SettingsFragment;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Random;
 
-import jp.wasabeef.blurry.Blurry;
-
 /**
  * Draws the pressure map on the Mapping Activity.
  * <p>
  * Created by hamis on 2017-06-13.
  */
-public class MappingActivity extends AppCompatActivity implements MappingView.OnToggledListener {
+public class MappingActivity extends AppCompatActivity {
 
     private static final String TAG = "MappingActivity";
 
@@ -42,7 +30,7 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
 
     private GridLayout mappingGridLayout;
 
-    private LinearLayout viewGroup;
+    public static final int MAP_SIZE = 64;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +41,6 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
 
         // Make the bottom navigation bar.
         setupBottomNavigationView();
-        setupViewPager();
 
         // Get the Mapping Grid layout to manipulate.
         mappingGridLayout = (GridLayout) findViewById(R.id.mappingGrid);
@@ -67,30 +54,12 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
 
         int gridId = 0;
 
+        int[] pressure = getPressure();
+        int pressureIndex = 0;
+
         for (int yPos = 0; yPos < numOfRow; yPos++) {
             for (int xPos = 0; xPos < numOfCol; xPos++) {
-
-                Random rand = new Random();
-
-                int pressure = rand.nextInt(255);
-
-                int red = 255 - pressure;
-                int green = 255 - pressure;
-                int blue = 255 - pressure;
-
-                int color;
-
-                if (pressure >= 0 && pressure <= 100)
-                    color = Color.rgb(red, green, blue);
-                else if (pressure > 100 && pressure <= 200)
-                    color = Color.rgb(red, green, blue);
-                else if (pressure > 200 && pressure <= 255)
-                    color = Color.argb(1, red, green, blue);
-                else
-                    color = Color.TRANSPARENT;
-
-                BitmapView tView = new BitmapView(this, xPos, yPos, color);
-
+                BitmapView tView = new BitmapView(this, xPos, yPos, pressure[pressureIndex++ % pressure.length]);
                 tView.setId(gridId++);
                 myViews[yPos * numOfCol + xPos] = tView;
                 mappingGridLayout.addView(tView);
@@ -125,57 +94,13 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
                         }
                     }
                 }
+
             });
-
-        /* TODO: The Blurring.
-        viewGroup = (LinearLayout) findViewById(R.id.mapping_viewGroup);
-        viewGroup.post(new Runnable() {
-            @Override
-            public void run() {
-                Blurry.with(MappingActivity.this)
-                        .radius(25)
-                        .sampling(2)
-                        .color(Color.TRANSPARENT)
-                        .onto((ViewGroup) viewGroup);
-            }
-        });
-        */
-    }
-
-    /**
-     * Adds menu, home, and settings fragments to the MainActivity.
-     */
-    private void setupViewPager() {
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        adapter.addFragment(new MenuFragment());
-        adapter.addFragment(new MappingFragment());
-        adapter.addFragment(new SettingsFragment());
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(adapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-        TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
-        assert tabMenu != null;
-        tabMenu.setIcon(R.drawable.ic_hamburger);
-
-        TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
-        assert tabSettings != null;
-        tabSettings.setIcon(R.drawable.ic_settings);
-
-        // Starts the MainActivity HomeFragment when booted
-        TabLayout.Tab tabHome = tabLayout.getTabAt(1);
-        assert tabHome != null;
-        viewPager.setCurrentItem(tabHome.getPosition());
-
     }
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     * <p>
+     *
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
@@ -189,16 +114,17 @@ public class MappingActivity extends AppCompatActivity implements MappingView.On
         item.setChecked(true);
     }
 
-    @Override
-    public void OnToggled(MappingView v, boolean touchOn) {
-
-        //get the id string
-        String idString = v.getIdX() + ":" + v.getIdY();
-
-        Toast.makeText(MappingActivity.this,
-                "Toogled:\n" +
-                        idString + "\n" +
-                        touchOn + "",
-                Toast.LENGTH_SHORT).show();
+    /**
+     * Gets a pressure-reading array of values for each node.
+     *
+     * @return The pressure map array of values.
+     */
+    private int[] getPressure() {
+        int[] pressure = new int[MAP_SIZE];
+        Random rand = new Random();
+        for (int i = 0; i < MAP_SIZE; i++) {
+            pressure[i] = rand.nextInt(255);
+        }
+        return pressure;
     }
 }

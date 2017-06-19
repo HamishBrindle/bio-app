@@ -12,13 +12,14 @@ public class BitmapView extends View {
     int idX = 0; //default
     int idY = 0; //default
     private int color;
+    private int pressure;
 
-    public BitmapView(Context context, int x, int y, int color) {
+    public BitmapView(Context context, int x, int y, int pressure) {
         super(context);
         idX = x;
         idY = y;
-        this.color = color;
-        init();
+        this.pressure = pressure;
+        getColorFromPressure();
     }
 
     public BitmapView(Context context) {
@@ -49,18 +50,23 @@ public class BitmapView extends View {
         canvas.drawColor(this.color);
     }
 
-    @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
+    /**
+     * Determine the color of the square based on the pressure reading during initialization.
+     */
+    private void getColorFromPressure() {
 
-    public int getIdX(){
-        return idX;
-    }
-
-    public int getIdY(){
-        return idY;
+        if (pressure >= 200)
+            color = Color.rgb(255, 0, 0);
+        else if (pressure >= 125)
+            color = Color.rgb(127, 127, 0);
+        else if (pressure >= 75)
+            color = Color.rgb(0, 255, 0);
+        else if (pressure >= 50)
+            color = Color.rgb(0, 127, 127);
+        else if (pressure >= 25)
+            color = Color.rgb(0, 0, 255);
+        else if (pressure >= 0)
+            color = Color.rgb(63, 127, 63);
     }
 
 }
