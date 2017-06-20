@@ -59,7 +59,12 @@ public class MappingActivity extends AppCompatActivity {
 
         for (int yPos = 0; yPos < numOfRow; yPos++) {
             for (int xPos = 0; xPos < numOfCol; xPos++) {
-                BitmapView tView = new BitmapView(this, xPos, yPos, pressure[pressureIndex++ % pressure.length]);
+                BitmapView tView = new BitmapView(
+                        this, // View
+                        xPos, // X position
+                        yPos, // Y Position
+                        pressure[pressureIndex++ % pressure.length] // The pressure value from array
+                );
                 tView.setId(gridId++);
                 myViews[yPos * numOfCol + xPos] = tView;
                 mappingGridLayout.addView(tView);
@@ -94,7 +99,6 @@ public class MappingActivity extends AppCompatActivity {
                         }
                     }
                 }
-
             });
     }
 

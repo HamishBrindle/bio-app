@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class BitmapView extends View {
 
     int idX = 0; //default
@@ -67,6 +69,6 @@ public class BitmapView extends View {
             color = Color.rgb(0, 0, 255);
         else if (pressure >= 0)
             color = Color.rgb(63, 127, 63);
-    }
 
+    }
 }

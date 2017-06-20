@@ -1,25 +1,25 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context="com.biomap.application.bio_app.Login.LoginActivity">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:gravity="center_horizontal"
+                                             android:orientation="vertical"
+                                             tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
             android:id="@+id/login_progress"
@@ -34,12 +34,13 @@
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            tools:layout_constraintTop_creator="1"/>
 
         <ImageView
             android:id="@+id/biomap_logo_imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="7dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
@@ -54,13 +55,14 @@
             app:srcCompat="@drawable/ic_logo"
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            android:layout_centerHorizontal="true"/>
+            tools:layout_constraintRight_creator="1"/>
 
         <ImageView
             android:id="@+id/biomap_text_imageView"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/biomap_logo_imageView"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="6dp"
             android:contentDescription="BioMap Text Logo"
             android:scaleType="centerCrop"
@@ -71,21 +73,18 @@
             app:srcCompat="@drawable/ic_biomap"
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            android:layout_below="@+id/biomap_logo_imageView"
-            android:layout_centerHorizontal="true"/>
+            tools:layout_constraintRight_creator="1"/>
 
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
             android:layout_below="@id/biomap_text_imageView"
+            android:layout_marginBottom="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/biomap_text_imageView"
             app:layout_constraintRight_toRightOf="@+id/biomap_text_imageView"
             tools:layout_constraintBottom_creator="1">
-
 
 
             <LinearLayout
@@ -107,7 +106,7 @@
                         android:hint="@string/prompt_email"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"/>
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -127,7 +126,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"/>
 
                 <Button
                     android:id="@+id/email_sign_in_button"
@@ -136,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_sign_in_short"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <!-- Login progress -->
                 <Button
@@ -147,7 +146,12 @@
                     android:text="Register"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="118dp"
-                    tools:layout_editor_absoluteY="342dp" />
+                    tools:layout_editor_absoluteY="342dp"/>
+                <!--Google sign in button -->
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/google_signin_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
         </ScrollView>

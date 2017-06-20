@@ -60,9 +60,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/darkColor"
-                android:columnCount="24"
+                android:columnCount="8"
                 android:orientation="horizontal"
-                android:rowCount="24"/>
+                android:rowCount="8"/>
 
         </LinearLayout>
 
