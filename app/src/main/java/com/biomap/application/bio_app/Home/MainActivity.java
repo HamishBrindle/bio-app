@@ -8,28 +8,21 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
-import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginActivity;
-import com.biomap.application.bio_app.Mapping.MappingActivity;
+import com.biomap.application.bio_app.Login.RegisterActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.util.ArrayList;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
      */
     public static SharedPreferences SHARED_PREFERENCES;
 
+    /**
+     * User's login credentials.
+     */
+    private FirebaseAuth mAuth;
+
+    /**
+     * Listener for login/logout state changes.
+     */
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -57,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
-                "com.biomap.application.bio_app", Context.MODE_PRIVATE
+                "com.example.hamishbrindle.bio_app", Context.MODE_PRIVATE
         );
 
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
-        TextView mUserId = (TextView) findViewById(R.id.userId);
-        //mUserId.setText(FirebaseAuth.getInstance().getCurrentUser().getUid()    );
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -76,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
+                    Intent RegisterIntent = new Intent(getBaseContext(), RegisterActivity.class);
                     Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(logOutIntent);
+                    startActivity(RegisterIntent);
                     finish();
                 }
             }
@@ -86,21 +89,13 @@ public class MainActivity extends AppCompatActivity {
         // Get the user's authentication credentials and check if signed in or not.
         mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference();
+
 
         // Create Logout button on the main page for testing.
         // TODO: Move logout button to settings fragment.
-        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
-        mSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: signed out button");
-                // Sign out the user.
-                mAuth.signOut();
-                // Check if user is signed out.
-                // TODO: Preferably, we'd like to not call this manually.
-                mAuthListener.onAuthStateChanged(mAuth);
-            }
-        });
+
     }
 
     /**
@@ -108,11 +103,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager() {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         adapter.addFragment(new MenuFragment());
         adapter.addFragment(new HomeFragment());
         adapter.addFragment(new SettingsFragment());
-
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(adapter);
 
@@ -136,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
+     * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
@@ -148,4 +142,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
+
+
 }

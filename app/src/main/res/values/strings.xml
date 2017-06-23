@@ -31,4 +31,13 @@
     <string name="connect_activity_title">Connect</string>
     <string name="analytics_activity_title">Analytics</string>
     <string name="alerts_activity_title">Alerts</string>
+
+    <!-- Strings for Facebook login -->
+    <string name="facebook_app_id">1380319342016148</string>
+    <string name="fb_login_protocol_scheme">fb1380319342016148</string>
+    <string name="ulcers_check_text">Have you had ulcers in the past?</string>
+    <string name="good_morning_text">Good morning</string>
+    <string name="good_afternoon_text">Good Afternoon</string>
+    <string name="good_evening_text">Good Evening</string>
+    <string name="good_night_text">Good Night</string>
 </resources>
