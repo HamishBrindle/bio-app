@@ -46,6 +46,7 @@ public class MappingMatrix {
         int[][] newOutput;
 
         newOutput = stretchMatrixHorizontal(input2D, startResolution, endResolution);
+        //newOutput = stretchMatrixHorizontal(newOutput, newOutput.length, newOutput[0].length);
         newOutput = rotateMatrix90(newOutput);
         newOutput = stretchMatrixHorizontal(newOutput, endResolution, endResolution);
         newOutput = rotateMatrix90(newOutput);
