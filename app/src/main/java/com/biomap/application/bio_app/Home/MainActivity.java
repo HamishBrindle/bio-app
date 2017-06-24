@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,20 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
-import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginActivity;
-import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.util.ArrayList;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public static SharedPreferences SHARED_PREFERENCES;
 
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
-        TextView mUserId = (TextView) findViewById(R.id.userId);
-        //mUserId.setText(FirebaseAuth.getInstance().getCurrentUser().getUid()    );
+
+        /*
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -89,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create Logout button on the main page for testing.
         // TODO: Move logout button to settings fragment.
-        Button mSignOut = (Button) findViewById(R.id.singoutbtn);
+        Button mSignOut = (Button) findViewById(R.id.signoutBtn);
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 mAuthListener.onAuthStateChanged(mAuth);
             }
         });
+        */
     }
 
     /**

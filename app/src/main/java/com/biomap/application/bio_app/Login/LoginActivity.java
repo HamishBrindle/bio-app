@@ -52,7 +52,6 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.biomap.application.bio_app.Home.MainActivity.SHARED_PREFERENCES;
-import static com.biomap.application.bio_app.R.id.email_register_button;
 
 /**
  * A login screen that offers login via email/password.
