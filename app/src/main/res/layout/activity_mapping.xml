@@ -63,6 +63,7 @@
                 android:columnCount="24"
                 android:orientation="horizontal"
                 android:rowCount="24"/>
+                />
 
         </LinearLayout>
 
