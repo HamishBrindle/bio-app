@@ -2,6 +2,7 @@ package com.biomap.application.bio_app.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,14 @@ import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by hamis on 2017-06-13.
@@ -28,6 +37,8 @@ public class SettingsFragment extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private Button mUpdate;
+    private Button mAddtoDB;
+
     private Intent updateProfileIntent;
 
 
@@ -53,6 +64,8 @@ public class SettingsFragment extends Fragment {
                 }
             }
         };
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference();
         updateProfileIntent = new Intent(getActivity(), ProfileActivity.class);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
@@ -70,12 +83,27 @@ public class SettingsFragment extends Fragment {
                 mAuthListener.onAuthStateChanged(mAuth);
             }
         });
+        Integer[] numbers = new Integer[63];
+        for (int i = 0; i < 63; i++) {
+            numbers[i] = i;
+        }
+        final List<Integer> numbersList = Arrays.asList(numbers);
         mUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(updateProfileIntent);
                 getActivity().finish();
 
+            }
+        });
+        mAddtoDB = (Button) view.findViewById(R.id.array_to_db_btn);
+        mAddtoDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: addtoDB");
+                Calendar cal = Calendar.getInstance();
+                Log.d(TAG, "onClick: " + cal.get(Calendar.YEAR));
+                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("History").child(String.valueOf(cal.get(Calendar.YEAR))).child(String.valueOf(cal.get(Calendar.MONTH))).child(String.valueOf(cal.get(Calendar.DAY_OF_MONTH))).child(String .valueOf(cal.get(Calendar.HOUR_OF_DAY))).setValue(numbersList);
             }
         });
         return view;
