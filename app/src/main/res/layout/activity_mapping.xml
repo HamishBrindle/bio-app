@@ -22,19 +22,35 @@
 
         </RelativeLayout>
 
-        <!-- Page Header -->
-        <TextView
-            android:id="@+id/pageTitle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/mapping_activity_title"
-            android:textSize="24sp"
-            android:textColor="@color/colorAccent"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:includeFontPadding="true"
-            fontPath="fonts/Gotham-Bold.otf" />
+            android:gravity="center">
+            <!-- Page Header -->
+            <TextView
+                android:id="@+id/mapping_page_title"
+                fontPath="fonts/Gotham-Bold.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:text="@string/mapping_activity_title"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toLeftOf="@+id/mapping_page_title"
+                android:layout_toStartOf="@+id/mapping_page_title"
+                android:padding="10dp"
+                custom:srcCompat="@drawable/ic_mapping_svg" />
+
+        </RelativeLayout>
 
         <!-- Body -->
         <RelativeLayout
@@ -47,34 +63,33 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/mapping_indicators"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/relLayout1"
             android:layout_centerHorizontal="true"
-            android:id="@+id/mapping_indicators"
             android:layout_marginTop="10dp">
 
             <TextView
+                android:id="@+id/map_right_indicator"
+                fontPath="fonts/Gothic-Bold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Right"
-                android:textSize="14sp"
                 android:layout_marginEnd="200dp"
-                fontPath="fonts/Gothic-Bold.otf"
-                android:id="@+id/map_right_indicator"
                 android:layout_marginRight="50dp"
-                android:textColor="@color/MintGreen"/>
+                android:text="Right"
+                android:textColor="@color/LavenderPurple"
+                android:textSize="17sp" />
 
             <TextView
+                android:id="@+id/map_left_indicator"
+                fontPath="fonts/Gothic-Bold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Left"
-                android:textSize="14sp"
-                fontPath="fonts/Gothic-Bold.otf"
                 android:layout_toRightOf="@id/map_right_indicator"
-                android:id="@+id/map_left_indicator"
-                android:textColor="@color/SeafoamGreen"/>
-
+                android:text="Left"
+                android:textColor="@color/SeafoamGreen"
+                android:textSize="17sp" />
 
         </RelativeLayout>
 
@@ -104,10 +119,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Weight Distribution"
-                android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                android:textSize="20sp"/>
+                android:layout_marginTop="20dp"
+                android:text="Weight Distribution"
+                android:textSize="17sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -124,10 +139,10 @@
                     android:background="@color/darkColor"
                     custom:arc_bottom_text="Right"
                     custom:arc_bottom_text_size="15sp"
-                    custom:arc_finished_color="@color/MintGreen"
+                    custom:arc_finished_color="@color/LavenderPurple"
                     custom:arc_progress="32"
                     custom:arc_suffix_text=""
-                    custom:arc_text_color="@color/MintGreen"
+                    custom:arc_text_color="@color/LavenderPurple"
                     custom:arc_unfinished_color="@color/colorPrimary" />
 
                 <com.github.lzyzsd.circleprogress.ArcProgress
@@ -149,9 +164,7 @@
 
             </RelativeLayout>
 
-
         </LinearLayout>
-
 
         <!-- Bottom Toolbar -->
         <include layout="@layout/layout_bottom_navigation_view" />
