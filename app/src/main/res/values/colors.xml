@@ -16,5 +16,6 @@
     <color name="SkyBlue">#3d8cb4</color>
     <color name="LavenderPurple">#888bb6</color>
     <color name="DarkPurple">#41416d</color>
+    <color name="DarkGrey">#2c2c2c</color>
 
 </resources>
