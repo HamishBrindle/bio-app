@@ -58,6 +58,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.biomap.application.bio_app.Home.MainActivity.SHARED_PREFERENCES;
+import static com.biomap.application.bio_app.R.layout.activity_register;
 
 /**
  * A register screen that offers login via email/password.
@@ -96,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(activity_register);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -205,7 +206,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             //Signed in Succesfully
             Log.d(TAG, "onActivityResult: Success");
             GoogleSignInAccount account = result.getSignInAccount();
-            AuthCredential credential = GoogleAuthProvider.getCredential(result.getSignInAccount().getIdToken(), null);
             firebaseAuthWithGoogle(account);
         } else {
             //Still signed out
@@ -225,6 +225,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @SuppressWarnings("ConstantConditions")
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.child("Users").hasChild(mAuth.getCurrentUser().getUid())) {
@@ -531,9 +532,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // TODO: attempt authentication against a network service.
 
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                @SuppressWarnings("ConstantConditions")
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
+                        //noinspection ThrowableResultOfMethodCallIgnored
                         if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                             Toast.makeText(RegisterActivity.this, "User with this email already exist.", Toast.LENGTH_SHORT).show();
                         }
@@ -559,9 +562,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", true).apply();
                 Log.d(TAG, "MOBILE REGISTER FLAG SETTING TO TRUE");
                 finish();
-            } else {
-                // mPasswordView.setError(getString(R.string.error_incorrect_password));
-                // mPasswordView.requestFocus();
             }
         }
 

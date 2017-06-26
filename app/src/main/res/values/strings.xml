@@ -36,8 +36,8 @@
     <string name="facebook_app_id">1380319342016148</string>
     <string name="fb_login_protocol_scheme">fb1380319342016148</string>
     <string name="ulcers_check_text">Have you had ulcers in the past?</string>
-    <string name="good_morning_text">Good morning</string>
-    <string name="good_afternoon_text">Good Afternoon</string>
-    <string name="good_evening_text">Good Evening</string>
-    <string name="good_night_text">Good Night</string>
+    <string name="good_morning_text">Good morning %1$s</string>
+    <string name="good_afternoon_text">Good Afternoon %1$s</string>
+    <string name="good_evening_text">Good Evening %1$s</string>
+    <string name="good_night_text">Good Night %1$s</string>
 </resources>
