@@ -8,7 +8,7 @@
                                              tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
     <RelativeLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -39,7 +39,7 @@
 
         <ImageView
             android:id="@+id/biomap_logo_imageView"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="7dp"
@@ -48,37 +48,37 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:contentDescription="BioMap Logo"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/biomap_text_imageView"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/ic_logo_white_filled"
+            app:srcCompat="@drawable/ic_logo"
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1" />
+            tools:layout_constraintRight_creator="1"/>
 
         <ImageView
             android:id="@+id/biomap_text_imageView"
             android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/biomap_logo_imageView"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="6dp"
             android:contentDescription="BioMap Text Logo"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/login_form"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="@+id/biomap_logo_imageView"
             app:layout_constraintRight_toRightOf="@+id/biomap_logo_imageView"
-            app:srcCompat="@drawable/ic_wordmark_white"
+            app:srcCompat="@drawable/ic_biomap"
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1"/>
 
         <ScrollView
             android:id="@+id/login_form"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/biomap_text_imageView"
             android:layout_marginBottom="0dp"
@@ -90,7 +90,7 @@
 
             <LinearLayout
                 android:id="@+id/email_login_form"
-                android:layout_width="match_parent"
+                android:layout_width="344dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:layout_editor_absoluteX="8dp"
@@ -107,7 +107,7 @@
                         android:hint="@string/prompt_email"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true"/>
+                        />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -127,7 +127,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true"/>
+                    />
 
                 <Button
                     android:id="@+id/email_sign_in_button"
@@ -138,14 +138,30 @@
                     android:text="@string/action_sign_in_short"
                     android:textStyle="bold"/>
 
-                <!-- Login progress -->
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:text="or"
+                    android:textSize="24sp"/>
+
 
                 <!--Google sign in button -->
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/google_signin_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
+                    >
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:text="or"
+                        android:textSize="24sp"/>
+                </com.google.android.gms.common.SignInButton>
 
                 <!-- Facebook Sign in button -->
 
