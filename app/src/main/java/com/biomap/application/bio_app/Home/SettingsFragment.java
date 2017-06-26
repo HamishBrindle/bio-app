@@ -14,7 +14,6 @@ import android.widget.Button;
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.R;
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -65,7 +64,6 @@ public class SettingsFragment extends Fragment {
                 Log.d(TAG, "onClick: signed out button");
                 // Sign out the user.
                 mAuth.signOut();
-                LoginManager.getInstance().logOut();
 
                 // Check if user is signed out.
                 // TODO: Preferably, we'd like to not call this manually.
