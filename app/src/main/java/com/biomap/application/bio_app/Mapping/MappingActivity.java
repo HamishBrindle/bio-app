@@ -32,8 +32,6 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
     private static final int NUM_NODES = (int) Math.pow(NODES_RESOLUTION, 2);
     public static final int MAP_RESOLUTION = (NODES_RESOLUTION * 2) + 1;
     public static final int MAP_SIZE = (int) Math.pow(MAP_RESOLUTION, 2);
-    private static final int GRID_WIDTH = 900;
-    private static final int GRID_HEIGHT = 700;
     private BitmapSquare[][] gridSquares;
     private GridLayout grid;
     private final Random rand = new Random();
@@ -49,7 +47,6 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // Make the bottom navigation bar.
         setupBottomNavigationView();
         setupGrid();
-
     }
 
     /**
@@ -108,8 +105,8 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
                         // Set the space between each button. Keep at zero.
                         final int MARGIN = 0;
 
-                        int pWidth = GRID_WIDTH;
-                        int pHeight = GRID_HEIGHT;
+                        int pWidth = grid.getWidth();
+                        int pHeight = (int) (pWidth * 0.75);
                         int numOfCol = grid.getColumnCount();
                         int numOfRow = grid.getRowCount();
                         int w = pWidth / numOfCol;
@@ -152,24 +149,7 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
      */
     private int[] getPressure() {
 
-
-//        int[] pressure = new int[];
-//        for (int i = 0; i < MAP_SIZE; i++) {
-//            pressure[i] = rand.nextInt(255);
-//        }
-//
-//        return pressure;
-
-//        return new int[]{
-//            10, 20, 30, 40, 50, 60, 70, 80,
-//            20, 30, 40, 50, 60, 70, 80, 10,
-//            30, 40, 50, 60, 70, 80, 10, 20,
-//            40, 50, 60, 70, 80, 10, 20, 30,
-//            50, 60, 70, 80, 10, 20, 30, 40,
-//            60, 70, 80, 10, 20, 30, 40, 50,
-//            70, 80, 10, 20, 30, 40, 50, 60,
-//            80, 10, 20, 30, 40, 50, 60, 70
-//        };
+        // TODO: This will eventually get information from the nodes and create an array.
 
         return new int[]{
             3, 6, 4, 20, 30, 20, 15, 11,
