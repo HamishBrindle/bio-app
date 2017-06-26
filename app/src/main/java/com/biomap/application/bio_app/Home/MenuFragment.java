@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
@@ -43,11 +44,11 @@ public class MenuFragment extends Fragment {
      */
     public void setupMenuFragmentButtons(View view) {
 
-        Button[] menuButtons = {
-            (Button) view.findViewById(R.id.menu_button_mapping),
-            (Button) view.findViewById(R.id.menu_button_alerts),
-            (Button) view.findViewById(R.id.menu_button_analytics),
-            (Button) view.findViewById(R.id.menu_button_connect)
+        ImageButton[] menuButtons = {
+            (ImageButton) view.findViewById(R.id.menu_button_mapping),
+            (ImageButton) view.findViewById(R.id.menu_button_alerts),
+            (ImageButton) view.findViewById(R.id.menu_button_analytics),
+            (ImageButton) view.findViewById(R.id.menu_button_connect)
         };
 
         final Class[] menuActivities = {

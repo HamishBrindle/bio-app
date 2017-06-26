@@ -17,6 +17,8 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Random;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 /**
  * Draws the pressure map on the Mapping Activity.
  * <p>
@@ -25,26 +27,21 @@ import java.util.Random;
 public class MappingActivity extends AppCompatActivity implements BitmapSquare.OnToggledListener {
 
     private static final String TAG = "MappingActivity";
-
     private static final int ACTIVITY_NUM = 0;
-
     private static final int NODES_RESOLUTION = 8;
-
     private static final int NUM_NODES = (int) Math.pow(NODES_RESOLUTION, 2);
-
-    public static final int MAP_RESOLUTION = 17;
-
+    public static final int MAP_RESOLUTION = (NODES_RESOLUTION * 2) + 1;
     public static final int MAP_SIZE = (int) Math.pow(MAP_RESOLUTION, 2);
-
+    private static final int GRID_WIDTH = 900;
+    private static final int GRID_HEIGHT = 700;
     private BitmapSquare[][] gridSquares;
-
     private GridLayout grid;
-
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initFonts();
         setContentView(R.layout.activity_mapping);
 
         Log.d(TAG, "onCreate: starting.");
@@ -52,8 +49,12 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // Make the bottom navigation bar.
         setupBottomNavigationView();
         setupGrid();
+
     }
 
+    /**
+     * Draw the pressure map and add to activity.
+     */
     private void setupGrid() {
 
         // Get the Mapping Grid layout to manipulate.
@@ -79,11 +80,7 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
         MappingMatrix matrix = new MappingMatrix(pressure, NODES_RESOLUTION, MAP_RESOLUTION);
         int[][] expandedMatrix = matrix.convertMatrix2D(pressure);
-
-        // TODO: Change expandedMatrix to the new resolution
         expandedMatrix = matrix.expandMatrix(expandedMatrix);
-
-        Log.e(TAG, "expandedMatrix: " + expandedMatrix);
 
         // Create squares for the pressure map and add them to the grid. Also, make an array for
         // the squares so we can make further changes to the grid.
@@ -111,8 +108,8 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
                         // Set the space between each button. Keep at zero.
                         final int MARGIN = 0;
 
-                        int pWidth = grid.getWidth();
-                        int pHeight = pWidth;
+                        int pWidth = GRID_WIDTH;
+                        int pHeight = GRID_HEIGHT;
                         int numOfCol = grid.getColumnCount();
                         int numOfRow = grid.getRowCount();
                         int w = pWidth / numOfCol;
@@ -134,7 +131,7 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     * <p>
+     *
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
@@ -155,20 +152,34 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
      */
     private int[] getPressure() {
 
-        //        int[] pressure = new int[NUM_NODES];
-//        for (int i = 0; i < NUM_NODES; i++) {
+
+//        int[] pressure = new int[];
+//        for (int i = 0; i < MAP_SIZE; i++) {
 //            pressure[i] = rand.nextInt(255);
 //        }
+//
+//        return pressure;
+
+//        return new int[]{
+//            10, 20, 30, 40, 50, 60, 70, 80,
+//            20, 30, 40, 50, 60, 70, 80, 10,
+//            30, 40, 50, 60, 70, 80, 10, 20,
+//            40, 50, 60, 70, 80, 10, 20, 30,
+//            50, 60, 70, 80, 10, 20, 30, 40,
+//            60, 70, 80, 10, 20, 30, 40, 50,
+//            70, 80, 10, 20, 30, 40, 50, 60,
+//            80, 10, 20, 30, 40, 50, 60, 70
+//        };
 
         return new int[]{
-            10, 20, 30, 40, 50, 60, 70, 80,
-            20, 30, 40, 50, 60, 70, 80, 10,
-            30, 40, 50, 60, 70, 80, 10, 20,
-            40, 50, 60, 70, 80, 10, 20, 30,
-            50, 60, 70, 80, 10, 20, 30, 40,
-            60, 70, 80, 10, 20, 30, 40, 50,
-            70, 80, 10, 20, 30, 40, 50, 60,
-            80, 10, 20, 30, 40, 50, 60, 70
+            3, 6, 4, 20, 30, 20, 15, 11,
+            7, 20, 70, 88, 90, 75, 20, 7,
+            15, 45, 50, 11, 44, 65, 30, 10,
+            2, 4, 10, 4, 8, 23, 10, 5,
+            10, 20, 10, 5, 5, 7, 15, 2,
+            20, 40, 30, 5, 7, 28, 33, 15,
+            30, 65, 60, 15, 11, 45, 55, 10,
+            40, 80, 70, 20, 20, 65, 77, 13
         };
     }
 
@@ -183,6 +194,17 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
                 "Toogled:\n" +
                         idString + "\n",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Initialize the custom fonts.
+     */
+    private void initFonts() {
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Gotham-Bold.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
 }

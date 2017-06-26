@@ -16,10 +16,10 @@ import java.util.Random;
  */
 public class BitmapSquare extends View {
 
-    // TODO: Listeners for testing information of squares.
     public interface OnToggledListener {
         void OnToggled(BitmapSquare v, boolean touchOn);
     }
+
     boolean touchOn;
     boolean mDownTouch = false;
     private OnToggledListener toggledListener;
@@ -27,8 +27,6 @@ public class BitmapSquare extends View {
     private static final String TAG = "SQAURE";
     private int x = 0; //default
     private int y = 0; //default
-    private int row;
-    private int column;
     private int gridID;
     private int pressure;
     private int color;
@@ -93,10 +91,57 @@ public class BitmapSquare extends View {
     /**
      * Determine the color of the square based on the pressure reading during initialization.
      */
-    private int getColorFromPressure(int pressure) {
+    private int getColorFromPressure(int input) {
         int color;
-        color = Color.rgb(pressure * 3, 0, 255);
+        int pressure = input * 5;
+
+        if (pressure > 255 && pressure < 370)
+            color = Color.rgb(255, 140 + (pressure - 255), 180);
+        else if (pressure >= 370 && pressure < 445)
+            color = Color.rgb(255, 255, 180 + (pressure - 370));
+        else if (pressure >= 445)
+            color = Color.WHITE;
+        else
+            color = Color.rgb(pressure, 140, 180);
+
         return color;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+
+                touchOn = !touchOn;
+                invalidate();
+
+                if (toggledListener != null) {
+                    toggledListener.OnToggled(this, touchOn);
+                }
+
+                mDownTouch = true;
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                if (mDownTouch) {
+                    mDownTouch = false;
+                    performClick();
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
+    public void setOnToggledListener(OnToggledListener listener) {
+        toggledListener = listener;
     }
 
     public int getPressure() {
@@ -135,52 +180,7 @@ public class BitmapSquare extends View {
         this.color = color;
     }
 
-    public int getRow(int y) {
-        return y % MappingActivity.MAP_RESOLUTION;
-    }
-
-    public int getColumn(int y) {
-        return x % MappingActivity.MAP_RESOLUTION;
-    }
-
     private void init() {
         touchOn = false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-
-                touchOn = !touchOn;
-                invalidate();
-
-                if(toggledListener != null){
-                    toggledListener.OnToggled(this, touchOn);
-                }
-
-                mDownTouch = true;
-                return true;
-
-            case MotionEvent.ACTION_UP:
-                if (mDownTouch) {
-                    mDownTouch = false;
-                    performClick();
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
-
-    public void setOnToggledListener(OnToggledListener listener){
-        toggledListener = listener;
     }
 }
