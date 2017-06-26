@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,18 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_top_tabs" />
+            <include layout="@layout/layout_top_tabs"/>
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="46dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_wordmark_white"
+                android:contentDescription="@string/app_name" />
 
         </RelativeLayout>
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_biomap"
-            android:contentDescription="@string/app_name" />
 
         <!-- Middle section (body) -->
         <RelativeLayout
@@ -40,6 +41,18 @@
 
         </RelativeLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:id="@+id/signoutBtn"
+            android:text="Logout"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/relLayout1"/>
 
         <!-- bottom navigation -->
         <include layout="@layout/layout_bottom_navigation_view" />
