@@ -21,10 +21,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by hamis on 2017-06-13.
@@ -102,8 +104,14 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: addtoDB");
                 Calendar cal = Calendar.getInstance();
+                String year = String.valueOf(cal.get(Calendar.YEAR));
+                String month = String.valueOf(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+                Log.d(TAG, "onClick: " + cal.get(Calendar.MONTH));
+                String day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+                String hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+
                 Log.d(TAG, "onClick: " + cal.get(Calendar.YEAR));
-                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("History").child(String.valueOf(cal.get(Calendar.YEAR))).child(String.valueOf(cal.get(Calendar.MONTH))).child(String.valueOf(cal.get(Calendar.DAY_OF_MONTH))).child(String .valueOf(cal.get(Calendar.HOUR_OF_DAY))).setValue(numbersList);
+                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("History").child(year).child(month + "//" + day).child(hour).setValue(numbersList);
             }
         });
         return view;
