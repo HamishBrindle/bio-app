@@ -1,5 +1,6 @@
 package com.biomap.application.bio_app.Home;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -59,31 +60,39 @@ public class HomeFragment extends Fragment {
         Intent homeIntent = new Intent(getActivity(), MainActivity.class);
         //Notificatonis
         Button notificationButton = (Button) getView().findViewById(R.id.notification_button);
-        final NotificationManager notify = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent resultHomeItent = PendingIntent.getActivity(
-                getActivity(),
-                0,
-                homeIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        final int mNotificationId = 1;
-        final NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getActivity())
-                        .setSmallIcon(R.drawable.ic_logo)
-                        .setColor(Color.parseColor("#4c4c4c"))
-                        .setContentTitle("It's time to move!")
-                        .setContentText("Hey " + name + " get off your asshole")
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setPriority(Notification.PRIORITY_MAX)
-                        .setDefaults(Notification.DEFAULT_VIBRATE)
-                        .setLights(Color.RED, 1000, 250)
-                        .setAutoCancel(true);
-        mBuilder.setContentIntent(resultHomeItent);
+//        final NotificationManager notify = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//        PendingIntent resultHomeItent = PendingIntent.getActivity(
+//                getActivity(),
+//                0,
+//                homeIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT
+//        );
+//        final int mNotificationId = 1;
+//        final NotificationCompat.Builder mBuilder =
+//                new NotificationCompat.Builder(getActivity())
+//                        .setSmallIcon(R.drawable.ic_logo)
+//                        .setColor(Color.parseColor("#4c4c4c"))
+//                        .setContentTitle("It's time to move!")
+//                        .setContentText("Hey " + name + " get off your asshole")
+//                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+//                        .setPriority(Notification.PRIORITY_MAX)
+//                        .setDefaults(Notification.DEFAULT_VIBRATE)
+//                        .setLights(Color.RED, 1000, 250)
+//                        .setAutoCancel(true);
+//        mBuilder.setContentIntent(resultHomeItent);
 
         notificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notify.notify(mNotificationId, mBuilder.build());
+                Calendar c = Calendar.getInstance();
+                c.add(Calendar.SECOND, 3);
+                long firstTime = c.getTimeInMillis();
+
+                PendingIntent mAlarmSender = PendingIntent.getBroadcast(getContext(), 0, new Intent(getContext(), NotificationPublisher.class), 0);
+                AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+                am.set(AlarmManager.RTC_WAKEUP, firstTime, mAlarmSender);
+
+
             }
         });
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
