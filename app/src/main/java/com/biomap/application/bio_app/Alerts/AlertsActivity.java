@@ -60,6 +60,7 @@ public class AlertsActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app.ALARM_PREFERENCES", Context.MODE_PRIVATE
         );
 
+        // Initialize page elements.
         setupBottomNavigationView();
         setupAddRemoveButtons();
     }
@@ -69,19 +70,30 @@ public class AlertsActivity extends AppCompatActivity {
      */
     protected void setupAddRemoveButtons() {
 
+        // Initialize the buttons.
         ImageButton mAdd = (ImageButton) findViewById(R.id.alerts_button_add);
         ImageButton mRemove = (ImageButton) findViewById(R.id.alerts_button_remove);
+
+        // Get the TextView displaying the time to the user (in middle of donut).
         mTime = (TextView) findViewById(R.id.time);
 
         // Retrieves the Alert preferences, but if it doesn't exist, sets to default value.
         timerInterval = SHARED_PREFERENCES.getInt(getString(R.string.alert_interval),
                 DEFAULT_PROGRESS);
 
+        // Set the progress value of the donut (how filled up it is).
         mDonutProgress.setDonut_progress(String.valueOf(timerInterval));
+
+        // Set the maximum value the donut can fill to.
         mDonutProgress.setMax(MAXIMUM_PROGRESS);
+
+        // Sets the text of the TextView located inside the donut.
         mTime.setText(String.valueOf(timerInterval));
+
+        // Update the shared preferences of the user's Alert preference.
         updateAlarmPreferences(timerInterval);
 
+        // Create the listeners for the two inc/dec buttons.
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +104,6 @@ public class AlertsActivity extends AppCompatActivity {
                 }
             }
         });
-
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
