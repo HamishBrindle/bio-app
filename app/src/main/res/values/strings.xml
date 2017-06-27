@@ -31,4 +31,5 @@
     <string name="connect_activity_title">Connect</string>
     <string name="analytics_activity_title">Analytics</string>
     <string name="alerts_activity_title">Alerts</string>
+    <string name="alert_interval"> </string>
 </resources>
