@@ -38,6 +38,7 @@ public class AlertsActivity extends AppCompatActivity {
     private static final int INC_DEC_VALUE = 1;
 
     public static SharedPreferences SHARED_PREFERENCES;
+
     public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
 
     private TextView mTime;
@@ -61,9 +62,11 @@ public class AlertsActivity extends AppCompatActivity {
 
         setupBottomNavigationView();
         setupAddRemoveButtons();
-
     }
 
+    /**
+     * Initializes the add and remove buttons for incrementing and decrementing the Alerts interval.
+     */
     private void setupAddRemoveButtons() {
 
         ImageButton mAdd = (ImageButton) findViewById(R.id.alerts_button_add);
@@ -118,7 +121,6 @@ public class AlertsActivity extends AppCompatActivity {
         }
 
         mTime.setText(String.valueOf(timerInterval));
-
     }
 
     /**

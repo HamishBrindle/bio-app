@@ -40,20 +40,6 @@
 
         </RelativeLayout>
 
-        <!-- Logout Button
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:id="@+id/signoutBtn"
-            android:text="Logout"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/relLayout1"/>
-            -->
 
         <!-- bottom navigation -->
         <include layout="@layout/layout_bottom_navigation_view" />

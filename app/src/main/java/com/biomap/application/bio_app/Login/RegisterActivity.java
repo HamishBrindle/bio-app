@@ -44,7 +44,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -58,13 +58,14 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.biomap.application.bio_app.Home.MainActivity.SHARED_PREFERENCES;
+import static com.biomap.application.bio_app.R.layout.activity_register;
 
 /**
- * A login screen that offers login via email/password.
+ * A register screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "RegisterActivity";
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -87,32 +88,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent mainIntent;
+    private Intent setUpIntent;
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
-    private Intent registerIntent;
+    private Intent logInIntent;
     private DatabaseReference myRef;
-    private Intent setUpIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(activity_register);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-        TextView registerFromLogin = (TextView) findViewById(R.id.register_from_login);
+
         mPasswordView = (EditText) findViewById(R.id.password);
-        registerIntent = new Intent(this, RegisterActivity.class);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+        logInIntent = new Intent(this, LoginActivity.class);
         setUpIntent = new Intent(this, ProfileActivity.class);
-        registerFromLogin.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(registerIntent);
-                finish();
-            }
-        });
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -123,17 +117,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        SignInButton mGoogleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
+        Button emailSignUpButton = (Button) findViewById(R.id.email_register_button);
+        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
         mCallbackManager = CallbackManager.Factory.create();
-
-        Log.d(TAG, "onCreate: " + mGoogleSignInButton.getHeight());
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-
+        TextView loginText = (TextView) findViewById(R.id.login_from_register);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
         mainIntent = new Intent(this, MainActivity.class);
+
 
         //Configuring Google sign in
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -152,28 +146,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Login:signed_in:" + user.getUid());
-                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.child("Users").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                Log.d(TAG, "onDataChange: GOING TO MAIN");
-                                startActivity(mainIntent);
-                                finish();
-                            } else {
-                                Log.d(TAG, "onDataChange: GOING TO SETUP");
-                                startActivity(setUpIntent);
-                                Toast.makeText(LoginActivity.this, "Register first please", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                    startActivity(mainIntent);
-                    Toast.makeText(LoginActivity.this, "Redirecting",
+                    startActivity(setUpIntent);
+                    Toast.makeText(RegisterActivity.this, "Redirecting",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -182,17 +156,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
         };
-
-        //Signing in with Email
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        //Registering with Email
+        emailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
+            public void onClick(View v) {
+                createAccount();
+            }
+        });
+        loginText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
+                startActivity(logInIntent);
+                finish();
 
             }
         });
         //Signing in with Google
-        mGoogleSignInButton.setOnClickListener(new OnClickListener() {
+        googleSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 googleSignIn();
@@ -243,12 +224,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @SuppressWarnings("ConstantConditions")
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.child("Users").hasChild(mAuth.getCurrentUser().getUid())) {
+                                        startActivity(mainIntent);
+                                        finish();
+                                    } else {
+                                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Email").setValue(mAuth.getCurrentUser().getEmail());
+                                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
+                                        startActivity(setUpIntent);
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
                             mAuthListener.onAuthStateChanged(mAuth);
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -256,6 +259,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    private void createAccount() {
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError("This Field is Required");
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            showProgress(true);
+            Log.d(TAG, "createAccount: going to login");
+            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);
+        }
+    }
 
     @Override
     public void onStart() {
@@ -288,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
             Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                    .setAction(android.R.string.ok, new OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
                         public void onClick(View v) {
@@ -443,7 +495,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(RegisterActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -477,14 +529,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            mAuth.signInWithEmailAndPassword(mEmail, mPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+            // TODO: attempt authentication against a network service.
+
+            mAuth.createUserWithEmailAndPassword(mEmail, mPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                @SuppressWarnings("ConstantConditions")
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "User is logged in now", Toast.LENGTH_SHORT).show();
-                        mAuthListener.onAuthStateChanged(mAuth);
-                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                        Toast.makeText(LoginActivity.this, "User does not exist.", Toast.LENGTH_SHORT).show();
+                    if (!task.isSuccessful()) {
+                        //noinspection ThrowableResultOfMethodCallIgnored
+                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                            Toast.makeText(RegisterActivity.this, "User with this email already exist.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d(TAG, "onComplete: adding to db");
+                        myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Email").setValue(mEmailView.getText().toString());
+                        myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").setValue(false);
+
                     }
                 }
             });
