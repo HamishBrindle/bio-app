@@ -22,6 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+/**
+ * Home page.
+ *
+ * Created by Hamish Brindle on 2017-06-13.
+ */
 public class MainActivity extends AppCompatActivity {
 
     /**
