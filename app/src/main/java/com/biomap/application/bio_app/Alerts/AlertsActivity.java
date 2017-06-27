@@ -67,7 +67,7 @@ public class AlertsActivity extends AppCompatActivity {
     /**
      * Initializes the add and remove buttons for incrementing and decrementing the Alerts interval.
      */
-    private void setupAddRemoveButtons() {
+    protected void setupAddRemoveButtons() {
 
         ImageButton mAdd = (ImageButton) findViewById(R.id.alerts_button_add);
         ImageButton mRemove = (ImageButton) findViewById(R.id.alerts_button_remove);
@@ -102,7 +102,6 @@ public class AlertsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     /**
@@ -111,7 +110,7 @@ public class AlertsActivity extends AppCompatActivity {
      * @param value     How much to increment or decrement the timer.
      * @param increment If true, increase the value - else decrease it.
      */
-    public void updateAlarmDisplay(int value, boolean increment) {
+    protected void updateAlarmDisplay(int value, boolean increment) {
         if (increment) {
             timerInterval += value;
             mDonutProgress.setDonut_progress(Integer.toString(timerInterval));
@@ -128,7 +127,7 @@ public class AlertsActivity extends AppCompatActivity {
      *
      * @param newInterval New value of the alert interval preference.
      */
-    public void updateAlarmPreferences(int newInterval) {
+    protected void updateAlarmPreferences(int newInterval) {
         SHARED_PREFERENCES_EDITOR = SHARED_PREFERENCES.edit();
         SHARED_PREFERENCES_EDITOR.putInt(getString(R.string.alert_interval), newInterval);
         SHARED_PREFERENCES_EDITOR.apply();
@@ -140,7 +139,7 @@ public class AlertsActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
-    public void setupBottomNavigationView() {
+    protected void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
