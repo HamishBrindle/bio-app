@@ -43,11 +43,11 @@
         <activity
             android:name=".Login.LoginActivity"
             android:label="@string/title_activity_login"
-            android:launchMode="singleInstance"></activity>
+            android:launchMode="singleInstance"/>
 
         <receiver
-            android:name=".Home.NotificationPublisher"
-            android:process=":remote"></receiver>
+            android:name=".Alerts.NotificationPublisher"
+            android:process=":remote"/>
 
     </application>
 </manifest>

@@ -1,11 +1,10 @@
 package com.biomap.application.bio_app.Home;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.biomap.application.bio_app.Alerts.AlertNotification;
 import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,22 +54,30 @@ public class HomeFragment extends Fragment {
         mGreeting = (TextView) getView().findViewById(R.id.home_greeting);
         mUlcersText = (TextView) getView().findViewById(R.id.home_greeting_ulcers);
         setUpIntent = new Intent(getActivity(), ProfileActivity.class);
-        Intent homeIntent = new Intent(getActivity(), MainActivity.class);
 
+        //Notificatonis
         Button notificationButton = (Button) getView().findViewById(R.id.notification_button);
 
+        final AlertNotification aNotification = new AlertNotification(getContext());
+
         notificationButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                c.add(Calendar.SECOND, 3);
-                long firstTime = c.getTimeInMillis();
+                //Setting the time for the notification
+                long firstTime = aNotification.setTime(Calendar.MINUTE, 1);
+                //Setting up the repeating alarm to go off every 5 minutes
+                aNotification.setAlarmManagerRepeating(firstTime, 10000);
 
-                PendingIntent mAlarmSender = PendingIntent.getBroadcast(getContext(), 0, new Intent(getContext(), NotificationPublisher.class), 0);
-                AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-                am.set(AlarmManager.RTC_WAKEUP, firstTime, mAlarmSender);
-
-
+            }
+        });
+        Button cancelBtn = (Button) getView().findViewById(R.id.home_cancel_button);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Cancelling the repeating alarm.
+                aNotification.cancelAlarm(aNotification.getAlarmSender());
+                Log.d(TAG, "onClick: canceled");
             }
         });
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -111,7 +111,7 @@ public class SettingsFragment extends Fragment {
                 String hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
 
                 Log.d(TAG, "onClick: " + cal.get(Calendar.YEAR));
-                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("History").child(year).child(month + "//" + day).child(hour).setValue(numbersList);
+                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("History").child(year).child("" + month + "//" + day).child(hour).setValue(numbersList);
             }
         });
         return view;
