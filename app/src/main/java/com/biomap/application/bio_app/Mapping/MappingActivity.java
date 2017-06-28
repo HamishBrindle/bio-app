@@ -28,8 +28,8 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
 
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
-    private static final int NODES_RESOLUTION = 8;
-    private static final int NUM_NODES = (int) Math.pow(NODES_RESOLUTION, 2);
+    public static final int NODES_RESOLUTION = 8;
+    public static final int NUM_NODES = (int) Math.pow(NODES_RESOLUTION, 2);
     public static final int MAP_RESOLUTION = (NODES_RESOLUTION * 2) + 1;
     public static final int MAP_SIZE = (int) Math.pow(MAP_RESOLUTION, 2);
     private BitmapSquare[][] gridSquares;
@@ -75,9 +75,9 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         int[] pressure = getPressure();
 
         // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
-        MappingMatrix matrix = new MappingMatrix(pressure, NODES_RESOLUTION, MAP_RESOLUTION);
-        int[][] expandedMatrix = matrix.convertMatrix2D(pressure);
-        expandedMatrix = matrix.expandMatrix(expandedMatrix);
+        MappingMatrix matrix = new MappingMatrix();
+        int[][] expandedMatrix = matrix.convert2D(pressure);
+        expandedMatrix = matrix.expand(expandedMatrix);
 
         // Create squares for the pressure map and add them to the grid. Also, make an array for
         // the squares so we can make further changes to the grid.
@@ -97,7 +97,10 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
             }
         }
 
-        // Create listeners for each Mapping Grid Square.
+        /* Create listeners for each Mapping Grid Square.
+         * TODO: Produces strange error message in logcat:
+         * "horizontal constraints [...] are inconsistent; permanently removing: [...]"
+         */
         grid.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -128,7 +131,7 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
 
     /**
      * Sets up and enables the bottom navigation bar for each activity.
-     *
+     * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
@@ -152,14 +155,14 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // TODO: This will eventually get information from the nodes and create an array.
 
         return new int[]{
-            3, 6, 4, 20, 30, 20, 15, 11,
-            7, 20, 70, 88, 90, 75, 20, 7,
-            15, 45, 50, 11, 44, 65, 30, 10,
-            2, 4, 10, 4, 8, 23, 10, 5,
-            10, 20, 10, 5, 5, 7, 15, 2,
-            20, 40, 30, 5, 7, 28, 33, 15,
-            30, 65, 60, 15, 11, 45, 55, 10,
-            40, 80, 70, 20, 20, 65, 77, 13
+                3, 6, 4, 20, 30, 20, 15, 11,
+                7, 20, 70, 88, 90, 75, 20, 7,
+                15, 45, 50, 11, 44, 65, 30, 10,
+                2, 4, 10, 4, 8, 23, 10, 5,
+                10, 20, 10, 5, 5, 7, 15, 2,
+                20, 40, 30, 5, 7, 28, 33, 15,
+                30, 65, 60, 15, 11, 45, 55, 10,
+                40, 80, 70, 20, 20, 65, 77, 13
         };
     }
 
