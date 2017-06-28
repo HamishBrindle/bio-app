@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Stores fragments for tabs.
- *
+ * <p>
  * Created by hamis on 2017-06-13.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {

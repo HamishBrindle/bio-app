@@ -38,6 +38,7 @@ public class AlertsActivity extends AppCompatActivity {
     private static final int INC_DEC_VALUE = 1;
 
     public static SharedPreferences SHARED_PREFERENCES;
+
     public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
 
     private TextView mTime;
@@ -59,26 +60,40 @@ public class AlertsActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app.ALARM_PREFERENCES", Context.MODE_PRIVATE
         );
 
+        // Initialize page elements.
         setupBottomNavigationView();
         setupAddRemoveButtons();
-
     }
 
-    private void setupAddRemoveButtons() {
+    /**
+     * Initializes the add and remove buttons for incrementing and decrementing the Alerts interval.
+     */
+    protected void setupAddRemoveButtons() {
 
+        // Initialize the buttons.
         ImageButton mAdd = (ImageButton) findViewById(R.id.alerts_button_add);
         ImageButton mRemove = (ImageButton) findViewById(R.id.alerts_button_remove);
+
+        // Get the TextView displaying the time to the user (in middle of donut).
         mTime = (TextView) findViewById(R.id.time);
 
         // Retrieves the Alert preferences, but if it doesn't exist, sets to default value.
         timerInterval = SHARED_PREFERENCES.getInt(getString(R.string.alert_interval),
                 DEFAULT_PROGRESS);
 
+        // Set the progress value of the donut (how filled up it is).
         mDonutProgress.setDonut_progress(String.valueOf(timerInterval));
+
+        // Set the maximum value the donut can fill to.
         mDonutProgress.setMax(MAXIMUM_PROGRESS);
+
+        // Sets the text of the TextView located inside the donut.
         mTime.setText(String.valueOf(timerInterval));
+
+        // Update the shared preferences of the user's Alert preference.
         updateAlarmPreferences(timerInterval);
 
+        // Create the listeners for the two inc/dec buttons.
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +104,6 @@ public class AlertsActivity extends AppCompatActivity {
                 }
             }
         });
-
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +113,6 @@ public class AlertsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     /**
@@ -108,7 +121,7 @@ public class AlertsActivity extends AppCompatActivity {
      * @param value     How much to increment or decrement the timer.
      * @param increment If true, increase the value - else decrease it.
      */
-    public void updateAlarmDisplay(int value, boolean increment) {
+    protected void updateAlarmDisplay(int value, boolean increment) {
         if (increment) {
             timerInterval += value;
             mDonutProgress.setDonut_progress(Integer.toString(timerInterval));
@@ -118,7 +131,6 @@ public class AlertsActivity extends AppCompatActivity {
         }
 
         mTime.setText(String.valueOf(timerInterval));
-
     }
 
     /**
@@ -126,7 +138,7 @@ public class AlertsActivity extends AppCompatActivity {
      *
      * @param newInterval New value of the alert interval preference.
      */
-    public void updateAlarmPreferences(int newInterval) {
+    protected void updateAlarmPreferences(int newInterval) {
         SHARED_PREFERENCES_EDITOR = SHARED_PREFERENCES.edit();
         SHARED_PREFERENCES_EDITOR.putInt(getString(R.string.alert_interval), newInterval);
         SHARED_PREFERENCES_EDITOR.apply();
@@ -138,7 +150,7 @@ public class AlertsActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
-    public void setupBottomNavigationView() {
+    protected void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);

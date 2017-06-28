@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Random;
-
 /**
  * Creates a square within a Grid... WITHIN A GRID. Shit is real complex.
  * I refer to this object as an 'inner grid'.
