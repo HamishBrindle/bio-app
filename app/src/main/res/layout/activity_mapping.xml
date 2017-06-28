@@ -88,8 +88,8 @@
                     fontPath="fonts/Gothic-Bold.otf"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="200dp"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginEnd="100dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/mapping_indicator_tab"
                     android:gravity="center"
                     android:text="Right"
@@ -113,6 +113,8 @@
 
             <!-- Pressure map grid -->
             <GridLayout
+                xmlns:grid="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/mappingGrid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,55 +122,128 @@
                 android:background="@color/darkColor"
                 android:orientation="horizontal" />
 
-            <!-- "Weight Distribution" TextView -->
+            <!-- Start of Time update indicator -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:text="Weight Distribution"
-                android:textSize="17sp" />
+                android:text="Updated 7:32pm"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="6dp"/>
+            <!-- End of Time update indicator -->
 
             <!-- Start of Weight Distribution charts -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp">
+                android:orientation="vertical">
 
-                <!-- Circle chart RIGHT -->
-                <com.github.lzyzsd.circleprogress.ArcProgress
-                    android:id="@+id/arc_progress"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/darkColor"
-                    custom:arc_bottom_text="Right"
-                    custom:arc_bottom_text_size="15sp"
-                    custom:arc_finished_color="@color/LavenderPurple"
-                    custom:arc_progress="32"
-                    custom:arc_text_color="@color/LavenderPurple"
-                    custom:arc_unfinished_color="@color/colorPrimary" />
+                <!-- Start of Holder for Weight Distribution Header and Charts -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_margin="15dp">
 
-                <!-- Circle chart LEFT -->
-                <com.github.lzyzsd.circleprogress.ArcProgress
-                    android:id="@+id/arc_progress2"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/arc_progress"
-                    android:layout_toRightOf="@id/arc_progress"
-                    android:background="@color/darkColor"
-                    custom:arc_bottom_text="Left"
-                    custom:arc_bottom_text_size="15sp"
-                    custom:arc_finished_color="@color/SeafoamGreen"
-                    custom:arc_progress="44"
-                    custom:arc_text_color="@color/SeafoamGreen"
-                    custom:arc_unfinished_color="@color/colorPrimary" />
+                    <!-- Header -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weight Distribution"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_marginBottom="10dp" />
 
-            </RelativeLayout>
+                    <!-- Start of Charts (RIGHT) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Right indicator -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Right"
+                            android:textSize="17sp"
+                            android:textColor="@color/LavenderPurple"
+                            android:layout_weight="2"/>
+
+                        <!-- Percentage -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="25%"
+                            android:id="@+id/right_percentage"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="2"/>
+
+                        <!-- Progress bar -->
+                        <ProgressBar
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:progress="25"
+                            android:id="@+id/right_progress"
+                            android:progressTint="@color/LavenderPurple"
+                            android:progressBackgroundTint="@color/colorPrimary"
+                            android:layout_weight="2"/>
+
+                    </LinearLayout>
+                    <!-- End of Charts (RIGHT) -->
+
+                    <!-- A trusty space to give some distance between the charts -->
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"/>
+
+                    <!-- Start of Charts (LEFT) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Right indicator -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Left"
+                            android:textSize="17sp"
+                            android:textColor="@color/SeafoamGreen"
+                            android:layout_weight="2"/>
+
+                        <!-- Percentage -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="44%"
+                            android:id="@+id/left_percentage"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="2"/>
+
+                        <!-- Progress bar -->
+                        <ProgressBar
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:progress="44"
+                            android:id="@+id/left_progress"
+                            android:progressTint="@color/SeafoamGreen"
+                            android:progressBackgroundTint="@color/colorPrimary"
+                            android:layout_weight="2"/>
+
+                    </LinearLayout>
+                    <!-- End of Charts (LEFT) -->
+
+                </LinearLayout>
+                <!-- End of Holder for Weight Distribution Header and Charts -->
+
+            </LinearLayout>
             <!-- End of Distribution charts -->
 
         </LinearLayout>
