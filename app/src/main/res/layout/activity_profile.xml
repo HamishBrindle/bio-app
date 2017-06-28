@@ -48,7 +48,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:contentDescription="BioMap Logo"
+            android:contentDescription="@string/biomap_logo"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/biomap_text_imageView"
             app:layout_constraintHorizontal_bias="0.498"
@@ -66,7 +66,7 @@
             android:layout_below="@+id/biomap_logo_imageView"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="6dp"
-            android:contentDescription="BioMap Text Logo"
+            android:contentDescription="@string/biomap_text_logo"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/login_form"
             app:layout_constraintHorizontal_bias="0.0"
@@ -101,24 +101,22 @@
                     android:id="@+id/profile_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="First Name"
+                    android:hint="@string/first_name"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:singleLine="true"
                     app:layout_constraintBottom_toTopOf="@+id/email"/>
 
                 <EditText
                     android:id="@+id/profike_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Last Name"
+                    android:hint="@string/last_name"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:singleLine="true"
                     app:layout_constraintBottom_toTopOf="@+id/email"/>
 
                 <android.support.design.widget.TextInputLayout
@@ -169,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Continue"
+                    android:text="@string/continue_text"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="118dp"
                     tools:layout_editor_absoluteY="342dp"/>

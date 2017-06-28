@@ -2,7 +2,6 @@ package com.biomap.application.bio_app.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,9 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -81,7 +77,6 @@ public class SettingsFragment extends Fragment {
                 mAuth.signOut();
 
                 // Check if user is signed out.
-                // TODO: Preferably, we'd like to not call this manually.
                 mAuthListener.onAuthStateChanged(mAuth);
             }
         });

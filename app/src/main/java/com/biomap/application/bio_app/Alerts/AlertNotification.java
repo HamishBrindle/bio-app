@@ -20,16 +20,16 @@ public class AlertNotification {
     private PendingIntent mAlarmSender;
     private AlarmManager am;
 
-    public PendingIntent getAlarmSender() {
-        return mAlarmSender;
-    }
-    //The constructor for this class, setting up all of the alarm managers.
-
     public AlertNotification(Context context) {
         calendar = Calendar.getInstance();
         mAlarmSender = PendingIntent.getBroadcast(context, 0, new Intent(context, NotificationPublisher.class), 0);
         am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
+    }
+    //The constructor for this class, setting up all of the alarm managers.
+
+    public PendingIntent getAlarmSender() {
+        return mAlarmSender;
     }
 
     //Used to set the time you want the alarm to first go off.

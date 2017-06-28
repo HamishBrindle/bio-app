@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.biomap.application.bio_app.Mapping.MappingActivity">
+                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context="com.biomap.application.bio_app.Mapping.MappingActivity">
 
     <!-- Start of Main Container -->
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_top_tabs" />
+            <include layout="@layout/layout_top_tabs"/>
         </RelativeLayout>
 
         <!-- Start of Page Header & Title -->
@@ -45,7 +45,7 @@
                 android:includeFontPadding="true"
                 android:text="@string/mapping_activity_title"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="24sp"/>
 
             <!-- Mapping icon next to page title -->
             <ImageView
@@ -54,25 +54,25 @@
                 android:layout_toLeftOf="@+id/mapping_page_title"
                 android:layout_toStartOf="@+id/mapping_page_title"
                 android:padding="10dp"
-                custom:srcCompat="@drawable/ic_mapping_svg" />
+                custom:srcCompat="@drawable/ic_mapping_svg"/>
         </RelativeLayout>
         <!-- End of Page Header & Title -->
 
         <!-- Start of indicators, pressure grid, and weight distribution charts -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            tools:context="com.example.androidtouchview.MainActivity"
-            android:weightSum="1">
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_centerInParent="true"
+                      android:layout_marginTop="5dp"
+                      android:gravity="center"
+                      android:orientation="vertical"
+                      android:paddingBottom="@dimen/activity_vertical_margin"
+                      android:paddingLeft="@dimen/activity_horizontal_margin"
+                      android:paddingRight="@dimen/activity_horizontal_margin"
+                      android:paddingTop="@dimen/activity_vertical_margin"
+                      android:weightSum="1"
+                      tools:context="com.example.androidtouchview.MainActivity">
 
             <!-- Start of Right and Left indicatiors at top -->
             <LinearLayout
@@ -93,7 +93,7 @@
                     android:gravity="center"
                     android:text="Right"
                     android:textColor="@color/LavenderPurple"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"/>
 
                 <!-- Left Indicator -->
                 <TextView
@@ -105,7 +105,7 @@
                     android:gravity="center"
                     android:text="Left"
                     android:textColor="@color/SeafoamGreen"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"/>
 
             </LinearLayout>
             <!-- End of Right and Left indicatiors at top -->
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/darkColor"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"/>
 
             <!-- "Weight Distribution" TextView -->
             <TextView
@@ -126,7 +126,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="Weight Distribution"
-                android:textSize="17sp" />
+                android:textSize="17sp"/>
 
             <!-- Start of Weight Distribution charts -->
             <RelativeLayout
@@ -148,7 +148,7 @@
                     custom:arc_finished_color="@color/LavenderPurple"
                     custom:arc_progress="32"
                     custom:arc_text_color="@color/LavenderPurple"
-                    custom:arc_unfinished_color="@color/colorPrimary" />
+                    custom:arc_unfinished_color="@color/colorPrimary"/>
 
                 <!-- Circle chart LEFT -->
                 <com.github.lzyzsd.circleprogress.ArcProgress
@@ -165,7 +165,7 @@
                     custom:arc_finished_color="@color/SeafoamGreen"
                     custom:arc_progress="44"
                     custom:arc_text_color="@color/SeafoamGreen"
-                    custom:arc_unfinished_color="@color/colorPrimary" />
+                    custom:arc_unfinished_color="@color/colorPrimary"/>
 
             </RelativeLayout>
             <!-- End of Distribution charts -->
@@ -174,7 +174,7 @@
         <!-- End of indicators, pressure grid, and weight distribution charts -->
 
         <!-- Bottom Navigation Toolbar -->
-        <include layout="@layout/layout_bottom_navigation_view" />
+        <include layout="@layout/layout_bottom_navigation_view"/>
 
     </RelativeLayout>
     <!-- End of Main Container -->

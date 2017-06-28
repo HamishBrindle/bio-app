@@ -44,6 +44,7 @@
             android:name=".Login.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleInstance"/>
+        <activity android:name=".Login.RegisterActivity"/>
 
         <receiver
             android:name=".Alerts.NotificationPublisher"

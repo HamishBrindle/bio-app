@@ -1,30 +1,23 @@
 package com.biomap.application.bio_app.Home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 /**
  * Home page.
- *
+ * <p>
  * Created by Hamish Brindle on 2017-06-13.
  */
 public class MainActivity extends AppCompatActivity {
@@ -62,45 +55,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the navigation bar (bottom) and the pager (top)
         setupBottomNavigationView();
         setupViewPager();
-
-        /*
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-                    // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(logOutIntent);
-                    finish();
-                }
-            }
-        };
-
-        // Get the user's authentication credentials and check if signed in or not.
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener.onAuthStateChanged(mAuth);
-
-        // Create Logout button on the main page for testing.
-        // TODO: Move logout button to settings fragment.
-        Button mSignOut = (Button) findViewById(R.id.signoutBtn);
-        mSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: signed out button");
-                // Sign out the user.
-                mAuth.signOut();
-                // Check if user is signed out.
-                // TODO: Preferably, we'd like to not call this manually.
-                mAuthListener.onAuthStateChanged(mAuth);
-            }
-        });
-        */
     }
 
     /**
@@ -139,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
-    public void setupBottomNavigationView() {
+    private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);

@@ -106,9 +106,9 @@ public class HomeFragment extends Fragment {
                     }
 
                     if (ulcers) {
-                        mUlcersText.setText("You have ulcers");
+                        mUlcersText.setText(getString(R.string.ulcers_true));
                     } else {
-                        mUlcersText.setText("You Don't have ulcers");
+                        mUlcersText.setText(getString(R.string.ulcers_false));
                     }
                 }
             }
