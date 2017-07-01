@@ -96,11 +96,14 @@ public class BitmapSquare extends View {
         int pressure = input * 5;
 
         if (pressure > 255 && pressure < 370)
-            color = Color.argb(255, 255, 140 + (pressure - 255), 180);
+            color = Color.rgb(255, 140 + (pressure - 255), 180);
+
         else if (pressure >= 370 && pressure < 445)
-            color = Color.argb(255, 255, 255, 180 + (pressure - 370));
+            color = Color.rgb(255, 255, 180 + (pressure - 370));
+
         else if (pressure >= 445)
             color = Color.WHITE;
+
         else
             color = Color.argb(pressure, pressure, 140, 180);
 

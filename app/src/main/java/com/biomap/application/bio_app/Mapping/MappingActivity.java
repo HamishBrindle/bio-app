@@ -58,8 +58,8 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         grid = (GridLayout) findViewById(R.id.mappingGrid);
 
         // Set the number of columns and rows in the grid.
-        grid.setRowCount(MAP_RESOLUTION);
-        grid.setColumnCount(MAP_RESOLUTION);
+        grid.setRowCount((MAP_RESOLUTION * 2) + 1);
+        grid.setColumnCount((MAP_RESOLUTION * 2) + 1);
 
         // Get the number of columns and rows to be displayed in the Mapping Grid.
         int numOfCol = grid.getColumnCount();
@@ -77,7 +77,8 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
         MappingMatrix matrix = new MappingMatrix();
         int[][] expandedMatrix = matrix.convert2D(pressure);
-        expandedMatrix = matrix.expand(expandedMatrix);
+        expandedMatrix = matrix.expand(expandedMatrix, NODES_RESOLUTION);
+        expandedMatrix = matrix.expand(expandedMatrix, MAP_RESOLUTION);
 
         // Create squares for the pressure map and add them to the grid. Also, make an array for
         // the squares so we can make further changes to the grid.
@@ -155,14 +156,14 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // TODO: This will eventually get information from the nodes and create an array.
 
         return new int[]{
-                3, 6, 4, 20, 30, 20, 15, 11,
-                7, 20, 70, 88, 90, 75, 20, 7,
-                15, 45, 50, 11, 44, 65, 30, 10,
-                2, 4, 10, 4, 8, 23, 10, 5,
-                10, 20, 10, 5, 5, 7, 15, 2,
-                20, 40, 30, 5, 7, 28, 33, 15,
-                30, 65, 60, 15, 11, 45, 55, 10,
-                40, 80, 70, 20, 20, 65, 77, 13
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 90, 90, 90, 0, 0, 0, 0,
+            0, 90, 0, 0, 90, 0, 0, 0,
+            0, 90, 0, 90, 0, 0, 0, 0,
+            0, 90, 0, 90, 0, 0, 0, 0,
+            0, 90, 0, 0, 90, 0, 0, 0,
+            0, 90, 90, 90, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
         };
     }
 

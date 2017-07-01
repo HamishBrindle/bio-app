@@ -36,13 +36,13 @@ class MappingMatrix {
      * @param input2D Original matrix to be stretched out.
      * @return New matrix.
      */
-    int[][] expand(int[][] input2D) {
+    int[][] expand(int[][] input2D, int startResolution) {
         int[][] newOutput;
 
         // Stretch, rotate, stretch, rotate lol
-        newOutput = stretchHorizontal(input2D);
+        newOutput = stretchHorizontal(input2D, startResolution);
         newOutput = rotate90CounterClockwise(newOutput);
-        newOutput = stretchHorizontal(newOutput);
+        newOutput = stretchHorizontal(newOutput, startResolution);
         rotate90ClockWise(newOutput);
 
         return newOutput;
@@ -62,7 +62,7 @@ class MappingMatrix {
      * @param input Original matrix of values to be stretched.
      * @return New matrix of stretched values.
      */
-    private int[][] stretchHorizontal(int[][] input) {
+    private int[][] stretchHorizontal(int[][] input, int startingResolution) {
 
         /* The height of the new array won't change from the input array, but the width will be double
          * plus 1.
@@ -75,7 +75,6 @@ class MappingMatrix {
 
         double startEndPadding = 1.25;
         int padding;
-        int startingResolution = MappingActivity.NODES_RESOLUTION;
 
         /* Take the input array (2D) and expand it from starting resolution to end resolution.
          * Essentially, the original array is working through itself while adding values from the
