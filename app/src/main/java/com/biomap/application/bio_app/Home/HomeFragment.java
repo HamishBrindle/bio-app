@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Cancelling the repeating alarm.
-                aNotification.cancelAlarm(aNotification.getAlarmSender());
+                aNotification.cancelAlarm();
                 Log.d(TAG, "onClick: canceled");
             }
         });
@@ -99,10 +99,8 @@ public class HomeFragment extends Fragment {
                         mGreeting.setText(getString(R.string.good_morning_text, name));
                     } else if (12 <= calender.get(Calendar.HOUR_OF_DAY) && calender.get(Calendar.HOUR_OF_DAY) < 17) {
                         mGreeting.setText(getString(R.string.good_afternoon_text, name));
-                    } else if (17 <= calender.get(Calendar.HOUR_OF_DAY) && calender.get(Calendar.HOUR_OF_DAY) < 20) {
-                        mGreeting.setText(getString(R.string.good_evening_text, name));
                     } else {
-                        mGreeting.setText(getString(R.string.good_night_text, name));
+                        mGreeting.setText(getString(R.string.good_evening_text, name));
                     }
 
                     if (ulcers) {

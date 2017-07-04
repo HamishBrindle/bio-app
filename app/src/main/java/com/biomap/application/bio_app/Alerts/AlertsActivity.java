@@ -9,13 +9,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Allows user to define Alert intervals for their positioning reminders.
@@ -33,7 +38,7 @@ public class AlertsActivity extends AppCompatActivity {
 
     private static final int MAXIMUM_PROGRESS = 20;
 
-    private static final int MINIMUM_PROGRESS = 5;
+    private static final int MINIMUM_PROGRESS = 0;
 
     private static final int INC_DEC_VALUE = 1;
 
@@ -47,18 +52,24 @@ public class AlertsActivity extends AppCompatActivity {
 
     private int timerInterval;
 
+    private boolean notificationOn;
+
+    private AlertNotification alertNotification;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerts);
         Log.d(TAG, "onCreate: starting.");
 
+        alertNotification = new AlertNotification(getApplicationContext());
         mDonutProgress = (DonutProgress) findViewById(R.id.donut_progress);
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
                 "com.biomap.application.bio_app.ALARM_PREFERENCES", Context.MODE_PRIVATE
         );
+
 
         // Initialize page elements.
         setupBottomNavigationView();
@@ -73,6 +84,7 @@ public class AlertsActivity extends AppCompatActivity {
         // Initialize the buttons.
         ImageButton mAdd = (ImageButton) findViewById(R.id.alerts_button_add);
         ImageButton mRemove = (ImageButton) findViewById(R.id.alerts_button_remove);
+        final ToggleButton mToggle = (ToggleButton) findViewById(R.id.toggle_button_alarm);
 
         // Get the TextView displaying the time to the user (in middle of donut).
         mTime = (TextView) findViewById(R.id.time);
@@ -101,6 +113,7 @@ public class AlertsActivity extends AppCompatActivity {
                 if (!(timerInterval >= MAXIMUM_PROGRESS)) {
                     updateAlarmDisplay(INC_DEC_VALUE, true);
                     updateAlarmPreferences(timerInterval);
+                    mToggle.setChecked(false);
                 }
             }
         });
@@ -110,6 +123,23 @@ public class AlertsActivity extends AppCompatActivity {
                 if (!(timerInterval <= MINIMUM_PROGRESS)) {
                     updateAlarmDisplay(INC_DEC_VALUE, false);
                     updateAlarmPreferences(timerInterval);
+                    mToggle.setChecked(false);
+
+                }
+            }
+        });
+
+        mToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Log.d(TAG, "onCheckedChanged: " + timerInterval);
+                    long firstTime = alertNotification.setTime(Calendar.MINUTE, timerInterval);
+                    alertNotification.setAlarmManagerRepeating(firstTime, TimeUnit.MINUTES.toMillis(timerInterval));
+                    Log.d(TAG, "onCheckedChanged: Alarm Set");
+                } else {
+                    alertNotification.cancelAlarm();
+                    Log.d(TAG, "onCheckedChanged: Alarm Cancelled");
                 }
             }
         });
