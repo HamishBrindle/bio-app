@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 
@@ -40,10 +41,23 @@ public class MappingActivity extends AppCompatActivity {
         initFonts();
         setContentView(R.layout.activity_mapping);
 
-        Log.d(TAG, "onCreate: starting.");
+        // Get the Mapping Grid layout to manipulate.
+        grid = (GridLayout) findViewById(R.id.mappingGrid);
+        grid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redrawGrid();
+            }
+        });
 
         // Make the bottom navigation bar.
         setupBottomNavigationView();
+        setupGrid();
+
+    }
+
+    private void redrawGrid() {
+        grid.invalidate();
         setupGrid();
     }
 
@@ -53,7 +67,7 @@ public class MappingActivity extends AppCompatActivity {
     private void setupGrid() {
 
         // Make a mock pressure-chart; this will be 8x8.
-        int[] pressure = getPressure();
+        int[] pressure = getRandomPressure();
 
         // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
         MappingMatrix matrix = new MappingMatrix();
@@ -61,9 +75,6 @@ public class MappingActivity extends AppCompatActivity {
         int[][] expandedMatrix = matrix.convert2D(pressure);
 
         expandedMatrix = matrix.expand(expandedMatrix, 3);
-
-        // Get the Mapping Grid layout to manipulate.
-        grid = (GridLayout) findViewById(R.id.mappingGrid);
 
         // Set the number of columns and rows in the grid.
         grid.setRowCount(expandedMatrix.length);
@@ -105,6 +116,7 @@ public class MappingActivity extends AppCompatActivity {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+
                         // Set the space between each button. Keep at zero.
                         final int MARGIN = 0;
 
@@ -126,7 +138,20 @@ public class MappingActivity extends AppCompatActivity {
                             }
                         }
                     }
+
                 });
+    }
+
+    private int[] getRandomPressure() {
+
+        int[] output = new int[64];
+
+        for (int i = 0; i < 64; i++) {
+            output[i] = rand.nextInt(100);
+        }
+
+        return output;
+
     }
 
     /**
@@ -155,14 +180,14 @@ public class MappingActivity extends AppCompatActivity {
         // TODO: This will eventually get information from the nodes and create an array.
 
         return new int[]{
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 90, 90, 90, 0, 0, 0, 0,
-            0, 90, 0, 0, 90, 0, 0, 0,
-            0, 90, 0, 90, 0, 0, 0, 0,
-            0, 90, 0, 90, 0, 0, 0, 0,
-            0, 90, 0, 0, 90, 0, 0, 0,
-            0, 90, 90, 90, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
+                3, 6, 4, 20, 30, 20, 5, 1,
+                7, 20, 70, 88, 90, 75, 20, 7,
+                15, 65, 70, 61, 64, 65, 50, 0,
+                3, 75, 60, 40, 38, 60, 70, 5,
+                0, 50, 50, 20, 5, 55, 60, 2,
+                5, 60, 45, 5, 3, 48, 50, 5,
+                0, 65, 40, 5, 1, 45, 55, 0,
+                0, 40, 30, 2, 0, 55, 47, 3
         };
     }
 

@@ -32,6 +32,7 @@
     <string name="analytics_activity_title">Analytics</string>
     <string name="alerts_activity_title">Alerts</string>
     <string name="alert_interval"> </string>
+    <string name="notificationsOnOff"> </string>
 
     <string-array name="menu_drawer">
         <item>Home</item>

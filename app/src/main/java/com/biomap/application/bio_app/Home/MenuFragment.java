@@ -34,6 +34,8 @@ public class MenuFragment extends Fragment {
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) view.findViewById(R.id.left_drawer);
 
+
+
         return view;
     }
 

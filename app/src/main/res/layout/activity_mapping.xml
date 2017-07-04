@@ -113,13 +113,10 @@
 
             <!-- Pressure map grid -->
             <GridLayout
-                xmlns:grid="http://schemas.android.com/apk/res-auto"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/mappingGrid"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/darkColor"
                 android:orientation="horizontal" />
 
             <!-- Start of Time update indicator -->
