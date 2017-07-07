@@ -9,13 +9,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Allows user to define Alert intervals for their positioning reminders.
@@ -31,20 +36,27 @@ public class AlertsActivity extends AppCompatActivity {
 
     private static final int DEFAULT_PROGRESS = 15;
 
-    private static final int MAXIMUM_PROGRESS = 20;
+    private static final int MAXIMUM_PROGRESS = 30;
 
-    private static final int MINIMUM_PROGRESS = 5;
+    private static final int MINIMUM_PROGRESS = 0;
 
     private static final int INC_DEC_VALUE = 1;
 
     public static SharedPreferences SHARED_PREFERENCES;
+
     public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
 
     private TextView mTime;
 
     private DonutProgress mDonutProgress;
 
+    private ToggleButton mToggle;
+
     private int timerInterval;
+
+    private boolean notificationOn;
+
+    private AlertNotification alertNotification;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +64,7 @@ public class AlertsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alerts);
         Log.d(TAG, "onCreate: starting.");
 
+        alertNotification = new AlertNotification(getApplicationContext());
         mDonutProgress = (DonutProgress) findViewById(R.id.donut_progress);
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
@@ -59,26 +72,49 @@ public class AlertsActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app.ALARM_PREFERENCES", Context.MODE_PRIVATE
         );
 
+        // Initialize page elements.
         setupBottomNavigationView();
         setupAddRemoveButtons();
-
     }
 
-    private void setupAddRemoveButtons() {
+    /**
+     * Initializes the add and remove buttons for incrementing and decrementing the Alerts interval.
+     */
+    protected void setupAddRemoveButtons() {
 
+        // Initialize the buttons.
         ImageButton mAdd = (ImageButton) findViewById(R.id.alerts_button_add);
         ImageButton mRemove = (ImageButton) findViewById(R.id.alerts_button_remove);
+
+        // Get toggle button for turning notifications on/off
+        mToggle = (ToggleButton) findViewById(R.id.toggle_button_alarm);
+
+        // Get the TextView displaying the time to the user (in middle of donut).
         mTime = (TextView) findViewById(R.id.time);
 
         // Retrieves the Alert preferences, but if it doesn't exist, sets to default value.
         timerInterval = SHARED_PREFERENCES.getInt(getString(R.string.alert_interval),
                 DEFAULT_PROGRESS);
+        notificationOn = SHARED_PREFERENCES.getBoolean("notifications",
+                false);
 
+        // Load the preferences for the toggle button.
+        mToggle.setChecked(notificationOn);
+
+        // Set the progress value of the donut (how filled up it is).
         mDonutProgress.setDonut_progress(String.valueOf(timerInterval));
-        mDonutProgress.setMax(MAXIMUM_PROGRESS);
-        mTime.setText(String.valueOf(timerInterval));
-        updateAlarmPreferences(timerInterval);
 
+        // Set the maximum value the donut can fill to.
+        mDonutProgress.setMax(MAXIMUM_PROGRESS);
+
+        // Sets the text of the TextView located inside the donut.
+        mTime.setText(String.valueOf(timerInterval));
+
+        // Update the shared preferences of the user's Alert preference.
+        updateAlarmPreferences(timerInterval);
+        updateNotificationPreferences();
+
+        // Create the listeners for the two inc/dec buttons.
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,20 +122,50 @@ public class AlertsActivity extends AppCompatActivity {
                 if (!(timerInterval >= MAXIMUM_PROGRESS)) {
                     updateAlarmDisplay(INC_DEC_VALUE, true);
                     updateAlarmPreferences(timerInterval);
+                    alertNotification.resetAlarm(timerInterval);
+                    mToggle.setChecked(true);
                 }
             }
         });
-
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!(timerInterval <= MINIMUM_PROGRESS)) {
                     updateAlarmDisplay(INC_DEC_VALUE, false);
                     updateAlarmPreferences(timerInterval);
+                    alertNotification.resetAlarm(timerInterval);
+                    mToggle.setChecked(true);
                 }
             }
         });
 
+        mToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    long firstTime = alertNotification.setTime(Calendar.MINUTE, timerInterval);
+                    alertNotification.setAlarmManagerRepeating(firstTime, TimeUnit.MINUTES.toMillis(timerInterval));
+                    Log.d(TAG, "onCheckedChanged: Alarm Set");
+                } else {
+                    alertNotification.cancelAlarm();
+                    Log.d(TAG, "onCheckedChanged: Alarm Cancelled");
+                }
+            }
+        });
+    }
+
+    /**
+     * Updates the notification toggle button as per the user's stored preferences.
+     */
+    protected void updateNotificationPreferences() {
+
+        notificationOn = !notificationOn;
+        mToggle.setChecked(notificationOn);
+
+        // Save the notifications preference.
+        SHARED_PREFERENCES_EDITOR = SHARED_PREFERENCES.edit();
+        SHARED_PREFERENCES_EDITOR.putBoolean("notifications", notificationOn);
+        SHARED_PREFERENCES_EDITOR.apply();
     }
 
     /**
@@ -108,7 +174,7 @@ public class AlertsActivity extends AppCompatActivity {
      * @param value     How much to increment or decrement the timer.
      * @param increment If true, increase the value - else decrease it.
      */
-    public void updateAlarmDisplay(int value, boolean increment) {
+    protected void updateAlarmDisplay(int value, boolean increment) {
         if (increment) {
             timerInterval += value;
             mDonutProgress.setDonut_progress(Integer.toString(timerInterval));
@@ -118,7 +184,6 @@ public class AlertsActivity extends AppCompatActivity {
         }
 
         mTime.setText(String.valueOf(timerInterval));
-
     }
 
     /**
@@ -126,7 +191,7 @@ public class AlertsActivity extends AppCompatActivity {
      *
      * @param newInterval New value of the alert interval preference.
      */
-    public void updateAlarmPreferences(int newInterval) {
+    protected void updateAlarmPreferences(int newInterval) {
         SHARED_PREFERENCES_EDITOR = SHARED_PREFERENCES.edit();
         SHARED_PREFERENCES_EDITOR.putInt(getString(R.string.alert_interval), newInterval);
         SHARED_PREFERENCES_EDITOR.apply();
@@ -138,7 +203,7 @@ public class AlertsActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
-    public void setupBottomNavigationView() {
+    protected void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);

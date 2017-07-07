@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    tools:context="com.biomap.application.bio_app.Connect.ConnectActivity">
+                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context="com.biomap.application.bio_app.Connect.ConnectActivity">
 
     <RelativeLayout
         android:id="@+id/mainContainer"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_top_tabs" />
+            <include layout="@layout/layout_top_tabs"/>
 
         </RelativeLayout>
 
@@ -31,26 +31,26 @@
 
             <TextView
                 android:id="@+id/connect_page_title"
+                fontPath="fonts/Gotham-Bold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:text="@string/connect_activity_title"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:textSize="24sp"
-                android:textColor="@color/colorAccent"
                 android:layout_marginTop="0dp"
                 android:gravity="center"
                 android:includeFontPadding="true"
-                fontPath="fonts/Gotham-Bold.otf" />
+                android:text="@string/connect_activity_title"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp"/>
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                custom:srcCompat="@drawable/ic_connect_svg"
-                android:padding="10dp"
+                android:layout_toLeftOf="@+id/connect_page_title"
                 android:layout_toStartOf="@+id/connect_page_title"
-                android:layout_toLeftOf="@+id/connect_page_title" />
+                android:padding="10dp"
+                custom:srcCompat="@drawable/ic_connect_svg"/>
 
         </RelativeLayout>
 
@@ -59,11 +59,12 @@
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <include layout="@layout/layout_center_viewpager" />
+
+            <include layout="@layout/layout_center_viewpager"/>
         </RelativeLayout>
 
         <!-- Bottom Toolbar -->
-        <include layout="@layout/layout_bottom_navigation_view" />
+        <include layout="@layout/layout_bottom_navigation_view"/>
 
     </RelativeLayout>
 

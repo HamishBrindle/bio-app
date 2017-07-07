@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.biomap.application.bio_app.Alerts.AlertsActivity">
+                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context="com.biomap.application.bio_app.Alerts.AlertsActivity">
 
     <!-- Start of Main Container -->
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_top_tabs" />
+            <include layout="@layout/layout_top_tabs"/>
 
         </RelativeLayout>
 
@@ -44,7 +44,7 @@
                 android:includeFontPadding="true"
                 android:text="@string/alerts_activity_title"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="24sp"/>
 
             <!-- Alerts Icon -->
             <ImageView
@@ -53,7 +53,7 @@
                 android:layout_toLeftOf="@+id/alerts_page_title"
                 android:layout_toStartOf="@+id/alerts_page_title"
                 android:padding="10dp"
-                custom:srcCompat="@drawable/ic_alerts_svg" />
+                custom:srcCompat="@drawable/ic_alerts_svg"/>
 
         </RelativeLayout>
         <!-- End of Page Header -->
@@ -83,7 +83,7 @@
                     custom:donut_max="20"
                     custom:donut_progress="15"
                     custom:donut_show_text="false"
-                    custom:donut_unfinished_stroke_width="30sp" />
+                    custom:donut_unfinished_stroke_width="30sp"/>
 
                 <!-- Start of 3 consecutive TextViews to describe progress donut -->
                 <LinearLayout
@@ -102,7 +102,7 @@
                         android:text="Alert every"
                         android:textAlignment="center"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
 
                     <!-- 2/3: Time -->
                     <TextView
@@ -112,7 +112,7 @@
                         android:text="15"
                         android:textAlignment="center"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="40sp" />
+                        android:textSize="40sp"/>
 
                     <!-- 3/3: "Minutes" -->
                     <TextView
@@ -122,7 +122,7 @@
                         android:text="minutes"
                         android:textAlignment="center"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
 
                 </LinearLayout>
                 <!-- End of 3 consecutive TextViews to describe progress donut -->
@@ -147,7 +147,7 @@
                     android:layout_weight="1"
                     android:background="#00000000"
                     android:scaleType="fitCenter"
-                    custom:srcCompat="@drawable/ic_alert_add" />
+                    custom:srcCompat="@drawable/ic_alert_add"/>
 
                 <!-- Remove Button -->
                 <ImageButton
@@ -157,7 +157,7 @@
                     android:layout_weight="1"
                     android:background="#00000000"
                     android:scaleType="fitCenter"
-                    custom:srcCompat="@drawable/ic_alert_remove" />
+                    custom:srcCompat="@drawable/ic_alert_remove"/>
 
             </LinearLayout>
             <!-- End of Add & Remove buttons -->
@@ -168,7 +168,19 @@
         <!-- Bottom Toolbar -->
         <include
             android:id="@+id/bottom_navigation"
-            layout="@layout/layout_bottom_navigation_view" />
+            layout="@layout/layout_bottom_navigation_view"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_button_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/page_body"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/alert_toggle_button"
+            android:text="ToggleButton"
+            android:textOff="Turn On Alarms"
+            android:textOn="Turn Off Alarms"/>
 
     </RelativeLayout>
     <!-- End of Main Container -->
