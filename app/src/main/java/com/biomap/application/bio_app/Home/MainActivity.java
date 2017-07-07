@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -74,16 +75,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
-        assert tabMenu != null;
         tabMenu.setIcon(R.drawable.ic_hamburger);
 
         TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
-        assert tabSettings != null;
         tabSettings.setIcon(R.drawable.ic_settings);
 
         // Starts the MainActivity HomeFragment when booted
         TabLayout.Tab tabHome = tabLayout.getTabAt(1);
-        assert tabHome != null;
         viewPager.setCurrentItem(tabHome.getPosition());
 
     }

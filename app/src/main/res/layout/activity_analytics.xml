@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  tools:context="com.biomap.application.bio_app.Analytics.AnalyticsActivity">
 
     <RelativeLayout
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_top_tabs"/>
+            <include layout="@layout/layout_top_tabs" />
 
         </RelativeLayout>
 
@@ -31,40 +32,40 @@
 
             <TextView
                 android:id="@+id/analytics_page_title"
-                fontPath="fonts/Gotham-Bold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="10dp"
+                android:text="@string/analytics_activity_title"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="24sp"
+                android:textColor="@color/colorAccent"
                 android:layout_marginTop="0dp"
                 android:gravity="center"
                 android:includeFontPadding="true"
-                android:text="@string/analytics_activity_title"
-                android:textColor="@color/colorAccent"
-                android:textSize="24sp"/>
+                fontPath="fonts/Gotham-Bold.otf" />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_toLeftOf="@+id/analytics_page_title"
-                android:layout_toStartOf="@+id/analytics_page_title"
+                custom:srcCompat="@drawable/ic_analytics_svg"
                 android:padding="10dp"
-                custom:srcCompat="@drawable/ic_analytics_svg"/>
+                android:layout_toStartOf="@+id/analytics_page_title"
+                android:layout_toLeftOf="@+id/analytics_page_title" />
 
         </RelativeLayout>
 
-        <!-- Body -->
-        <RelativeLayout
-            android:id="@+id/body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <include layout="@layout/layout_center_viewpager"/>
-        </RelativeLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="data.json"
+            app:lottie_loop="true"
+            android:layout_below="@+id/relLayout1"/>
 
         <!-- Bottom Toolbar -->
-        <include layout="@layout/layout_bottom_navigation_view"/>
+        <include layout="@layout/layout_bottom_navigation_view" />
 
     </RelativeLayout>
 
