@@ -27,14 +27,14 @@
 
         <ImageView
             android:id="@+id/biomap_logo_imageView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:contentDescription="BioMap Logo"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_logo_white_filled"
+            app:srcCompat="@drawable/ic_logo_white"
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="8dp"
