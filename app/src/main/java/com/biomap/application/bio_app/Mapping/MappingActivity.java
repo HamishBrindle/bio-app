@@ -1,15 +1,14 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
-import android.widget.Toast;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
@@ -24,7 +23,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * <p>
  * Created by hamis on 2017-06-13.
  */
-public class MappingActivity extends AppCompatActivity implements BitmapSquare.OnToggledListener {
+public class MappingActivity extends AppCompatActivity {
 
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
@@ -42,10 +41,23 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         initFonts();
         setContentView(R.layout.activity_mapping);
 
-        Log.d(TAG, "onCreate: starting.");
+        // Get the Mapping Grid layout to manipulate.
+        grid = (GridLayout) findViewById(R.id.mappingGrid);
+        grid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redrawGrid();
+            }
+        });
 
         // Make the bottom navigation bar.
         setupBottomNavigationView();
+        setupGrid();
+
+    }
+
+    private void redrawGrid() {
+        grid.invalidate();
         setupGrid();
     }
 
@@ -54,12 +66,19 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
      */
     private void setupGrid() {
 
-        // Get the Mapping Grid layout to manipulate.
-        grid = (GridLayout) findViewById(R.id.mappingGrid);
+        // Make a mock pressure-chart; this will be 8x8.
+        int[] pressure = getRandomPressure();
+
+        // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
+        MappingMatrix matrix = new MappingMatrix();
+
+        int[][] expandedMatrix = matrix.convert2D(pressure);
+
+        expandedMatrix = matrix.expand(expandedMatrix, 3);
 
         // Set the number of columns and rows in the grid.
-        grid.setRowCount(MAP_RESOLUTION);
-        grid.setColumnCount(MAP_RESOLUTION);
+        grid.setRowCount(expandedMatrix.length);
+        grid.setColumnCount(expandedMatrix[0].length);
 
         // Get the number of columns and rows to be displayed in the Mapping Grid.
         int numOfCol = grid.getColumnCount();
@@ -71,13 +90,6 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // Initialize gridId to start.
         int gridId = 0;
 
-        // Make a mock pressure-chart; this will be 8x8.
-        int[] pressure = getPressure();
-
-        // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
-        MappingMatrix matrix = new MappingMatrix();
-        int[][] expandedMatrix = matrix.convert2D(pressure);
-        expandedMatrix = matrix.expand(expandedMatrix);
 
         // Create squares for the pressure map and add them to the grid. Also, make an array for
         // the squares so we can make further changes to the grid.
@@ -90,7 +102,6 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
                         gridId,
                         expandedMatrix[xPos][yPos] // The pressure value from array
                 );
-                tView.setOnToggledListener(this);
                 tView.setId(gridId++);
                 gridSquares[xPos][yPos] = tView;
                 grid.addView(tView);
@@ -105,6 +116,7 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+
                         // Set the space between each button. Keep at zero.
                         final int MARGIN = 0;
 
@@ -126,7 +138,20 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
                             }
                         }
                     }
+
                 });
+    }
+
+    private int[] getRandomPressure() {
+
+        int[] output = new int[64];
+
+        for (int i = 0; i < 64; i++) {
+            output[i] = rand.nextInt(100);
+        }
+
+        return output;
+
     }
 
     /**
@@ -155,28 +180,15 @@ public class MappingActivity extends AppCompatActivity implements BitmapSquare.O
         // TODO: This will eventually get information from the nodes and create an array.
 
         return new int[]{
-                3, 6, 4, 20, 30, 20, 15, 11,
+                3, 6, 4, 20, 30, 20, 5, 1,
                 7, 20, 70, 88, 90, 75, 20, 7,
-                15, 45, 50, 11, 44, 65, 30, 10,
-                2, 4, 10, 4, 8, 23, 10, 5,
-                10, 20, 10, 5, 5, 7, 15, 2,
-                20, 40, 30, 5, 7, 28, 33, 15,
-                30, 65, 60, 15, 11, 45, 55, 10,
-                40, 80, 70, 20, 20, 65, 77, 13
+                15, 65, 70, 61, 64, 65, 50, 0,
+                3, 75, 60, 40, 38, 60, 70, 5,
+                0, 50, 50, 20, 5, 55, 60, 2,
+                5, 60, 45, 5, 3, 48, 50, 5,
+                0, 65, 40, 5, 1, 45, 55, 0,
+                0, 40, 30, 2, 0, 55, 47, 3
         };
-    }
-
-    @Override
-    public void OnToggled(BitmapSquare v, boolean touchOn) {
-        //get the id string
-        String idString = v.getXCoordinate() + ":" + v.getYCoordinate();
-
-        v.setColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
-
-        Toast.makeText(MappingActivity.this,
-                "Toogled:\n" +
-                        idString + "\n",
-                Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Vafa on 2017-06-27.
@@ -20,19 +21,34 @@ public class AlertNotification {
     private PendingIntent mAlarmSender;
     private AlarmManager am;
 
+    /**
+     * The constructor of this class, setting up the instance variables.
+     *
+     * @param context the context of the class calling this object.
+     */
     public AlertNotification(Context context) {
         calendar = Calendar.getInstance();
         mAlarmSender = PendingIntent.getBroadcast(context, 0, new Intent(context, NotificationPublisher.class), 0);
         am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
     }
-    //The constructor for this class, setting up all of the alarm managers.
 
+    /**
+     * Gets the pending intent for the alarm manager.
+     *
+     * @return mAlarmSender the pending intent.
+     */
     public PendingIntent getAlarmSender() {
         return mAlarmSender;
     }
 
-    //Used to set the time you want the alarm to first go off.
+    /**
+     * Sets up the time for the alarm manager to go off.
+     *
+     * @param origin The unit which you want to add to, eg. Calender.MINUTE
+     * @param toAdd  the amount you want to add to the origin.
+     * @return the final added time.
+     */
     public long setTime(int origin, int toAdd) {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(origin, toAdd);
@@ -42,7 +58,11 @@ public class AlertNotification {
 
     }
 
-    //Setting up the alarm manager so it goes off at the given time.
+    /**
+     * Set up the alarm manager to go off once at the given time.
+     *
+     * @param notificationTime the time for the alarm to go off.
+     */
     public void setAlarmManager(long notificationTime) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             am.setExact(AlarmManager.RTC_WAKEUP, notificationTime, mAlarmSender);
@@ -52,17 +72,30 @@ public class AlertNotification {
         Log.d(TAG, "setAlarmManager: Alarm Set");
     }
 
-    //Setting up the repeating alarm manager, goes off the first time at 'notficatinTime' and repeats at every interval.
+    /**
+     * Set up the alarm manger to go off repeatedly.
+     *
+     * @param notificationTime the first time the alarm goes off
+     * @param interval         the interval in which the alarm goes off.
+     */
     public void setAlarmManagerRepeating(long notificationTime, long interval) {
         am.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime, interval, mAlarmSender);
-        Log.d(TAG, "setAlarmManagerRepeating: Repeating Alarm Set");
     }
 
-    //Cancel the repeating alarm.
-    public void cancelAlarm(PendingIntent alarmListener) {
-        am.cancel(alarmListener);
-        Log.d(TAG, "cancelAlarm: Alarm Cancelled");
+    /**
+     * Cancels the alarm manager.
+     */
+    public void cancelAlarm() {
+        am.cancel(mAlarmSender);
+    }
 
+    /**
+     * Reset the alarm.
+     */
+    public void resetAlarm(int newInterval) {
+        this.cancelAlarm();
+        long init = setTime(Calendar.MINUTE, newInterval);
+        setAlarmManagerRepeating(init, TimeUnit.MINUTES.toMillis(newInterval));
     }
 
 }

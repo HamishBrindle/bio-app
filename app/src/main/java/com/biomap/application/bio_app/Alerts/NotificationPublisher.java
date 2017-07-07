@@ -45,6 +45,7 @@ public class NotificationPublisher extends BroadcastReceiver {
                 homeIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
+        mBuilder.setContentIntent(resultHomeItent);
         notificationManager.notify(1, mBuilder.build());
     }
 }

@@ -33,10 +33,9 @@
     <string name="alerts_activity_title">Alerts</string>
 
     <string name="ulcers_check_text">Have you had ulcers in the past?</string>
-    <string name="good_morning_text">Good morning %1$s</string>
-    <string name="good_afternoon_text">Good Afternoon %1$s</string>
-    <string name="good_evening_text">Good Evening %1$s</string>
-    <string name="good_night_text">Good Night %1$s</string>
+    <string name="good_morning_text">Good morning, %1$s</string>
+    <string name="good_afternoon_text">Good Afternoon, %1$s</string>
+    <string name="good_evening_text">Good Evening, %1$s</string>
     <string name="alert_interval"> </string>
     <string name="biomap_logo">BioMap Logo</string>
     <string name="biomap_text_logo">BioMap Text Logo</string>
@@ -44,5 +43,15 @@
     <string name="last_name">Last Name</string>
     <string name="continue_text">Continue</string>
     <string name="ulcers_true">You have ulcers</string>
-    <string name="ulcers_false">You Do not have ulcers</string>
+    <string name="ulcers_false">You do not have ulcers</string>
+    <string name="notificationsOnOff"></string>
+
+    <string-array name="menu_drawer">
+        <item>Home</item>
+        <item>Mapping</item>
+        <item>Alerts</item>
+        <item>Analytics</item>
+        <item>Connect</item>
+        <item>Settings</item>
+    </string-array>
 </resources>

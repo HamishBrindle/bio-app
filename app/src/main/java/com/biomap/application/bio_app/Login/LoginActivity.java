@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.child("Users").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                 Log.d(TAG, "onDataChange: GOING TO MAIN");
+
                                 startActivity(mainIntent);
                                 finish();
                             } else {
@@ -467,7 +468,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
         }
 
-
         @Override
         protected Boolean doInBackground(Void... params) {
 
@@ -482,7 +482,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 }
             });
-
 
             return false;
         }
