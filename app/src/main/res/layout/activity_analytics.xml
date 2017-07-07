@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    tools:context="com.biomap.application.bio_app.Analytics.AnalyticsActivity">
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 tools:context="com.biomap.application.bio_app.Analytics.AnalyticsActivity">
 
     <RelativeLayout
         android:id="@+id/mainContainer"
@@ -54,13 +55,14 @@
 
         </RelativeLayout>
 
-        <!-- Body -->
-        <RelativeLayout
-            android:id="@+id/body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/layout_center_viewpager" />
-        </RelativeLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="data.json"
+            app:lottie_loop="true"
+            android:layout_below="@+id/relLayout1"/>
 
         <!-- Bottom Toolbar -->
         <include layout="@layout/layout_bottom_navigation_view" />

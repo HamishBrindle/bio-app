@@ -1,25 +1,19 @@
 package com.biomap.application.bio_app.Home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
@@ -115,16 +109,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
-        assert tabMenu != null;
         tabMenu.setIcon(R.drawable.ic_hamburger);
 
         TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
-        assert tabSettings != null;
         tabSettings.setIcon(R.drawable.ic_settings);
 
         // Starts the MainActivity HomeFragment when booted
         TabLayout.Tab tabHome = tabLayout.getTabAt(1);
-        assert tabHome != null;
         viewPager.setCurrentItem(tabHome.getPosition());
 
     }
