@@ -14,7 +14,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
         TextView mDescriptionText = (TextView) findViewById(R.id.login_register_description_text);
-        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Book.otf");
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Bold.otf");
         mDescriptionText.setTypeface(font);
     }
 }
