@@ -15,7 +15,7 @@ class MappingMatrix {
      * @return Converted array.
      */
     int[][] convert2D(int[] input) {
-        int resolution = MappingActivity.NODES_RESOLUTION;
+        int resolution = (int) Math.sqrt(input.length);
         int[][] output = new int[resolution][resolution];
         int count = 0;
 
@@ -36,14 +36,18 @@ class MappingMatrix {
      * @param input2D Original matrix to be stretched out.
      * @return New matrix.
      */
-    int[][] expand(int[][] input2D, int startResolution) {
-        int[][] newOutput;
+    int[][] expand(int[][] input2D, int iterations) {
 
-        // Stretch, rotate, stretch, rotate lol
-        newOutput = stretchHorizontal(input2D, startResolution);
-        newOutput = rotate90CounterClockwise(newOutput);
-        newOutput = stretchHorizontal(newOutput, startResolution);
-        rotate90ClockWise(newOutput);
+        int[][] newOutput = input2D;
+
+        for (int i = 0; i < iterations; i++) {
+            // Stretch, rotate, stretch, rotate lol
+            int startingResolution = newOutput.length;
+            newOutput = stretchHorizontal(newOutput, startingResolution);
+            newOutput = rotate90CounterClockwise(newOutput);
+            newOutput = stretchHorizontal(newOutput, startingResolution);
+            rotate90ClockWise(newOutput);
+        }
 
         return newOutput;
     }
