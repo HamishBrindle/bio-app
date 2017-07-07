@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-group='com.github.HamishBrindle'
+group = 'com.github.HamishBrindle'
 
 android {
     compileSdkVersion 25

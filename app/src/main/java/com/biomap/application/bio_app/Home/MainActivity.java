@@ -11,11 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.biomap.application.bio_app.Login.LoginActivity;
+import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
 
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupViewPager();
 
-        /*
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -66,12 +64,16 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+                    startActivity(register_login_intent);
+                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
                     Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(logOutIntent);
+//                    startActivity(logOutIntent);
+//                    finish();
+                    startActivity(register_login_intent);
                     finish();
                 }
             }
@@ -81,21 +83,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
 
-        // Create Logout button on the main page for testing.
-        // TODO: Move logout button to settings fragment.
-        Button mSignOut = (Button) findViewById(R.id.signoutBtn);
-        mSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: signed out button");
-                // Sign out the user.
-                mAuth.signOut();
-                // Check if user is signed out.
-                // TODO: Preferably, we'd like to not call this manually.
-                mAuthListener.onAuthStateChanged(mAuth);
-            }
-        });
-        */
     }
 
     /**

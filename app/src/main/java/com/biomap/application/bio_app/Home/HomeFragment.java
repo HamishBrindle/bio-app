@@ -1,17 +1,12 @@
 package com.biomap.application.bio_app.Home;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,29 +52,8 @@ public class HomeFragment extends Fragment {
         mGreeting = (TextView) getView().findViewById(R.id.home_greeting);
         mUlcersText = (TextView) getView().findViewById(R.id.home_greeting_ulcers);
         setUpIntent = new Intent(getActivity(), ProfileActivity.class);
-        Intent homeIntent = new Intent(getActivity(), MainActivity.class);
         //Notificatonis
         Button notificationButton = (Button) getView().findViewById(R.id.notification_button);
-//        final NotificationManager notify = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-//        PendingIntent resultHomeItent = PendingIntent.getActivity(
-//                getActivity(),
-//                0,
-//                homeIntent,
-//                PendingIntent.FLAG_UPDATE_CURRENT
-//        );
-//        final int mNotificationId = 1;
-//        final NotificationCompat.Builder mBuilder =
-//                new NotificationCompat.Builder(getActivity())
-//                        .setSmallIcon(R.drawable.ic_logo)
-//                        .setColor(Color.parseColor("#4c4c4c"))
-//                        .setContentTitle("It's time to move!")
-//                        .setContentText("Hey " + name + " get off your asshole")
-//                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-//                        .setPriority(Notification.PRIORITY_MAX)
-//                        .setDefaults(Notification.DEFAULT_VIBRATE)
-//                        .setLights(Color.RED, 1000, 250)
-//                        .setAutoCancel(true);
-//        mBuilder.setContentIntent(resultHomeItent);
 
         notificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
