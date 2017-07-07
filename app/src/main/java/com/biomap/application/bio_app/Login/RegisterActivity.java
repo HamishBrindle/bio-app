@@ -71,15 +71,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
+    private static final int RC_SIGN_IN = 9001;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
-    private static final int RC_SIGN_IN = 9001;
-
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -421,12 +417,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with database verification logic
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with database verification logic
         return password.length() > 5;
     }
 
@@ -529,7 +523,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            // TODO: attempt authentication against a network service.
 
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                 @SuppressWarnings("ConstantConditions")

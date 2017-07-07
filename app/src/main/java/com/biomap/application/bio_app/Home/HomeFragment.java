@@ -1,8 +1,5 @@
 package com.biomap.application.bio_app.Home;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Login.ProfileActivity;
@@ -49,26 +45,8 @@ public class HomeFragment extends Fragment {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        mGreeting = (TextView) getView().findViewById(R.id.home_greeting);
-        mUlcersText = (TextView) getView().findViewById(R.id.home_greeting_ulcers);
         setUpIntent = new Intent(getActivity(), ProfileActivity.class);
         //Notificatonis
-        Button notificationButton = (Button) getView().findViewById(R.id.notification_button);
-
-        notificationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                c.add(Calendar.SECOND, 3);
-                long firstTime = c.getTimeInMillis();
-
-                PendingIntent mAlarmSender = PendingIntent.getBroadcast(getContext(), 0, new Intent(getContext(), NotificationPublisher.class), 0);
-                AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-                am.set(AlarmManager.RTC_WAKEUP, firstTime, mAlarmSender);
-
-
-            }
-        });
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

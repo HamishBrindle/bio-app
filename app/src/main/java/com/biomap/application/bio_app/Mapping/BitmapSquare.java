@@ -4,27 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Random;
-
 /**
- * Creates a square within a Grid... WITHIN A GRID. Shit is real complex.
- * I refer to this object as an 'inner grid'.
+ * Creates a square for inside the grid.
  */
 public class BitmapSquare extends View {
 
-    public interface OnToggledListener {
-        void OnToggled(BitmapSquare v, boolean touchOn);
-    }
-
-    boolean touchOn;
-    boolean mDownTouch = false;
-    private OnToggledListener toggledListener;
-
-    private static final String TAG = "SQAURE";
+    private static final String TAG = "BitmapSquare";
     private int x = 0; //default
     private int y = 0; //default
     private int gridID;
@@ -46,27 +33,22 @@ public class BitmapSquare extends View {
         this.gridID = gridID;
         this.pressure = pressure;
         color = getColorFromPressure(pressure);
-        init();
     }
 
     public BitmapSquare(Context context) {
         super(context);
-        init();
     }
 
     public BitmapSquare(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public BitmapSquare(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
     /**
-     * Honestly don't know the exact reason I have to include this. It may have something to do
-     * with the parent GridView.
+     * Honestly don't know the exact reason I have to include this.
      *
      * @param widthMeasureSpec  n/a
      * @param heightMeasureSpec n/a
@@ -84,7 +66,6 @@ public class BitmapSquare extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e(TAG, "Square drawn - width: " + canvas.getWidth());
         canvas.drawColor(this.color);
     }
 
@@ -97,51 +78,17 @@ public class BitmapSquare extends View {
 
         if (pressure > 255 && pressure < 370)
             color = Color.rgb(255, 140 + (pressure - 255), 180);
+
         else if (pressure >= 370 && pressure < 445)
             color = Color.rgb(255, 255, 180 + (pressure - 370));
+
         else if (pressure >= 445)
             color = Color.WHITE;
+
         else
-            color = Color.rgb(pressure, 140, 180);
+            color = Color.argb(pressure, pressure, 140, 180);
 
         return color;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-
-                touchOn = !touchOn;
-                invalidate();
-
-                if (toggledListener != null) {
-                    toggledListener.OnToggled(this, touchOn);
-                }
-
-                mDownTouch = true;
-                return true;
-
-            case MotionEvent.ACTION_UP:
-                if (mDownTouch) {
-                    mDownTouch = false;
-                    performClick();
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
-
-    public void setOnToggledListener(OnToggledListener listener) {
-        toggledListener = listener;
     }
 
     public int getPressure() {
@@ -180,7 +127,4 @@ public class BitmapSquare extends View {
         this.color = color;
     }
 
-    private void init() {
-        touchOn = false;
-    }
 }

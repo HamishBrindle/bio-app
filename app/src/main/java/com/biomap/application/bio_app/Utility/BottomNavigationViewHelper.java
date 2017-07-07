@@ -18,7 +18,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 /**
  * Creates and enables the bottom navigation toolbar. This toolbar is always visible and switches
  * between the main activities.
- *
+ * <p>
  * Created by hamis on 2017-06-13.
  */
 
@@ -41,13 +41,13 @@ public class BottomNavigationViewHelper {
      * Each button is labeled with the corresponding number to it's order.
      *
      * @param context The activity we're presently in.
-     * @param view The toolbar we're using.
+     * @param view    The toolbar we're using.
      */
     public static void enableNavigation(final Context context, BottomNavigationViewEx view) {
         view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
 
                     case R.id.ic_mapping:
                         Intent intentMapping = new Intent(context, MappingActivity.class); // 0
@@ -65,7 +65,7 @@ public class BottomNavigationViewHelper {
                         break;
 
                     case R.id.ic_analytics:
-                        Intent intentAnalytics= new Intent(context, AnalyticsActivity.class); // 3
+                        Intent intentAnalytics = new Intent(context, AnalyticsActivity.class); // 3
                         context.startActivity(intentAnalytics);
                         break;
 

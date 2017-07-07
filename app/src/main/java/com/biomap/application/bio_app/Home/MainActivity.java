@@ -16,10 +16,16 @@ import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+/**
+ * Home page.
+ * <p>
+ * Created by Hamish Brindle on 2017-06-13.
+ */
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -102,16 +108,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
-        assert tabMenu != null;
         tabMenu.setIcon(R.drawable.ic_hamburger);
 
         TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
-        assert tabSettings != null;
         tabSettings.setIcon(R.drawable.ic_settings);
 
         // Starts the MainActivity HomeFragment when booted
         TabLayout.Tab tabHome = tabLayout.getTabAt(1);
-        assert tabHome != null;
         viewPager.setCurrentItem(tabHome.getPosition());
 
     }
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
-    public void setupBottomNavigationView() {
+    private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
