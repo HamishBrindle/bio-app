@@ -88,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
     private Intent logInIntent;
+    private EditText mConfirmPassword;
     private DatabaseReference myRef;
 
     @Override
@@ -100,8 +101,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        mConfirmPassword = (EditText) findViewById(R.id.password_confirm);
+
         logInIntent = new Intent(this, LoginActivity.class);
-        setUpIntent = new Intent(this, ProfileActivity.class);
+        setUpIntent = new Intent(this, ProfileInfoActivity.class);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -118,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mCallbackManager = CallbackManager.Factory.create();
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        TextView loginText = (TextView) findViewById(R.id.login_from_register);
+//        TextView loginText = (TextView) findViewById(R.id.login_from_register);
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -159,15 +162,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 createAccount();
             }
         });
-        loginText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: ");
-                startActivity(logInIntent);
-                finish();
-
-            }
-        });
+//        loginText.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(TAG, "onClick: ");
+//                startActivity(logInIntent);
+//                finish();
+//
+//            }
+//        });
         //Signing in with Google
         googleSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -263,10 +266,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mConfirmPassword.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String confirmPassword = mConfirmPassword.getText().toString();
+
         boolean cancel = false;
         View focusView = null;
 
@@ -274,6 +280,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+        if (!confirmPassword.equals(password)) {
+            mConfirmPassword.setError("Passwords do not match");
+            focusView = mConfirmPassword;
             cancel = true;
         }
         // Check for a valid email address.
@@ -289,6 +300,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("This Field is Required");
             focusView = mPasswordView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(confirmPassword)) {
+            mConfirmPassword.setError("This Field is Required");
+            focusView = mConfirmPassword;
             cancel = true;
         }
         if (cancel) {

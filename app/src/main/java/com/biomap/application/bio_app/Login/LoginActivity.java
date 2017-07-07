@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         registerIntent = new Intent(this, RegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
-        setUpIntent = new Intent(this, ProfileActivity.class);
+        setUpIntent = new Intent(this, ProfileInfoActivity.class);
         registerFromLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

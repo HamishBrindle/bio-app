@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.biomap.application.bio_app.Login.LoginActivity;
-import com.biomap.application.bio_app.Login.ProfileActivity;
+import com.biomap.application.bio_app.Login.LoginRegisterActivity;
+import com.biomap.application.bio_app.Login.ProfileInfoActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,7 +56,7 @@ public class SettingsFragment extends Fragment {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getActivity(), LoginActivity.class);
+                    Intent logOutIntent = new Intent(getActivity(), LoginRegisterActivity.class);
                     startActivity(logOutIntent);
                     getActivity().finish();
                 }
@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
         };
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference();
-        updateProfileIntent = new Intent(getActivity(), ProfileActivity.class);
+        updateProfileIntent = new Intent(getActivity(), ProfileInfoActivity.class);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
         mUpdate = (Button) view.findViewById(R.id.settings_profile_update);

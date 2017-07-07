@@ -42,15 +42,19 @@
             android:name=".Connect.ConnectActivity"
             android:launchMode="singleInstance"/>
         <activity
-            android:name=".Login.ProfileActivity"
+            android:name=".Login.ProfileInfoActivity"
             android:launchMode="singleInstance"/>
         <activity
             android:name=".Login.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleInstance"/>
+        <activity
+            android:name=".Login.RegisterActivity"
+            android:launchMode="singleInstance"
+            />
 
         <receiver
-            android:name=".Home.NotificationPublisher"
+            android:name=".Alerts.NotificationPublisher"
             android:process=":remote"/>
     </application>
 

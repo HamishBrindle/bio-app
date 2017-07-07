@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
 
-        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
@@ -70,17 +68,16 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-                    startActivity(register_login_intent);
-                    finish();
+//                    startActivity(register_login_intent);
+//                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-//                    startActivity(logOutIntent);
-//                    finish();
-                    startActivity(register_login_intent);
+                    Intent logOutIntent = new Intent(getBaseContext(), LoginRegisterActivity.class);
+                    startActivity(logOutIntent);
                     finish();
+
                 }
             }
         };
