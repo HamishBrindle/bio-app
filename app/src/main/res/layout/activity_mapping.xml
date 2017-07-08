@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="100dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/mapping_indicator_tab"
+                    android:background="@drawable/misc_mapping_indicator"
                     android:gravity="center"
                     android:text="Right"
                     android:textColor="@color/LavenderPurple"
@@ -102,7 +102,7 @@
                     fontPath="fonts/Gothic-Bold.otf"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/mapping_indicator_tab"
+                    android:background="@drawable/misc_mapping_indicator"
                     android:gravity="center"
                     android:text="Left"
                     android:textColor="@color/SeafoamGreen"
@@ -113,10 +113,11 @@
 
             <!-- Pressure map grid -->
             <GridLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/mappingGrid"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/darkColor"
                 android:orientation="horizontal" />
 
             <!-- Start of Time update indicator -->
@@ -124,7 +125,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Updated 7:32pm"
-                android:textColor="@color/colorAccent"
                 android:layout_marginTop="6dp"/>
             <!-- End of Time update indicator -->
 
@@ -149,7 +149,6 @@
                         android:layout_height="wrap_content"
                         android:text="Weight Distribution"
                         android:textSize="20sp"
-                        android:textColor="@color/colorAccent"
                         android:layout_marginBottom="10dp" />
 
                     <!-- Start of Charts (RIGHT) -->

@@ -1,51 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 tools:context="com.biomap.application.bio_app.Home.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.biomap.application.bio_app.Home.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
-        <!-- top toolbar -->
-        <RelativeLayout
-            android:id="@+id/relLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <include layout="@layout/layout_top_tabs"/>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="257dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.485">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="46dp"
+                android:id="@+id/biomap_logo_imageView"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:contentDescription="@string/app_name"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="BioMap Logo"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_wordmark_white"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_logo_svg" />
 
-        </RelativeLayout>
+            <ImageButton
+                android:id="@+id/menu_button_mapping"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/button_menu_mapping"
+                android:padding="@dimen/menu_icon_padding"
+                android:scaleType="fitCenter"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="@string/menu_button_mapping"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/biomap_logo_imageView"
+                app:srcCompat="@drawable/ic_mapping_svg" />
 
-        <!-- Middle section (body) -->
-        <RelativeLayout
-            android:id="@+id/relLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/relLayout1">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/mapping_activity_title"
+                android:textAlignment="center"
+                android:textSize="@dimen/h3_font_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu_button_mapping" />
 
-            <include layout="@layout/layout_center_viewpager"/>
+            <ImageButton
+                android:id="@+id/menu_button_alerts"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/button_menu_alerts"
+                android:padding="@dimen/menu_icon_padding"
+                android:scaleType="fitCenter"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="@string/menu_button_alerts"
+                android:textSize="20sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/biomap_logo_imageView"
+                app:srcCompat="@drawable/ic_alerts_svg" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="38dp"
+                android:layout_marginRight="38dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/alerts_activity_title"
+                android:textAlignment="center"
+                android:textSize="@dimen/h3_font_size"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu_button_alerts" />
+
+            <ImageButton
+                android:id="@+id/menu_button_analytics"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="60dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_menu_analytics"
+                android:padding="@dimen/menu_icon_padding"
+                android:scaleType="fitCenter"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="@string/menu_button_analytics"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                app:srcCompat="@drawable/ic_analytics_svg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/analytics_activity_title"
+                android:textAlignment="center"
+                android:textSize="@dimen/h3_font_size"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu_button_analytics" />
+
+            <ImageButton
+                android:id="@+id/menu_button_connect"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="60dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_menu_connect"
+                android:padding="@dimen/menu_icon_padding"
+                android:scaleType="fitCenter"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="@string/menu_button_connect"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:srcCompat="@drawable/ic_connect_svg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/connect_activity_title"
+                android:textAlignment="center"
+                android:textSize="@dimen/h3_font_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu_button_connect" />
+
+        </android.support.constraint.ConstraintLayout>
 
 
         <!-- bottom navigation -->
-        <include layout="@layout/layout_bottom_navigation_view"/>
+        <include layout="@layout/layout_bottom_navigation_view" />
 
 
     </RelativeLayout>
 
+    <!-- This DrawerLayout has two children at the root
+    STAYS AT BOTTOM OF ACTIVITY, NOTHING BELOW -->
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- This LinearLayout represents the contents of the screen  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- The ActionBar displayed at the top -->
+            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimaryDark"
+                android:elevation="4dp"
+                android:fitsSystemWindows="true"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/toolbar_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="0dp">
+
+                    <ImageButton
+                        android:id="@+id/toolbar_hamburger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_hamburger_svg" />
+
+                    <ImageView
+                        android:layout_width="140dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="0dp"
+                        app:srcCompat="@drawable/ic_wordmark_white" />
+
+                    <ImageButton
+                        android:id="@+id/toolbar_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_account_svg" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+            <!-- The main content view where fragments are loaded -->
+            <FrameLayout
+                android:id="@+id/flContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <!-- The navigation drawer that comes from the left -->
+        <!-- Note that `android:layout_gravity` needs to be set to 'start' -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nvView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/darkColor"
+            app:headerLayout="@layout/layout_nav_drawer_header"
+            app:menu="@menu/nav_drawer" />
+
+    </android.support.v4.widget.DrawerLayout>
 
 </android.support.design.widget.CoordinatorLayout>

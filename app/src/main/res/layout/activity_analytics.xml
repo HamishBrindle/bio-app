@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         tools:ignore="MissingPrefix">
 
-        <!-- top toolbar -->
+        <!-- top nav_top -->
         <RelativeLayout
             android:id="@+id/relLayout1"
             android:layout_width="match_parent"

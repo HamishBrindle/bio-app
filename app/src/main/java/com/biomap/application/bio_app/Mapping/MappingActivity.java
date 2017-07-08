@@ -43,22 +43,11 @@ public class MappingActivity extends AppCompatActivity {
 
         // Get the Mapping Grid layout to manipulate.
         grid = (GridLayout) findViewById(R.id.mappingGrid);
-        grid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redrawGrid();
-            }
-        });
 
         // Make the bottom navigation bar.
         setupBottomNavigationView();
         setupGrid();
 
-    }
-
-    private void redrawGrid() {
-        grid.invalidate();
-        setupGrid();
     }
 
     /**
@@ -67,7 +56,7 @@ public class MappingActivity extends AppCompatActivity {
     private void setupGrid() {
 
         // Make a mock pressure-chart; this will be 8x8.
-        int[] pressure = getRandomPressure();
+        int[] pressure = getPressure();
 
         // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
         MappingMatrix matrix = new MappingMatrix();

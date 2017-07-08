@@ -30,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="62dp"
-            android:background="@drawable/ic_logo_white"
+            android:background="@drawable/ic_logo_svg"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp"/>
 

@@ -28,7 +28,7 @@ public class NotificationPublisher extends BroadcastReceiver {
         Intent homeIntent = new Intent(context, MainActivity.class);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_logo)
+                .setSmallIcon(R.drawable.ic_logo_svg)
                 .setColor(Color.parseColor("#4c4c4c"))
                 .setContentTitle("It's time to move!")
                 .setContentText("Hey get off your asshole")

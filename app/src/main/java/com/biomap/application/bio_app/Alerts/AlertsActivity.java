@@ -1,10 +1,15 @@
 package com.biomap.application.bio_app.Alerts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +19,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Home.MainActivity;
+import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -31,32 +40,20 @@ import java.util.concurrent.TimeUnit;
 public class AlertsActivity extends AppCompatActivity {
 
     private static final String TAG = "AlertsActivity";
-
     private static final int ACTIVITY_NUM = 1;
-
     private static final int DEFAULT_PROGRESS = 15;
-
     private static final int MAXIMUM_PROGRESS = 30;
-
     private static final int MINIMUM_PROGRESS = 0;
-
     private static final int INC_DEC_VALUE = 1;
-
     public static SharedPreferences SHARED_PREFERENCES;
-
     public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
-
     private TextView mTime;
-
     private DonutProgress mDonutProgress;
-
     private ToggleButton mToggle;
-
     private int timerInterval;
-
     private boolean notificationOn;
-
     private AlertNotification alertNotification;
+    private DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,8 +70,9 @@ public class AlertsActivity extends AppCompatActivity {
         );
 
         // Initialize page elements.
-        setupBottomNavigationView();
+        setupToolbar();
         setupAddRemoveButtons();
+        setupBottomNavigationView();
     }
 
     /**
@@ -195,6 +193,106 @@ public class AlertsActivity extends AppCompatActivity {
         SHARED_PREFERENCES_EDITOR = SHARED_PREFERENCES.edit();
         SHARED_PREFERENCES_EDITOR.putInt(getString(R.string.alert_interval), newInterval);
         SHARED_PREFERENCES_EDITOR.apply();
+    }
+
+    /**
+     * Setup the top-action-bar for navigation, page title, and settings.
+     */
+    private void setupToolbar() {
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        // Find drawer view
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
+
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
+
+        ImageButton hamburger = (ImageButton) findViewById(R.id.toolbar_hamburger);
+        hamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+    }
+
+    /**
+     * Open's the drawer when the hamburger (menu button) is selected.
+     *
+     * @param item Selected item.
+     * @return Selected item as well.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Setup the buttons for inside the navigation drawer in the top-action-bar.
+     *
+     * @param navigationView The drawer menu.
+     */
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    /**
+     * Gets user's choice of drawer buttons.
+     *
+     * @param menuItem The drawer button chosen.
+     */
+    public void selectDrawerItem(MenuItem menuItem) {
+
+        Intent intent = null;
+
+        switch (menuItem.getItemId()) {
+            case R.id.nav_home:
+                intent = new Intent(getBaseContext(), MainActivity.class);
+                break;
+            case R.id.nav_mapping:
+                intent = new Intent(getBaseContext(), MappingActivity.class);
+                break;
+            case R.id.nav_alerts:
+                intent = new Intent(getBaseContext(), AlertsActivity.class);
+                break;
+            case R.id.nav_analytics:
+                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                break;
+            case R.id.nav_connect:
+                intent = new Intent(getBaseContext(), ConnectActivity.class);
+                break;
+            default:
+
+        }
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+
+        startActivity(intent);
     }
 
     /**

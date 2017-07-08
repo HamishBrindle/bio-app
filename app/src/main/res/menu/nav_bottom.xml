@@ -4,31 +4,26 @@
     <item
         android:id="@+id/ic_mapping"
         android:icon="@drawable/ic_mapping_svg"
-        android:title="">
-    </item>
+        android:title=""/>
 
     <item
         android:id="@+id/ic_alerts"
         android:icon="@drawable/ic_alerts_svg"
-        android:title="">
-    </item>
+        android:title=""/>
 
     <item
         android:id="@+id/ic_home"
-        android:icon="@drawable/ic_home"
-        android:title="">
-    </item>
+        android:icon="@drawable/ic_home_svg"
+        android:title=""/>
 
     <item
         android:id="@+id/ic_analytics"
         android:icon="@drawable/ic_analytics_svg"
-        android:title="">
-    </item>
+        android:title=""/>
 
     <item
         android:id="@+id/ic_connect"
         android:icon="@drawable/ic_connect_svg"
-        android:title="">
-    </item>
+        android:title=""/>
 
 </menu>
