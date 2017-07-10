@@ -26,6 +26,8 @@ import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.util.Date;
+
 /**
  * Home page.
  * <p>
@@ -51,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawer;
-
-    // Make sure to be using android.support.v7.app.ActionBarDrawerToggle version.
-    // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize the navigation bar (bottom) and the pager (top)
         setupToolbar();
+        setupMenuButtons();
         setupBottomNavigationView();
 
 
@@ -176,9 +176,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = null;
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_home:
-                intent = new Intent(getBaseContext(), MainActivity.class);
-                break;
             case R.id.nav_mapping:
                 intent = new Intent(getBaseContext(), MappingActivity.class);
                 break;
@@ -219,4 +216,45 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
+
+    /**
+     * Creates the menu buttons for the menu fragment.
+     */
+    public void setupMenuButtons() {
+
+        ImageButton[] menuButtons = {
+                (ImageButton) findViewById(R.id.menu_button_mapping),
+                (ImageButton) findViewById(R.id.menu_button_alerts),
+                (ImageButton) findViewById(R.id.menu_button_analytics),
+                (ImageButton) findViewById(R.id.menu_button_connect)
+        };
+
+        final Class[] menuActivities = {
+                MappingActivity.class,
+                AlertsActivity.class,
+                AnalyticsActivity.class,
+                ConnectActivity.class
+        };
+
+        int numMenuButtons = menuButtons.length;
+
+        for (int i = 0; i < numMenuButtons; i++) {
+            final int finalI = i;
+            menuButtons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), menuActivities[finalI]);
+                    startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+    public void setupDateBanner() {
+
+        Date date = new Date();
+
+    }
+
 }

@@ -1,15 +1,26 @@
 package com.biomap.application.bio_app.Mapping;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
+import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -25,15 +36,19 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 public class MappingActivity extends AppCompatActivity {
 
-    private static final String TAG = "MappingActivity";
-    private static final int ACTIVITY_NUM = 0;
     public static final int NODES_RESOLUTION = 8;
     public static final int NUM_NODES = (int) Math.pow(NODES_RESOLUTION, 2);
     public static final int MAP_RESOLUTION = (NODES_RESOLUTION * 2) + 1;
     public static final int MAP_SIZE = (int) Math.pow(MAP_RESOLUTION, 2);
+
+    private static final String TAG = "MappingActivity";
+    private static final int ACTIVITY_NUM = 0;
+
+    private final double heightReduction = 0.65;
+    private final Random rand = new Random();
     private BitmapSquare[][] gridSquares;
     private GridLayout grid;
-    private final Random rand = new Random();
+    private DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,8 +60,9 @@ public class MappingActivity extends AppCompatActivity {
         grid = (GridLayout) findViewById(R.id.mappingGrid);
 
         // Make the bottom navigation bar.
-        setupBottomNavigationView();
         setupGrid();
+        setupToolbar();
+        setupBottomNavigationView();
 
     }
 
@@ -110,7 +126,7 @@ public class MappingActivity extends AppCompatActivity {
                         final int MARGIN = 0;
 
                         int pWidth = grid.getWidth();
-                        int pHeight = (int) (pWidth * 0.75);
+                        int pHeight = (int) (pWidth * heightReduction);
                         int numOfCol = grid.getColumnCount();
                         int numOfRow = grid.getRowCount();
                         int w = pWidth / numOfCol;
@@ -144,6 +160,103 @@ public class MappingActivity extends AppCompatActivity {
     }
 
     /**
+     * Setup the top-action-bar for navigation, page title, and settings.
+     */
+    private void setupToolbar() {
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        // Find drawer view
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
+
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
+
+        ImageButton hamburger = (ImageButton) findViewById(R.id.toolbar_hamburger);
+        hamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+    }
+
+    /**
+     * Open's the drawer when the hamburger (menu button) is selected.
+     *
+     * @param item Selected item.
+     * @return Selected item as well.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Setup the buttons for inside the navigation drawer in the top-action-bar.
+     *
+     * @param navigationView The drawer menu.
+     */
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    /**
+     * Gets user's choice of drawer buttons.
+     *
+     * @param menuItem The drawer button chosen.
+     */
+    public void selectDrawerItem(MenuItem menuItem) {
+
+        Intent intent = null;
+
+        switch (menuItem.getItemId()) {
+            case R.id.nav_mapping:
+                intent = new Intent(getBaseContext(), MappingActivity.class);
+                break;
+            case R.id.nav_alerts:
+                intent = new Intent(getBaseContext(), AlertsActivity.class);
+                break;
+            case R.id.nav_analytics:
+                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                break;
+            case R.id.nav_connect:
+                intent = new Intent(getBaseContext(), ConnectActivity.class);
+                break;
+            default:
+
+        }
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+
+        startActivity(intent);
+    }
+
+    /**
      * Sets up and enables the bottom navigation bar for each activity.
      * <p>
      * Also customizes the bottom navigation so that the buttons don't physically react to being
@@ -169,14 +282,14 @@ public class MappingActivity extends AppCompatActivity {
         // TODO: This will eventually get information from the nodes and create an array.
 
         return new int[]{
-                3, 6, 4, 20, 30, 20, 5, 1,
-                7, 20, 70, 88, 90, 75, 20, 7,
+                0, 0, 0, 20, 30, 20, 0, 0,
+                0, 20, 70, 88, 90, 75, 20, 0,
                 15, 65, 70, 61, 64, 65, 50, 0,
-                3, 75, 60, 40, 38, 60, 70, 5,
-                0, 50, 50, 20, 5, 55, 60, 2,
-                5, 60, 45, 5, 3, 48, 50, 5,
-                0, 65, 40, 5, 1, 45, 55, 0,
-                0, 40, 30, 2, 0, 55, 47, 3
+                0, 75, 60, 40, 38, 60, 50, 0,
+                0, 50, 50, 20, 0, 55, 55, 0,
+                0, 60, 45, 0, 0, 48, 50, 0,
+                0, 65, 40, 0, 0, 45, 55, 0,
+                0, 40, 30, 0, 0, 55, 47, 0
         };
     }
 

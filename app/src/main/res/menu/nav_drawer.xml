@@ -2,25 +2,20 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home_svg"
-            android:title="Home"
-            android:checked="true"/>
-        <item
             android:id="@+id/nav_mapping"
-            android:icon="@drawable/ic_mapping_svg"
-            android:title="Mapping" />
+            android:title="Mapping"
+            android:icon="@drawable/ic_mapping_black_svg"/>
         <item
             android:id="@+id/nav_alerts"
-            android:icon="@drawable/ic_alerts_svg"
-            android:title="Alerts" />
+            android:title="Alerts"
+            android:icon="@drawable/ic_alerts_black_svg"/>
         <item
             android:id="@+id/nav_analytics"
-            android:icon="@drawable/ic_analytics_svg"
-            android:title="Analytics" />
+            android:title="Analytics"
+            android:icon="@drawable/ic_analytics_black_svg"/>
         <item
             android:id="@+id/nav_connect"
-            android:icon="@drawable/ic_connect_svg"
-            android:title="Connect" />
+            android:title="Connect"
+            android:icon="@drawable/ic_connect_black_svg"/>
     </group>
 </menu>

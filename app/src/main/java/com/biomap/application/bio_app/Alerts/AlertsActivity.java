@@ -39,14 +39,16 @@ import java.util.concurrent.TimeUnit;
 
 public class AlertsActivity extends AppCompatActivity {
 
+    public static SharedPreferences SHARED_PREFERENCES;
+    public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
+
     private static final String TAG = "AlertsActivity";
     private static final int ACTIVITY_NUM = 1;
     private static final int DEFAULT_PROGRESS = 15;
     private static final int MAXIMUM_PROGRESS = 30;
     private static final int MINIMUM_PROGRESS = 0;
     private static final int INC_DEC_VALUE = 1;
-    public static SharedPreferences SHARED_PREFERENCES;
-    public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
+
     private TextView mTime;
     private DonutProgress mDonutProgress;
     private ToggleButton mToggle;
@@ -266,9 +268,6 @@ public class AlertsActivity extends AppCompatActivity {
         Intent intent = null;
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_home:
-                intent = new Intent(getBaseContext(), MainActivity.class);
-                break;
             case R.id.nav_mapping:
                 intent = new Intent(getBaseContext(), MappingActivity.class);
                 break;
