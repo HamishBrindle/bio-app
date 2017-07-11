@@ -196,6 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             //Signed in Succesfully
+
             Log.d(TAG, "onActivityResult: Success");
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
@@ -213,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        final AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -230,6 +231,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         finish();
                                     } else {
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Email").setValue(mAuth.getCurrentUser().getEmail());
+                                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mAuth.getCurrentUser().getDisplayName());
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
                                         startActivity(setUpIntent);
                                         finish();
@@ -488,7 +490,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     } else {
                         Log.d(TAG, "onComplete: adding to db");
-                        String name = mFirstNameView.getText().toString() + mLastNameView.getText().toString();
+                        String name = mFirstNameView.getText().toString() + " " + mLastNameView.getText().toString();
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Email").setValue(mEmailView.getText().toString());
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(name);
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").setValue(false);

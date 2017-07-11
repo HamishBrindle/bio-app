@@ -164,8 +164,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         String postCode = mPostCodeView.getText().toString();
         String weight = mWeightView.getText().toString();
 
-        String regex = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
-
+        String regex = "^(?!.*[DFIOQUdfioqu])[A-VXYa-vxy][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$";
         Pattern pattern = Pattern.compile(regex);
 
         boolean cancel = false;
