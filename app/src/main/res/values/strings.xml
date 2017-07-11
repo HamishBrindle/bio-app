@@ -34,7 +34,7 @@
 
     <string name="ulcers_check_text">Have you had ulcers in the past?</string>
     <string name="good_night_text">Good Night %1$s</string>
-    <string name="login_register_description">Visual Insight into\r\nyour seated health</string>
+    <string name="login_register_description">Visual Insight into\n your seated health</string>
     <string name="good_morning_text">Good morning, %1$s</string>
     <string name="good_afternoon_text">Good Afternoon, %1$s</string>
     <string name="good_evening_text">Good Evening, %1$s</string>
@@ -47,7 +47,10 @@
     <string name="ulcers_true">You have ulcers</string>
     <string name="ulcers_false">You do not have ulcers</string>
     <string name="notificationsOnOff"></string>
-    <string name="register_LoginRegister">Register</string>
+    <string name="register_button">Register</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="form_remember_me">Remember me on this device</string>
+    <string name="form_ulcer_prompt">Have a history of pressure ulcers</string>
 
     <string-array name="menu_drawer">
         <item>Home</item>

@@ -10,10 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +30,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A register screen that offers login via email/password.
  */
-public class ProfileActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class ProfileActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "RegisterActivity";
 
@@ -39,8 +45,8 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private TextView mLastNameView;
     private String firstName;
     private String lastName;
+    private String gender;
     private Boolean ulcersDBCheck;
-
     private Button mContinueButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -67,7 +73,6 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         mLastNameView = (TextView) findViewById(R.id.profike_last_name);
         mContinueButton = (Button) findViewById(R.id.profile_continue_button);
         mUlcersCheck = (CheckBox) findViewById(R.id.checkBoxUlcers);
-
 
         //Intents
         registerIntent = new Intent(this, RegisterActivity.class);
@@ -193,7 +198,6 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         }
     }
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return null;
@@ -201,15 +205,15 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 
-
+    /**
+     *
+     */
     private void update() {
         Log.d(TAG, "update: RUNNING UPDATE");
         FirebaseUser user = mAuth.getCurrentUser();
@@ -224,5 +228,40 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         Log.d(TAG, "update: ABOUT TO REDIRECT");
         startActivity(mainIntent);
         finish();
+    }
+
+    private void setupGenderSpinner() {
+
+        // Spinner element
+        Spinner spinner = (Spinner) findViewById(R.id.form_gender_spinner);
+
+        // Spinner click listener
+        spinner.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> categories = new ArrayList<>();
+        categories.add("Male");
+        categories.add("Female");
+        categories.add("Other");
+        categories.add("Undisclosed");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        gender = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

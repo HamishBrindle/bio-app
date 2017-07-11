@@ -15,12 +15,10 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
-import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -36,15 +34,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 public class MappingActivity extends AppCompatActivity {
 
-    public static final int NODES_RESOLUTION = 8;
-    public static final int NUM_NODES = (int) Math.pow(NODES_RESOLUTION, 2);
-    public static final int MAP_RESOLUTION = (NODES_RESOLUTION * 2) + 1;
-    public static final int MAP_SIZE = (int) Math.pow(MAP_RESOLUTION, 2);
-
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
 
-    private final double heightReduction = 0.65;
+    private final double heightReduction = 0.60;
     private final Random rand = new Random();
     private BitmapSquare[][] gridSquares;
     private GridLayout grid;
@@ -145,18 +138,6 @@ public class MappingActivity extends AppCompatActivity {
                     }
 
                 });
-    }
-
-    private int[] getRandomPressure() {
-
-        int[] output = new int[64];
-
-        for (int i = 0; i < 64; i++) {
-            output[i] = rand.nextInt(100);
-        }
-
-        return output;
-
     }
 
     /**

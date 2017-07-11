@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,11 +20,13 @@ import android.widget.ImageButton;
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Date;
@@ -36,26 +39,14 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     /**
-     * Activity indicator.
-     */
-    private static final String TAG = "MainActivity";
-
-    /**
-     * The corresponding activity number allowing for bottom nav_top to switch between activities.
-     */
-    private static final int ACTIVITY_NUM = 2;
-
-    /**
      * Stores information about user's session.
      */
     public static SharedPreferences SHARED_PREFERENCES;
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
+    private static final String TAG = "MainActivity";
+    private static final int ACTIVITY_NUM = 2;
+
     private DrawerLayout mDrawer;
-    private ActionBarDrawerToggle drawerToggle;
-    private Toolbar toolbar;
-    private NavigationView nvDrawer;
 
 
     @Override
@@ -63,9 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate: Starting.");
 
-        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
@@ -73,36 +62,46 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize the navigation bar (bottom) and the pager (top)
         setupToolbar();
+        setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
+        setupFirebase();
 
+    }
 
-//        mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//                    startActivity(register_login_intent);
-//                    finish();
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//                    // Create the logout activity intent.
-//                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-//                    startActivity(logOutIntent);
-//                    finish();
-//                    startActivity(register_login_intent);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//
+    /**
+     * Initialize user authentication objects and listeners for authentication state changes.
+     */
+    private void setupFirebase() {
+
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+                    startActivity(register_login_intent);
+                    finish();
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    // Create the logout activity intent.
+                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(logOutIntent);
+                    finish();
+                    startActivity(register_login_intent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+
     }
 
     /**
@@ -110,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupToolbar() {
         // Set a Toolbar to replace the ActionBar.
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Find drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
@@ -135,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Open's the drawer when the hamburger (menu button) is selected.
      *
-     * @param item
-     * @return
+     * @param item  Menu item selected.
+     * @return  Icon pressed / to be navigated to.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
