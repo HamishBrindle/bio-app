@@ -6,66 +6,165 @@
                                                  android:layout_height="match_parent"
                                                  tools:context="com.biomap.application.bio_app.Connect.ConnectActivity">
 
-    <RelativeLayout
-        android:id="@+id/mainContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="MissingPrefix">
+    <!-- This DrawerLayout has two children at the root  -->
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/drawer_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent">
 
-        <!-- top toolbar -->
-        <RelativeLayout
-            android:id="@+id/relLayout1"
+        <!-- This LinearLayout represents the contents of the screen  -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <include layout="@layout/layout_top_tabs"/>
+            <!-- The ActionBar displayed at the top -->
+            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                               android:id="@+id/toolbar"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="wrap_content"
+                                               android:background="?attr/colorPrimaryDark"
+                                               android:elevation="4dp"
+                                               android:fitsSystemWindows="true"
+                                               android:minHeight="?attr/actionBarSize"
+                                               app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        </RelativeLayout>
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/toolbar_top"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:paddingEnd="16dp"
+                                android:paddingLeft="0dp"
+                                android:paddingRight="16dp"
+                                android:paddingStart="0dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center">
-            <!-- Page Header -->
+                    <ImageButton
+                        android:id="@+id/toolbar_hamburger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_hamburger_svg"/>
 
-            <TextView
-                android:id="@+id/connect_page_title"
-                fontPath="fonts/Gotham-Bold.otf"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="0dp"
-                android:gravity="center"
-                android:includeFontPadding="true"
-                android:text="@string/connect_activity_title"
-                android:textColor="@color/colorAccent"
-                android:textSize="24sp"/>
+                    <!-- Start of Page Header -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center">
+                        <!-- Page Header -->
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_toLeftOf="@+id/connect_page_title"
-                android:layout_toStartOf="@+id/connect_page_title"
-                android:padding="10dp"
-                custom:srcCompat="@drawable/ic_connect_svg"/>
+                        <TextView
+                            android:id="@+id/connect_page_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center"
+                            android:includeFontPadding="true"
+                            android:text="@string/connect_activity_title"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp"/>
 
-        </RelativeLayout>
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_toLeftOf="@+id/connect_page_title"
+                            android:layout_toStartOf="@+id/connect_page_title"
+                            android:padding="10dp"
+                            custom:srcCompat="@drawable/ic_connect_svg"/>
 
-        <!-- Body -->
-        <RelativeLayout
-            android:id="@+id/body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    </RelativeLayout>
+                    <!-- End of Page Header -->
 
-            <include layout="@layout/layout_center_viewpager"/>
-        </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/toolbar_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_account_svg"/>
 
-        <!-- Bottom Toolbar -->
-        <include layout="@layout/layout_bottom_navigation_view"/>
+                </RelativeLayout>
 
-    </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <!-- Start of Main Container -->
+            <RelativeLayout
+                android:id="@+id/mainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="MissingPrefix">
+
+                <!-- Start of Date Banner -->
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:custom="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/misc_connect_date_banner"
+                    android:orientation="horizontal"
+                    android:paddingLeft="60dp"
+                    android:id="@+id/date_banner">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        custom:srcCompat="@drawable/ic_calendar_svg"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/date_weekday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Monday"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/date_month_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="July 8, 2017"
+                            android:textSize="20sp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!-- End of Date Banner -->
+
+                <!-- Bottom Toolbar -->
+                <include layout="@layout/layout_bottom_navigation_view"/>
+
+            </RelativeLayout>
+            <!-- End of Main Container -->
+
+        </LinearLayout>
+
+        <!-- The navigation drawer that comes from the left -->
+        <!-- Note that `android:layout_gravity` needs to be set to 'start' -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nvView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:backgroundTint="@color/colorAccent"
+            app:itemTextColor="@color/DarkGrey"
+            app:itemIconTint="@color/DarkGrey"
+            app:headerLayout="@layout/layout_nav_drawer_header"
+            app:menu="@menu/nav_drawer"/>
+
+    </android.support.v4.widget.DrawerLayout>
 
 </android.support.design.widget.CoordinatorLayout>

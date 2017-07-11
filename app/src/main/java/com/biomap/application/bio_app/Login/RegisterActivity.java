@@ -58,7 +58,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.biomap.application.bio_app.Home.MainActivity.SHARED_PREFERENCES;
-import static com.biomap.application.bio_app.R.layout.activity_register;
+import static com.biomap.application.bio_app.R.layout.activity_register_old;
 
 /**
  * A register screen that offers login via email/password.
@@ -66,17 +66,10 @@ import static com.biomap.application.bio_app.R.layout.activity_register;
 public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     private static final String TAG = "RegisterActivity";
-
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int RC_SIGN_IN = 9001;
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
+
     private UserLoginTask mAuthTask = null;
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -88,24 +81,46 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
     private Intent logInIntent;
-    private EditText mConfirmPassword;
     private DatabaseReference myRef;
+    private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(activity_register);
+        setContentView(activity_register_old);
 
-        // Set up the login form.
+        setupRegisterForm();
+
+    }
+
+    /**
+     * Setup the form and enable reading data into Firebase for user.
+     */
+    private void setupRegisterForm() {
+
+        // Get email from auto-complete.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
+        // Get form elements.
         mPasswordView = (EditText) findViewById(R.id.password);
-        mConfirmPassword = (EditText) findViewById(R.id.password_confirm);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+        Button emailSignUpButton = (Button) findViewById(R.id.email_register_button);
+        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
+        TextView loginText = (TextView) findViewById(R.id.login_from_register);
 
+        // Setup the intents to direct user from the activity.
         logInIntent = new Intent(this, LoginActivity.class);
-        setUpIntent = new Intent(this, ProfileInfoActivity.class);
+        setUpIntent = new Intent(this, ProfileActivity.class);
+        mainIntent = new Intent(this, MainActivity.class);
 
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference();
+        mCallbackManager = CallbackManager.Factory.create();
+        mAuth = FirebaseAuth.getInstance();
+
+        // Listener for any password field editing.
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -116,19 +131,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 return false;
             }
         });
-        Button emailSignUpButton = (Button) findViewById(R.id.email_register_button);
-        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
-        mCallbackManager = CallbackManager.Factory.create();
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-//        TextView loginText = (TextView) findViewById(R.id.login_from_register);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-        mainIntent = new Intent(this, MainActivity.class);
 
-
-        //Configuring Google sign in
+        // Configure Google Sign-In
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("87626777677-vt3mopj16fhd99jjjoifa80buvp4d369.apps.googleusercontent.com")
                 .requestEmail()
@@ -138,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
+        // Create the state-change listener (user logged in or out)
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -155,23 +160,27 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 }
             }
         };
-        //Registering with Email
+
+        // Button for redirecting to Registration.
         emailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 createAccount();
             }
         });
-//        loginText.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "onClick: ");
-//                startActivity(logInIntent);
-//                finish();
-//
-//            }
-//        });
-        //Signing in with Google
+
+        // Button for redirecting to Sign-in.
+        loginText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
+                startActivity(logInIntent);
+                finish();
+
+            }
+        });
+
+        // Button for signing-in with Google.
         googleSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,10 +188,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-
     }
 
-
+    /**
+     * Signs in user with their Google account.
+     */
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -200,6 +210,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
+    /**
+     * Handler for successful and non-successful login attempts.
+     *
+     * @param result User's sign in attempt; either successful or not.
+     */
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             //Signed in Succesfully
@@ -212,6 +227,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
+    /**
+     * Authentication for Google sign-in with Firebase.
+     *
+     * @param account User's Google account
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
@@ -258,6 +278,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     }
 
+    /**
+     * Using the form's data, create an account for the user in Firebase.
+     */
     private void createAccount() {
         if (mAuthTask != null) {
             return;
@@ -266,13 +289,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
-        mConfirmPassword.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        String confirmPassword = mConfirmPassword.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
 
@@ -280,11 +300,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
-            cancel = true;
-        }
-        if (!confirmPassword.equals(password)) {
-            mConfirmPassword.setError("Passwords do not match");
-            focusView = mConfirmPassword;
             cancel = true;
         }
         // Check for a valid email address.
@@ -300,11 +315,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("This Field is Required");
             focusView = mPasswordView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(confirmPassword)) {
-            mConfirmPassword.setError("This Field is Required");
-            focusView = mConfirmPassword;
             cancel = true;
         }
         if (cancel) {
@@ -335,6 +345,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
+    /**
+     * Populates the auto-complete section of the form if able.
+     */
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -343,6 +356,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         getLoaderManager().initLoader(0, null, this);
     }
 
+    /**
+     * Ask user for access to contacts.
+     *
+     * @return Permission granted or not.
+     */
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -502,6 +520,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
 
+    /**
+     * Adds the user email to autocomplete.
+     *
+     * @param emailAddressCollection Colletion of emails.
+     */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -512,6 +535,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
 
+    /**
+     *  Not sure what this does; came with 'new Login Activity'.
+     */
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,

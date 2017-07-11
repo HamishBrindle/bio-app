@@ -5,20 +5,31 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
+import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
+import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
-import com.biomap.application.bio_app.Utility.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.Date;
 
 /**
  * Home page.
@@ -28,29 +39,21 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 public class MainActivity extends AppCompatActivity {
 
     /**
-     * Activity indicator.
-     */
-    private static final String TAG = "MainActivity";
-
-    /**
-     * The corresponding activity number allowing for bottom toolbar to switch between activities.
-     */
-    private static final int ACTIVITY_NUM = 2;
-
-    /**
      * Stores information about user's session.
      */
     public static SharedPreferences SHARED_PREFERENCES;
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
+    private static final String TAG = "MainActivity";
+    private static final int ACTIVITY_NUM = 2;
+
+    private DrawerLayout mDrawer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate: Starting.");
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
         SHARED_PREFERENCES = this.getSharedPreferences(
@@ -58,62 +61,144 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // Initialize the navigation bar (bottom) and the pager (top)
+        setupToolbar();
+        setupDateBanner();
+        setupMenuButtons();
         setupBottomNavigationView();
-        setupViewPager();
+        setupFirebase();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+    }
+
+    /**
+     * Initialize user authentication objects and listeners for authentication state changes.
+     */
+    private void setupFirebase() {
+
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//                    startActivity(register_login_intent);
-//                    finish();
+                    startActivity(register_login_intent);
+                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getBaseContext(), LoginRegisterActivity.class);
+                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(logOutIntent);
                     finish();
-
+                    startActivity(register_login_intent);
+                    finish();
                 }
             }
         };
 
         // Get the user's authentication credentials and check if signed in or not.
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
 
     }
 
     /**
-     * Adds menu, home, and settings fragments to the MainActivity.
+     * Setup the top-action-bar for navigation, page title, and settings.
      */
-    private void setupViewPager() {
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+    private void setupToolbar() {
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        adapter.addFragment(new MenuFragment());
-        adapter.addFragment(new HomeFragment());
-        adapter.addFragment(new SettingsFragment());
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(adapter);
+        // Find drawer view
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
 
-        TabLayout.Tab tabMenu = tabLayout.getTabAt(0);
-        tabMenu.setIcon(R.drawable.ic_hamburger);
+        ImageButton hamburger = (ImageButton) findViewById(R.id.toolbar_hamburger);
+        hamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.openDrawer(GravityCompat.START);
+            }
+        });
 
-        TabLayout.Tab tabSettings = tabLayout.getTabAt(2);
-        tabSettings.setIcon(R.drawable.ic_settings);
+    }
 
-        // Starts the MainActivity HomeFragment when booted
-        TabLayout.Tab tabHome = tabLayout.getTabAt(1);
-        viewPager.setCurrentItem(tabHome.getPosition());
+    /**
+     * Open's the drawer when the hamburger (menu button) is selected.
+     *
+     * @param item  Menu item selected.
+     * @return  Icon pressed / to be navigated to.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Setup the buttons for inside the navigation drawer in the top-action-bar.
+     *
+     * @param navigationView The drawer menu.
+     */
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    /**
+     * Gets user's choice of drawer buttons.
+     *
+     * @param menuItem The drawer button chosen.
+     */
+    public void selectDrawerItem(MenuItem menuItem) {
+
+        Intent intent = null;
+
+        switch (menuItem.getItemId()) {
+            case R.id.nav_mapping:
+                intent = new Intent(getBaseContext(), MappingActivity.class);
+                break;
+            case R.id.nav_alerts:
+                intent = new Intent(getBaseContext(), AlertsActivity.class);
+                break;
+            case R.id.nav_analytics:
+                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                break;
+            case R.id.nav_connect:
+                intent = new Intent(getBaseContext(), ConnectActivity.class);
+                break;
+            default:
+
+        }
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+
+        startActivity(intent);
     }
 
     /**
@@ -130,4 +215,45 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
+
+    /**
+     * Creates the menu buttons for the menu fragment.
+     */
+    public void setupMenuButtons() {
+
+        ImageButton[] menuButtons = {
+                (ImageButton) findViewById(R.id.menu_button_mapping),
+                (ImageButton) findViewById(R.id.menu_button_alerts),
+                (ImageButton) findViewById(R.id.menu_button_analytics),
+                (ImageButton) findViewById(R.id.menu_button_connect)
+        };
+
+        final Class[] menuActivities = {
+                MappingActivity.class,
+                AlertsActivity.class,
+                AnalyticsActivity.class,
+                ConnectActivity.class
+        };
+
+        int numMenuButtons = menuButtons.length;
+
+        for (int i = 0; i < numMenuButtons; i++) {
+            final int finalI = i;
+            menuButtons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), menuActivities[finalI]);
+                    startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+    public void setupDateBanner() {
+
+        Date date = new Date();
+
+    }
+
 }

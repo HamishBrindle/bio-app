@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mapping"
+            android:title="Mapping"
+            android:icon="@drawable/ic_mapping_black_svg"/>
+        <item
+            android:id="@+id/nav_alerts"
+            android:title="Alerts"
+            android:icon="@drawable/ic_alerts_black_svg"/>
+        <item
+            android:id="@+id/nav_analytics"
+            android:title="Analytics"
+            android:icon="@drawable/ic_analytics_black_svg"/>
+        <item
+            android:id="@+id/nav_connect"
+            android:title="Connect"
+            android:icon="@drawable/ic_connect_black_svg"/>
+    </group>
+</menu>
