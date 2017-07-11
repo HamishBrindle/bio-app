@@ -8,18 +8,19 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
@@ -67,7 +68,19 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupFirebase();
 
+        Button mDebugButton = (Button) findViewById(R.id.debug_button);
+        mDebugButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
+                startActivity(debugIntent);
+                finish();
+            }
+        });
+
     }
+
+
 
     /**
      * Initialize user authentication objects and listeners for authentication state changes.
@@ -83,15 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-                    startActivity(register_login_intent);
-                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
                     Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(logOutIntent);
-                    finish();
                     startActivity(register_login_intent);
                     finish();
                 }
@@ -134,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Open's the drawer when the hamburger (menu button) is selected.
      *
-     * @param item  Menu item selected.
-     * @return  Icon pressed / to be navigated to.
+     * @param item Menu item selected.
+     * @return Icon pressed / to be navigated to.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

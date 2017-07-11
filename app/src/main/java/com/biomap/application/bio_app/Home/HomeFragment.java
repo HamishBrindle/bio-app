@@ -4,22 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.biomap.application.bio_app.Login.ProfileInfoActivity;
+import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 
 public class HomeFragment extends Fragment {
@@ -45,7 +38,7 @@ public class HomeFragment extends Fragment {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        setUpIntent = new Intent(getActivity(), ProfileInfoActivity.class);
+        setUpIntent = new Intent(getActivity(), ProfileActivity.class);
         //Notificatonis
 //        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override

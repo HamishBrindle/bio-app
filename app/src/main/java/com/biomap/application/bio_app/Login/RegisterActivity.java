@@ -1,19 +1,11 @@
 package com.biomap.application.bio_app.Login;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +15,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +28,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,27 +43,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.biomap.application.bio_app.Home.MainActivity.SHARED_PREFERENCES;
-import static com.biomap.application.bio_app.R.layout.activity_register_old;
+import static com.biomap.application.bio_app.R.layout.activity_register;
 
 /**
  * A register screen that offers login via email/password.
  */
-public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int RC_SIGN_IN = 9001;
 
     private UserLoginTask mAuthTask = null;
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private EditText mFirstNameView;
+    private EditText mLastNameView;
+    private EditText mConfirmPasswordView;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent mainIntent;
@@ -87,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(activity_register_old);
+        setContentView(activity_register);
 
         setupRegisterForm();
 
@@ -99,16 +87,16 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private void setupRegisterForm() {
 
         // Get email from auto-complete.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        mEmailView = (EditText) findViewById(R.id.form_email);
 
         // Get form elements.
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        Button emailSignUpButton = (Button) findViewById(R.id.email_register_button);
-        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
-        TextView loginText = (TextView) findViewById(R.id.login_from_register);
+        mPasswordView = (EditText) findViewById(R.id.form_password);
+        mFirstNameView = (EditText) findViewById(R.id.form_first_name);
+        mLastNameView = (EditText) findViewById(R.id.form_last_name);
+        mConfirmPasswordView = (EditText) findViewById(R.id.form_confirm_password);
+
+        Button emailSignUpButton = (Button) findViewById(R.id.form_button_next);
+        LinearLayout googleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
 
         // Setup the intents to direct user from the activity.
         logInIntent = new Intent(this, LoginActivity.class);
@@ -169,16 +157,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        // Button for redirecting to Sign-in.
-        loginText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: ");
-                startActivity(logInIntent);
-                finish();
-
-            }
-        });
 
         // Button for signing-in with Google.
         googleSignInButton.setOnClickListener(new OnClickListener() {
@@ -289,10 +267,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mFirstNameView.setError(null);
+        mLastNameView.setError(null);
+        mConfirmPasswordView.setError(null);
+
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String firstName = mFirstNameView.getText().toString();
+        String lastName = mLastNameView.getText().toString();
+        String confirmPassword = mConfirmPasswordView.getText().toString();
+
         boolean cancel = false;
         View focusView = null;
 
@@ -317,6 +303,32 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             focusView = mPasswordView;
             cancel = true;
         }
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError("This Field is Required");
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(firstName)) {
+            mFirstNameView.setError("This Field is Required");
+            focusView = mFirstNameView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(lastName)) {
+            mLastNameView.setError("This Field is Required");
+            focusView = mLastNameView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(confirmPassword)) {
+            mConfirmPasswordView.setError("This Field is Required");
+            focusView = mConfirmPasswordView;
+            cancel = true;
+        }
+        if (!confirmPassword.equals(password)) {
+            mConfirmPasswordView.setError("Passwords must match");
+            mPasswordView.setError("Passwords must match");
+            focusView = mConfirmPasswordView;
+            cancel = true;
+        }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -324,7 +336,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             Log.d(TAG, "createAccount: going to login");
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -345,16 +356,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
-    /**
-     * Populates the auto-complete section of the form if able.
-     */
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
 
     /**
      * Ask user for access to contacts.
@@ -391,7 +392,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
             }
         }
     }
@@ -443,7 +443,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -458,94 +457,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         return password.length() > 5;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-    }
-
-    /**
-     * Adds the user email to autocomplete.
-     *
-     * @param emailAddressCollection Colletion of emails.
-     */
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(RegisterActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    /**
-     *  Not sure what this does; came with 'new Login Activity'.
-     */
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -577,7 +488,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                         }
                     } else {
                         Log.d(TAG, "onComplete: adding to db");
+                        String name = mFirstNameView.getText().toString() + mLastNameView.getText().toString();
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Email").setValue(mEmailView.getText().toString());
+                        myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(name);
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").setValue(false);
 
                     }
@@ -591,7 +504,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
             if (success) {
                 // We set the MOBILE_REGISTER_FLAG to true so we don't attempt to login again and again.
                 SHARED_PREFERENCES.edit().putBoolean("mobile_register_flag", true).apply();
@@ -603,7 +515,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
         }
     }
 }

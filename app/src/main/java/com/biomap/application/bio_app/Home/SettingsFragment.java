@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
-import com.biomap.application.bio_app.Login.ProfileInfoActivity;
+import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
         };
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference();
-        updateProfileIntent = new Intent(getActivity(), ProfileInfoActivity.class);
+        updateProfileIntent = new Intent(getActivity(), ProfileActivity.class);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
         mUpdate = (Button) view.findViewById(R.id.settings_profile_update);

@@ -1,15 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    tools:context="com.biomap.application.bio_app.Login.LoginActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:orientation="vertical">
 
         <!-- Start of Logo & Wordmark -->
@@ -26,7 +28,7 @@
                 android:layout_height="@dimen/biomap_register_login_logo_dim"
                 android:contentDescription="@string/biomap_logo"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_logo_svg" />
+                app:srcCompat="@drawable/ic_logo_svg"/>
 
             <!-- Wordmark -->
             <ImageView
@@ -35,7 +37,7 @@
                 android:layout_height="35dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/biomap_text_logo"
-                app:srcCompat="@drawable/ic_wordmark_white" />
+                app:srcCompat="@drawable/ic_wordmark_white"/>
 
         </LinearLayout>
         <!-- End of Logo & Wordmark -->
@@ -60,9 +62,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Postal Code"
-                    android:inputType="textPostalAddress"
+                    android:inputType="textCapCharacters"
                     android:textColor="@color/colorAccent"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </android.support.design.widget.TextInputLayout>
             <!-- End of Postal Code -->
@@ -78,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Age"
                     android:inputType="number"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </android.support.design.widget.TextInputLayout>
             <!-- End of Age -->
@@ -98,14 +100,18 @@
                     android:layout_marginBottom="4dp"
                     android:layout_weight="1"
                     android:gravity="bottom"
-                    android:text="Gender" />
+                    android:text="Gender"/>
 
                 <Spinner
                     android:id="@+id/form_gender_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="right"
                     android:layout_marginBottom="4dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+
+                    />
 
             </LinearLayout>
             <!-- End of Gender -->
@@ -121,14 +127,14 @@
                     android:layout_height="wrap_content"
                     android:hint="Weight (lbs)"
                     android:inputType="numberDecimal"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </android.support.design.widget.TextInputLayout>
             <!-- End of Weight -->
 
             <!-- Pressure Ulcer Confirmation -->
             <CheckBox
-                android:id="@+id/checkbox_meat"
+                android:id="@+id/form_checkbox_ulcer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -136,7 +142,7 @@
                 android:checked="false"
                 android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
                 android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-                android:text="@string/form_ulcer_prompt" />
+                android:text="@string/form_ulcer_prompt"/>
 
             <!-- Oddly placed icon from mock-up -->
             <ImageView
@@ -145,17 +151,17 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/misc_circle_white"
                 android:tint="#81c679"
-                app:srcCompat="@drawable/ic_account_svg" />
+                app:srcCompat="@drawable/ic_account_svg"/>
 
             <!-- Submit Button -->
             <Button
-                android:id="@+id/email_register_button"
+                android:id="@+id/form_button_next"
                 android:layout_width="170dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_register"
                 android:text="Next"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
         <!-- End of Form Fields and Buttons -->

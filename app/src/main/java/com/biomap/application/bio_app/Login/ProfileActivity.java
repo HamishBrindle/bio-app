@@ -13,17 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.regex.Pattern;
 
 /**
@@ -46,13 +40,10 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private static final String TAG = "RegisterActivity";
 
     // UI references.
-    private TextView mFirstNameView;
     private TextView mAgeView;
     private TextView mPostCodeView;
     private TextView mWeightView;
-    private TextView mCustomizeText;
 
-    private TextView mLastNameView;
     private String firstName;
     private String lastName;
     private String gender;
@@ -61,7 +52,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private Button mContinueButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private Intent mainIntent;
+    private Intent beginIntent;
     private Intent registerIntent;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -80,23 +71,22 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         myRef = database.getReference();
 
         //Views
-        mFirstNameView = (TextView) findViewById(R.id.profile_first_name);
-        mLastNameView = (TextView) findViewById(R.id.profile_last_name);
-        mContinueButton = (Button) findViewById(R.id.profile_continue_button);
-        mUlcersCheck = (CheckBox) findViewById(R.id.checkBoxUlcers);
-        mAgeView = (TextView) findViewById(R.id.profile_age);
-        mWeightView = (TextView) findViewById(R.id.profile_weight);
-        mPostCodeView = (TextView) findViewById(R.id.profile_post_code);
-        mCustomizeText = (TextView) findViewById(R.id.customize_text);
+        mContinueButton = (Button) findViewById(R.id.form_button_next);
+        mUlcersCheck = (CheckBox) findViewById(R.id.form_checkbox_ulcer);
+        mAgeView = (TextView) findViewById(R.id.form_age);
+        mWeightView = (TextView) findViewById(R.id.form_weight);
+        mPostCodeView = (TextView) findViewById(R.id.form_postal_code);
 
 
         //Setting the font of the description text;
         font = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Book.otf");
-        mCustomizeText.setTypeface(font);
+
+        //Setting up Gender Spinner
+        setupGenderSpinner();
 
         //Intents
-        registerIntent = new Intent(this, RegisterActivity.class);
-        mainIntent = new Intent(this, MainActivity.class);
+        registerIntent = new Intent(this, LoginRegisterActivity.class);
+        beginIntent = new Intent(this, BeginActivity.class);
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -109,11 +99,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
                             if (dataSnapshot.child("Users").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                 alreadySetUp = new Boolean((Boolean) dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").getValue());
                                 if (alreadySetUp.booleanValue()) {
-                                    firstName = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("FirstName").getValue().toString();
-                                    lastName = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("LastName").getValue().toString();
                                     ulcersDBCheck = (Boolean) dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Ulcers").getValue();
-                                    mFirstNameView.setText(firstName);
-                                    mLastNameView.setText(lastName);
                                     if (ulcersDBCheck) {
                                         mUlcersCheck.setChecked(true);
                                     } else {
@@ -168,16 +154,12 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
         Log.d(TAG, "verify: in verify");
         // Reset errors.
-        mFirstNameView.setError(null);
-        mLastNameView.setError(null);
         mAgeView.setError(null);
         mPostCodeView.setError(null);
         mWeightView.setError(null);
 
 
         // Store values at the time of the login attempt.
-        String firstName = mFirstNameView.getText().toString();
-        String lastName = mLastNameView.getText().toString();
         String age = mAgeView.getText().toString();
         String postCode = mPostCodeView.getText().toString();
         String weight = mWeightView.getText().toString();
@@ -190,19 +172,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         View focusView = null;
 
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(firstName)) {
-            Log.d(TAG, "verify: firename empty");
-            mFirstNameView.setError(getString(R.string.error_field_required));
-            focusView = mFirstNameView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(lastName)) {
-            Log.d(TAG, "verify: lastname empty");
-            mLastNameView.setError(getString(R.string.error_field_required));
-            focusView = mLastNameView;
-            cancel = true;
-        }
+        // Check for a valid email address.S
         if (TextUtils.isEmpty(age)) {
             mAgeView.setError(getString(R.string.error_field_required));
             focusView = mAgeView;
@@ -269,19 +239,16 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         Log.d(TAG, "update: RUNNING UPDATE");
         FirebaseUser user = mAuth.getCurrentUser();
         myRef.child("Users").child(user.getUid()).child("SetUp").setValue(true);
-        myRef.child("Users").child(user.getUid()).child("FirstName").setValue(mFirstNameView.getText().toString());
-        myRef.child("Users").child(user.getUid()).child("LastName").setValue(mLastNameView.getText().toString());
         myRef.child("Users").child(user.getUid()).child("Weight").setValue(mWeightView.getText().toString());
         myRef.child("Users").child(user.getUid()).child("Age").setValue(mAgeView.getText().toString());
         myRef.child("Users").child(user.getUid()).child("PostCode").setValue(mPostCodeView.getText().toString());
-
         if (ulcers) {
             myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Ulcers").setValue(true);
         } else {
             myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Ulcers").setValue(false);
         }
         Log.d(TAG, "update: ABOUT TO REDIRECT");
-        startActivity(mainIntent);
+        startActivity(beginIntent);
         finish();
     }
 

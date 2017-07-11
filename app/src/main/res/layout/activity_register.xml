@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
                     android:inputType="text"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </android.support.design.widget.TextInputLayout>
             <!-- End of Last Name -->
@@ -133,7 +133,7 @@
 
             <!-- Remember me Checkbox -->
             <CheckBox
-                android:id="@+id/checkbox_meat"
+                android:id="@+id/form_checkbox_ulcer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -142,7 +142,7 @@
 
             <!-- Submit Button -->
             <Button
-                android:id="@+id/email_register_button"
+                android:id="@+id/form_button_next"
                 android:layout_width="170dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
