@@ -139,6 +139,10 @@ public class RegisterActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Login:signed_in:" + user.getUid());
                     startActivity(setUpIntent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     Toast.makeText(RegisterActivity.this, "Redirecting",
                             Toast.LENGTH_SHORT).show();
                     finish();
@@ -174,6 +178,10 @@ public class RegisterActivity extends AppCompatActivity {
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        // Make switching between activities blend via fade-in / fade-out
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
     }
 
     @Override
@@ -228,12 +236,20 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.child("Users").hasChild(mAuth.getCurrentUser().getUid())) {
                                         startActivity(mainIntent);
+
+                                        // Make switching between activities blend via fade-in / fade-out
+                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                                         finish();
                                     } else {
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Email").setValue(mAuth.getCurrentUser().getEmail());
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mAuth.getCurrentUser().getDisplayName());
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
                                         startActivity(setUpIntent);
+
+                                        // Make switching between activities blend via fade-in / fade-out
+                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                                         finish();
                                     }
                                 }

@@ -122,6 +122,10 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
                 } else {
                     //User is NOT signed in;
                     startActivity(registerIntent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     finish();
                 }
             }
@@ -248,6 +252,10 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         }
         Log.d(TAG, "update: ABOUT TO REDIRECT");
         startActivity(beginIntent);
+
+        // Make switching between activities blend via fade-in / fade-out
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         finish();
     }
 

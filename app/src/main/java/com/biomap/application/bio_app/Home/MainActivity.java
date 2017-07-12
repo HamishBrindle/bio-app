@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
         setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
-        setupFirebase();
+        //setupFirebase();
+
 
         Button mDebugButton = (Button) findViewById(R.id.debug_button);
         mDebugButton.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
                 startActivity(debugIntent);
+
+                // Make switching between activities blend via fade-in / fade-out
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 finish();
             }
         });
@@ -102,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
                     // Create the logout activity intent.
                     Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(register_login_intent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     finish();
                 }
             }
@@ -208,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.closeDrawers();
 
         startActivity(intent);
+
     }
 
     /**
@@ -253,6 +263,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), menuActivities[finalI]);
                     startActivity(intent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 }
             });
         }

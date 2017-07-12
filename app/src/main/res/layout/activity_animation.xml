@@ -12,7 +12,18 @@
         android:layout_centerInParent="true"
         app:lottie_autoPlay="true"
         app:lottie_fileName="data.json"
-        app:lottie_loop="false"
-        />
+        app:lottie_loop="false"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:id="@+id/greeting_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome!"
+        android:textAlignment="center"
+        android:textSize="30sp"/>
 
 </LinearLayout>
