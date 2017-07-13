@@ -13,11 +13,8 @@ public class CustomFontsLoader {
     public static final int GOTHAM_BOOK_ITALIC = 5;
 
     private static final int NUM_OF_CUSTOM_FONTS = 3;
-
     private static boolean fontsLoaded = false;
-
     private static Typeface[] fonts = new Typeface[3];
-
     private static String[] fontPath = {
             "fonts/Gotham-Medium.otf",
             "fonts/Gotham-Bold.otf",
