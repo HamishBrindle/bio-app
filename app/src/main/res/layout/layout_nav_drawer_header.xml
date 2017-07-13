@@ -2,17 +2,82 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="250dp"
     android:background="?attr/colorAccent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <!-- Start of Header Logo & Wordmark -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:gravity="center_horizontal">
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_logo_black" />
+
+        <!-- Explicit Space -->
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <!-- Wordmark -->
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/menu_drawer_header"
+            app:srcCompat="@drawable/ic_wordmark_black" />
+
+    </LinearLayout>
+    <!-- End of Header Logo & Wordmark -->
+
+    <!-- Separator -->
     <ImageView
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/misc_nav_header_separator" />
+
+    <!-- Start of User Specific Greeting -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_wordmark_tagline_black"
-        android:contentDescription="Menu Drawer Header" />
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!-- Daytime Greeting -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Good Afternoon,"
+            android:textColor="@color/DarkPurple"
+            android:textSize="24sp"
+            android:id="@+id/nav_header_daytime"/>
+
+        <!-- Name of User -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friend"
+            android:textColor="@color/darkColor"
+            android:textSize="28sp"
+            android:id="@+id/nav_header_user"/>
+
+    </LinearLayout>
+    <!-- End of User Specific Greeting -->
+
+    <!-- Separator -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/misc_nav_header_separator" />
+
 
 </LinearLayout>

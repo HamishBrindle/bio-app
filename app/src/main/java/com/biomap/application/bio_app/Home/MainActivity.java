@@ -61,13 +61,14 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-        // Initialize the navigation bar (bottom) and the pager (top)
+        // Initialize page elements.
         setupToolbar();
         setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
-        setupFirebase();
+        // setupFirebase();
 
+        // TODO: Temp debug button to test animation activity.
         Button mDebugButton = (Button) findViewById(R.id.debug_button);
         mDebugButton.setOnClickListener(new View.OnClickListener() {
             @Override
