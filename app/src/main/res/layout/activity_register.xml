@@ -59,7 +59,7 @@
                     android:id="@+id/form_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="First Name"
+                    android:hint="@string/first_name"
                     android:inputType="text"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp" />
@@ -76,7 +76,7 @@
                     android:id="@+id/form_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Last Name"
+                    android:hint="@string/last_name"
                     android:inputType="text"
                     android:textSize="14sp"/>
 
@@ -92,7 +92,7 @@
                     android:id="@+id/form_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
+                    android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:textSize="14sp" />
 
@@ -108,7 +108,7 @@
                     android:id="@+id/form_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="@string/prompt_password"
                     android:inputType="textPassword"
                     android:textSize="14sp" />
 
@@ -124,7 +124,7 @@
                     android:id="@+id/form_confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Confirm Password"
+                    android:hint="@string/prompt_confirm_password"
                     android:inputType="textPassword"
                     android:textSize="14sp" />
 
@@ -147,7 +147,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_register"
-                android:text="Submit"
+                android:text="@string/submit_button"
                 android:textStyle="bold" />
 
             <!-- Start of Google Sign-In Button -->
@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="Google"
+                    android:text="@string/google_button"
                     android:textAllCaps="true"
                     android:textSize="14sp"
                     android:textStyle="bold" />
