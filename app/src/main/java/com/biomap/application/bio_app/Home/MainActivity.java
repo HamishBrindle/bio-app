@@ -61,19 +61,24 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-        // Initialize the navigation bar (bottom) and the pager (top)
+        // Initialize page elements.
         setupToolbar();
         setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
-        setupFirebase();
+        // setupFirebase();
 
+        // TODO: Temp debug button to test animation activity.
         Button mDebugButton = (Button) findViewById(R.id.debug_button);
         mDebugButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
                 startActivity(debugIntent);
+
+                // Make switching between activities blend via fade-in / fade-out
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 finish();
             }
         });
@@ -208,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.closeDrawers();
 
         startActivity(intent);
+
     }
 
     /**
@@ -253,6 +259,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), menuActivities[finalI]);
                     startActivity(intent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 }
             });
         }

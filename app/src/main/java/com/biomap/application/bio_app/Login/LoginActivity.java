@@ -149,10 +149,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Log.d(TAG, "onDataChange: GOING TO MAIN");
 
                                 startActivity(mainIntent);
+
+                                // Make switching between activities blend via fade-in / fade-out
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                                 finish();
                             } else {
                                 Log.d(TAG, "onDataChange: GOING TO SETUP");
                                 startActivity(setUpIntent);
+
+                                // Make switching between activities blend via fade-in / fade-out
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                                 Toast.makeText(LoginActivity.this, "Register first please", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
@@ -164,6 +172,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }
                     });
                     startActivity(mainIntent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     Toast.makeText(LoginActivity.this, "Redirecting",
                             Toast.LENGTH_SHORT).show();
                     finish();
@@ -197,6 +209,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        // Make switching between activities blend via fade-in / fade-out
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+
     }
 
     @Override

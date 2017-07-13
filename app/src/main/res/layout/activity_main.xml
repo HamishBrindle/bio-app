@@ -82,9 +82,8 @@
                     android:id="@+id/constraintLayout"
                     android:layout_width="257dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:paddingBottom="50dp">
+                    android:paddingBottom="0dp">
 
                     <ImageView
                         android:id="@+id/biomap_logo_imageView"
@@ -229,17 +228,17 @@
 
                 </android.support.constraint.ConstraintLayout>
 
-
                 <Button
                     android:id="@+id/debug_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/constraintLayout"
+                    android:layout_above="@id/constraintLayout"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-
-                    android:text="Button"/>
+                    android:text="DEBUG"
+                    android:textColor="@color/darkColor"
+                    android:backgroundTint="@color/colorAccent"/>
 
                 <!-- bottom navigation -->
                 <include layout="@layout/layout_bottom_navigation_view"/>
@@ -254,7 +253,7 @@
         <!-- Note that `android:layout_gravity` needs to be set to 'start' -->
         <android.support.design.widget.NavigationView
             android:id="@+id/nvView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:backgroundTint="@color/colorAccent"

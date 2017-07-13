@@ -50,7 +50,7 @@
             android:name=".Login.RegisterActivity"
             android:launchMode="singleInstance"/>
         <activity
-            android:name=".Utility.SplashActivity"
+            android:name=".Utility.AnimationActivity"
             android:launchMode="singleInstance"/>
 
         <receiver

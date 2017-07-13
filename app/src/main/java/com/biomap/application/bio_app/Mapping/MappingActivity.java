@@ -1,8 +1,11 @@
 package com.biomap.application.bio_app.Mapping;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,15 +15,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Random;
@@ -48,6 +56,22 @@ public class MappingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initFonts();
         setContentView(R.layout.activity_mapping);
+
+        // Change the fonts in the activity by going through all the children of the parent layout.
+        TextView mPageTitle = (TextView) findViewById(R.id.mapping_page_title);
+        LinearLayout mBannerText = (LinearLayout) findViewById(R.id.banner_text);
+        LinearLayout mMappingView = (LinearLayout) findViewById(R.id.mapping_viewGroup);
+        LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
+
+        mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
+        overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
+        overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
+
+
+        // Dashed warning line doesn't appear 'dashed' unless the following:
+        ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
+        mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         // Get the Mapping Grid layout to manipulate.
         grid = (GridLayout) findViewById(R.id.mappingGrid);
@@ -235,6 +259,7 @@ public class MappingActivity extends AppCompatActivity {
         mDrawer.closeDrawers();
 
         startActivity(intent);
+
     }
 
     /**
@@ -283,6 +308,21 @@ public class MappingActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+    }
+
+    private void overrideFonts(final Context context, final View v, int font) {
+        try {
+            if (v instanceof ViewGroup) {
+                ViewGroup vg = (ViewGroup) v;
+                for (int i = 0; i < vg.getChildCount(); i++) {
+                    View child = vg.getChildAt(i);
+                    overrideFonts(context, child, font);
+                }
+            } else if (v instanceof TextView ) {
+                ((TextView) v).setTypeface(CustomFontsLoader.getTypeface(context, font));
+            }
+        } catch (Exception e) {
+        }
     }
 
 }
