@@ -112,7 +112,7 @@
                     android:background="@drawable/misc_connect_date_banner"
                     android:orientation="horizontal"
                     android:paddingLeft="60dp"
-                    android:id="@+id/date_banner">
+                    android:id="@+id/mapping_date_banner">
 
                     <ImageView
                         android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package com.biomap.application.bio_app.Analytics;
+package com.biomap.application.bio_app.Vitals;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,9 +27,9 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
  * Created by Hamish Brindle on 2017-06-13.
  */
 
-public class AnalyticsActivity extends AppCompatActivity {
+public class VitalsActivity extends AppCompatActivity {
 
-    private static final String TAG = "AnalyticsActivity";
+    private static final String TAG = "VitalsActivity";
 
     private static final int ACTIVITY_NUM = 3;
     private DrawerLayout mDrawer;
@@ -37,7 +37,7 @@ public class AnalyticsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_analytics);
+        setContentView(R.layout.activity_vitals);
         Log.d(TAG, "onCreate: starting.");
 
         setupToolbar();
@@ -122,7 +122,7 @@ public class AnalyticsActivity extends AppCompatActivity {
                 intent = new Intent(getBaseContext(), AlertsActivity.class);
                 break;
             case R.id.nav_analytics:
-                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                intent = new Intent(getBaseContext(), VitalsActivity.class);
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);
@@ -151,7 +151,7 @@ public class AnalyticsActivity extends AppCompatActivity {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(AnalyticsActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(VitalsActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);

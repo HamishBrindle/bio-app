@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,11 +15,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginActivity;
@@ -26,6 +27,7 @@ import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -68,8 +70,13 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
         // setupFirebase();
 
+        ConstraintLayout mMenuButtons = (ConstraintLayout) findViewById(R.id.constraintLayout);
+        CustomFontsLoader.overrideFonts(this, mMenuButtons, CustomFontsLoader.GOTHAM_BOLD);
+
+
         // TODO: Temp debug button to test animation activity.
-        Button mDebugButton = (Button) findViewById(R.id.debug_button);
+        //Remove before deploying
+        ImageView mDebugButton = (ImageView) findViewById(R.id.biomap_logo_imageView);
         mDebugButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
 
     /**
@@ -196,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(getBaseContext(), AlertsActivity.class);
                 break;
             case R.id.nav_analytics:
-                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                intent = new Intent(getBaseContext(), VitalsActivity.class);
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);
@@ -246,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         final Class[] menuActivities = {
                 MappingActivity.class,
                 AlertsActivity.class,
-                AnalyticsActivity.class,
+                VitalsActivity.class,
                 ConnectActivity.class
         };
 

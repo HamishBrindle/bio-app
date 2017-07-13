@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.biomap.application.bio_app.Analytics.AnalyticsActivity">
+    tools:context="com.biomap.application.bio_app.Vitals.VitalsActivity">
 
     <!-- This DrawerLayout has two children at the root  -->
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -107,7 +107,7 @@
                 <!-- Start of Date Banner -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/date_banner"
+                    android:id="@+id/mapping_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_analytics_date_banner"

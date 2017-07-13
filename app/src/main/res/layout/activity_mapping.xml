@@ -20,84 +20,6 @@
             android:orientation="vertical">
 
             <!-- The ActionBar displayed at the top -->
-            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                                               xmlns:custom="http://schemas.android.com/apk/res-auto"
-                                               android:id="@+id/toolbar"
-                                               android:layout_width="match_parent"
-                                               android:layout_height="wrap_content"
-                                               android:background="?attr/colorPrimaryDark"
-                                               android:elevation="4dp"
-                                               android:fitsSystemWindows="true"
-                                               android:minHeight="?attr/actionBarSize"
-                                               custom:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                xmlns:custom="http://schemas.android.com/apk/res-auto"
-                                android:id="@+id/toolbar_top"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:paddingEnd="16dp"
-                                android:paddingLeft="0dp"
-                                android:paddingRight="16dp"
-                                android:paddingStart="0dp">
-
-                    <ImageButton
-                        android:id="@+id/toolbar_hamburger"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:background="@android:color/transparent"
-                        custom:srcCompat="@drawable/ic_hamburger_svg"/>
-
-                    <!-- Start of Page Header & Title -->
-                    <RelativeLayout
-                        android:id="@+id/page_header"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center">
-
-                        <!-- "Mapping" Page title -->
-                        <TextView
-                            android:id="@+id/mapping_page_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="0dp"
-                            android:gravity="center"
-                            android:includeFontPadding="true"
-                            android:text="@string/mapping_activity_title"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="24sp"/>
-
-                        <!-- Mapping icon next to page title -->
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_toLeftOf="@+id/mapping_page_title"
-                            android:layout_toStartOf="@+id/mapping_page_title"
-                            android:padding="10dp"
-                            custom:srcCompat="@drawable/ic_mapping_svg"/>
-                    </RelativeLayout>
-                    <!-- End of Page Header & Title -->
-
-                    <ImageButton
-                        android:id="@+id/toolbar_settings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@android:color/transparent"
-                        custom:srcCompat="@drawable/ic_account_svg"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.Toolbar>
-
-            <!-- Start of Main Container -->
             <RelativeLayout
                 android:id="@+id/mainContainer"
                 android:layout_width="match_parent"
@@ -107,7 +29,7 @@
 
                 <!-- Start of Date Banner -->
                 <LinearLayout
-                    android:id="@+id/date_banner"
+                    android:id="@+id/mapping_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_mapping_date_banner"
@@ -377,6 +299,85 @@
                 <include layout="@layout/layout_bottom_navigation_view"/>
 
             </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                                               xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                               android:id="@+id/toolbar"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="wrap_content"
+                                               android:background="?attr/colorPrimaryDark"
+                                               android:elevation="4dp"
+                                               android:fitsSystemWindows="true"
+                                               android:minHeight="?attr/actionBarSize"
+                                               custom:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/toolbar_top"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:paddingEnd="16dp"
+                                android:paddingLeft="0dp"
+                                android:paddingRight="16dp"
+                                android:paddingStart="0dp">
+
+                    <ImageButton
+                        android:id="@+id/toolbar_hamburger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="@android:color/transparent"
+                        custom:srcCompat="@drawable/ic_hamburger_svg"/>
+
+                    <!-- Start of Page Header & Title -->
+                    <RelativeLayout
+                        android:id="@+id/page_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center">
+
+                        <!-- "Mapping" Page title -->
+                        <TextView
+                            android:id="@+id/mapping_page_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center"
+                            android:includeFontPadding="true"
+                            android:text="@string/mapping_activity_title"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp"/>
+
+                        <!-- Mapping icon next to page title -->
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_toLeftOf="@+id/mapping_page_title"
+                            android:layout_toStartOf="@+id/mapping_page_title"
+                            android:padding="10dp"
+                            custom:srcCompat="@drawable/ic_mapping_svg"/>
+                    </RelativeLayout>
+                    <!-- End of Page Header & Title -->
+
+                    <ImageButton
+                        android:id="@+id/toolbar_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        custom:srcCompat="@drawable/ic_account_svg"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+            <!-- Start of Main Container -->
             <!-- End of Main Container -->
 
         </LinearLayout>

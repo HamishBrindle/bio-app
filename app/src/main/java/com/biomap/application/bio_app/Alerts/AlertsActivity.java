@@ -16,15 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
-import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -63,6 +64,19 @@ public class AlertsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alerts);
         Log.d(TAG, "onCreate: starting.");
 
+        TextView mPageTitle = (TextView) findViewById(R.id.alerts_page_title);
+        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.mapping_date_banner);
+        LinearLayout mCircleButtons = (LinearLayout) findViewById(R.id.circle_buttons);
+        ToggleButton mToggleButtonAlarm = (ToggleButton) findViewById(R.id.toggle_button_alarm);
+        TextView mTime = (TextView) findViewById(R.id.time);
+
+        mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
+        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
+        CustomFontsLoader.overrideFonts(this, mCircleButtons, CustomFontsLoader.GOTHAM_BOOK);
+        mTime.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        mToggleButtonAlarm.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+
+
         alertNotification = new AlertNotification(getApplicationContext());
         mDonutProgress = (DonutProgress) findViewById(R.id.donut_progress);
 
@@ -70,6 +84,7 @@ public class AlertsActivity extends AppCompatActivity {
         SHARED_PREFERENCES = this.getSharedPreferences(
                 "com.biomap.application.bio_app.ALARM_PREFERENCES", Context.MODE_PRIVATE
         );
+
 
         // Initialize page elements.
         setupToolbar();
@@ -275,7 +290,7 @@ public class AlertsActivity extends AppCompatActivity {
                 intent = new Intent(getBaseContext(), AlertsActivity.class);
                 break;
             case R.id.nav_analytics:
-                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                intent = new Intent(getBaseContext(), VitalsActivity.class);
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);

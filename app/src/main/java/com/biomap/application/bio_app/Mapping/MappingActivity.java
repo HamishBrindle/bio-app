@@ -1,11 +1,8 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -24,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
@@ -32,8 +28,6 @@ import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Random;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Draws the pressure map on the Mapping Activity.
@@ -54,7 +48,6 @@ public class MappingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initFonts();
         setContentView(R.layout.activity_mapping);
 
         // Change the fonts in the activity by going through all the children of the parent layout.
@@ -64,9 +57,9 @@ public class MappingActivity extends AppCompatActivity {
         LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
 
         mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
-        overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
-        overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
+        CustomFontsLoader.overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
+        CustomFontsLoader.overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
+        CustomFontsLoader.overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
 
 
         // Dashed warning line doesn't appear 'dashed' unless the following:
@@ -242,7 +235,7 @@ public class MappingActivity extends AppCompatActivity {
                 intent = new Intent(getBaseContext(), AlertsActivity.class);
                 break;
             case R.id.nav_analytics:
-                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                intent = new Intent(getBaseContext(), VitalsActivity.class);
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);
@@ -299,30 +292,5 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
-    /**
-     * Initialize the custom fonts.
-     */
-    private void initFonts() {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Gotham-Bold.otf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
-    }
-
-    private void overrideFonts(final Context context, final View v, int font) {
-        try {
-            if (v instanceof ViewGroup) {
-                ViewGroup vg = (ViewGroup) v;
-                for (int i = 0; i < vg.getChildCount(); i++) {
-                    View child = vg.getChildAt(i);
-                    overrideFonts(context, child, font);
-                }
-            } else if (v instanceof TextView ) {
-                ((TextView) v).setTypeface(CustomFontsLoader.getTypeface(context, font));
-            }
-        } catch (Exception e) {
-        }
-    }
 
 }

@@ -1,14 +1,9 @@
 package com.biomap.application.bio_app.Connect;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
+import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
@@ -127,7 +122,7 @@ public class ConnectActivity extends AppCompatActivity {
                 intent = new Intent(getBaseContext(), AlertsActivity.class);
                 break;
             case R.id.nav_analytics:
-                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                intent = new Intent(getBaseContext(), VitalsActivity.class);
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);

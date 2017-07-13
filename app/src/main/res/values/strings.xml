@@ -58,6 +58,7 @@
     <string name="drawer_sign_out">Sign Out</string>
     <string name="drawer_account">Account</string>
     <string name="menu_drawer_header">Menu Drawer Header</string>
+    <string name="vitals_activity_title">Vitals</string>
 
     <string-array name="menu_drawer">
         <item>Home</item>
