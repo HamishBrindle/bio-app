@@ -46,7 +46,7 @@ class MappingMatrix {
             newOutput = stretchHorizontal(newOutput, startingResolution);
             newOutput = rotate90CounterClockwise(newOutput);
             newOutput = stretchHorizontal(newOutput, startingResolution);
-            rotate90ClockWise(newOutput);
+            newOutput = rotate90CounterClockwise(newOutput);
         }
 
         return newOutput;

@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,19 +97,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-        TextView registerFromLogin = (TextView) findViewById(R.id.register_from_login);
         mPasswordView = (EditText) findViewById(R.id.password);
         registerIntent = new Intent(this, RegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         setUpIntent = new Intent(this, ProfileActivity.class);
-        registerFromLogin.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(registerIntent);
-                finish();
-            }
-        });
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -121,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        SignInButton mGoogleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
+        LinearLayout mGoogleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
         mCallbackManager = CallbackManager.Factory.create();
 
         Log.d(TAG, "onCreate: " + mGoogleSignInButton.getHeight());
@@ -155,10 +149,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Log.d(TAG, "onDataChange: GOING TO MAIN");
 
                                 startActivity(mainIntent);
+
+                                // Make switching between activities blend via fade-in / fade-out
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                                 finish();
                             } else {
                                 Log.d(TAG, "onDataChange: GOING TO SETUP");
                                 startActivity(setUpIntent);
+
+                                // Make switching between activities blend via fade-in / fade-out
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                                 Toast.makeText(LoginActivity.this, "Register first please", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
@@ -170,6 +172,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }
                     });
                     startActivity(mainIntent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     Toast.makeText(LoginActivity.this, "Redirecting",
                             Toast.LENGTH_SHORT).show();
                     finish();
@@ -203,6 +209,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        // Make switching between activities blend via fade-in / fade-out
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+
     }
 
     @Override

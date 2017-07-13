@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account_svg"
+            android:title="@string/drawer_account" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mapping"
+            android:icon="@drawable/ic_mapping_black_svg"
+            android:title="@string/mapping_activity_title" />
+        <item
+            android:id="@+id/nav_alerts"
+            android:icon="@drawable/ic_alerts_black_svg"
+            android:title="@string/alerts_activity_title" />
+        <item
+            android:id="@+id/nav_analytics"
+            android:icon="@drawable/ic_analytics_black_svg"
+            android:title="@string/analytics_activity_title" />
+        <item
+            android:id="@+id/nav_connect"
+            android:icon="@drawable/ic_connect_black_svg"
+            android:title="@string/connect_activity_title" />
+    </group>
+
+    <item>
+        <menu>
+            <item
+                android:id="@+id/nav_about_us"
+                android:title="@string/drawer_settings" />
+            <item
+                android:id="@+id/nav_privacy_policy"
+                android:title="@string/drawer_sign_out" />
+        </menu>
+    </item>
+
+</menu>

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.biomap.application.bio_app.Login.LoginActivity;
+import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,7 +56,7 @@ public class SettingsFragment extends Fragment {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
                     // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getActivity(), LoginActivity.class);
+                    Intent logOutIntent = new Intent(getActivity(), LoginRegisterActivity.class);
                     startActivity(logOutIntent);
                     getActivity().finish();
                 }

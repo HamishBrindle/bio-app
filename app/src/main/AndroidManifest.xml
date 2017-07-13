@@ -26,9 +26,7 @@
         </activity>
         <activity
             android:name=".Login.LoginRegisterActivity"
-            android:launchMode="singleInstance">
-
-        </activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".Mapping.MappingActivity"
             android:launchMode="singleInstance"/>
@@ -48,10 +46,18 @@
             android:name=".Login.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleInstance"/>
+        <activity
+            android:name=".Login.RegisterActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".Utility.AnimationActivity"
+            android:launchMode="singleInstance"/>
 
         <receiver
-            android:name=".Home.NotificationPublisher"
+            android:name=".Alerts.NotificationPublisher"
             android:process=":remote"/>
+
+        <activity android:name=".Login.BeginActivity"></activity>
     </application>
 
 </manifest>

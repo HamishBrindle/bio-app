@@ -7,7 +7,7 @@
     <color name="darkColor">@color/background_material_dark</color>
 
     <!-- Christine's specified palette -->
-    <color name="colorLightGray">#626262</color>
+    <color name="colorLightGray">#464646</color>
     <color name="MaroonRed">#96294a</color>
     <color name="RustOrange">#b66655</color>
     <color name="PaleYellow">#ede791</color>
