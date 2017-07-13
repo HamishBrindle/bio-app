@@ -122,6 +122,10 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
                 } else {
                     //User is NOT signed in;
                     startActivity(registerIntent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     finish();
                 }
             }
@@ -164,8 +168,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         String postCode = mPostCodeView.getText().toString();
         String weight = mWeightView.getText().toString();
 
-        String regex = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
-
+        String regex = "^(?!.*[DFIOQUdfioqu])[A-VXYa-vxy][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$";
         Pattern pattern = Pattern.compile(regex);
 
         boolean cancel = false;
@@ -249,6 +252,10 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         }
         Log.d(TAG, "update: ABOUT TO REDIRECT");
         startActivity(beginIntent);
+
+        // Make switching between activities blend via fade-in / fade-out
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         finish();
     }
 

@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:custom="http://schemas.android.com/apk/res-auto"
                                                  xmlns:tools="http://schemas.android.com/tools"
+                                                 android:id="@+id/mapping_parent_layout"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  tools:context="com.biomap.application.bio_app.Mapping.MappingActivity">
@@ -20,25 +21,25 @@
 
             <!-- The ActionBar displayed at the top -->
             <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:custom="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimaryDark"
-                android:elevation="4dp"
-                android:fitsSystemWindows="true"
-                android:minHeight="?attr/actionBarSize"
-                custom:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                                               xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                               android:id="@+id/toolbar"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="wrap_content"
+                                               android:background="?attr/colorPrimaryDark"
+                                               android:elevation="4dp"
+                                               android:fitsSystemWindows="true"
+                                               android:minHeight="?attr/actionBarSize"
+                                               custom:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/toolbar_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="16dp"
-                    android:paddingStart="0dp">
+                                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/toolbar_top"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:paddingEnd="16dp"
+                                android:paddingLeft="0dp"
+                                android:paddingRight="16dp"
+                                android:paddingStart="0dp">
 
                     <ImageButton
                         android:id="@+id/toolbar_hamburger"
@@ -47,7 +48,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:background="@android:color/transparent"
-                        custom:srcCompat="@drawable/ic_hamburger_svg" />
+                        custom:srcCompat="@drawable/ic_hamburger_svg"/>
 
                     <!-- Start of Page Header & Title -->
                     <RelativeLayout
@@ -70,7 +71,7 @@
                             android:includeFontPadding="true"
                             android:text="@string/mapping_activity_title"
                             android:textColor="@color/colorAccent"
-                            android:textSize="24sp" />
+                            android:textSize="24sp"/>
 
                         <!-- Mapping icon next to page title -->
                         <ImageView
@@ -79,7 +80,7 @@
                             android:layout_toLeftOf="@+id/mapping_page_title"
                             android:layout_toStartOf="@+id/mapping_page_title"
                             android:padding="10dp"
-                            custom:srcCompat="@drawable/ic_mapping_svg" />
+                            custom:srcCompat="@drawable/ic_mapping_svg"/>
                     </RelativeLayout>
                     <!-- End of Page Header & Title -->
 
@@ -90,7 +91,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:background="@android:color/transparent"
-                        custom:srcCompat="@drawable/ic_account_svg" />
+                        custom:srcCompat="@drawable/ic_account_svg"/>
 
                 </RelativeLayout>
 
@@ -116,9 +117,10 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        custom:srcCompat="@drawable/ic_calendar_svg" />
+                        custom:srcCompat="@drawable/ic_calendar_svg"/>
 
                     <LinearLayout
+                        android:id="@+id/banner_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
@@ -129,14 +131,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Monday"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"/>
 
                         <TextView
                             android:id="@+id/date_month_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="July 8, 2017"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"/>
 
                     </LinearLayout>
 
@@ -145,20 +147,20 @@
 
                 <!-- Start of indicators, pressure grid, and weight distribution charts -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:id="@+id/mapping_viewGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    android:weightSum="1"
-                    tools:context="com.example.androidtouchview.MainActivity">
+                              xmlns:tools="http://schemas.android.com/tools"
+                              android:id="@+id/mapping_viewGroup"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_centerInParent="true"
+                              android:layout_marginTop="5dp"
+                              android:gravity="center"
+                              android:orientation="vertical"
+                              android:paddingBottom="@dimen/activity_vertical_margin"
+                              android:paddingLeft="@dimen/activity_horizontal_margin"
+                              android:paddingRight="@dimen/activity_horizontal_margin"
+                              android:paddingTop="@dimen/activity_vertical_margin"
+                              android:weightSum="1"
+                              tools:context="com.example.androidtouchview.MainActivity">
 
                     <!-- Start of Right and Left indicatiors at top -->
                     <LinearLayout
@@ -167,18 +169,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:weightSum="2">
-
-                        <!-- Right indicator -->
-                        <TextView
-                            android:id="@+id/map_right_indicator"
-                            fontPath="fonts/Gothic-Bold.otf"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Right"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="17sp" />
 
                         <!-- Left Indicator -->
                         <TextView
@@ -190,7 +180,19 @@
                             android:gravity="center"
                             android:text="Left"
                             android:textColor="@color/colorAccent"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
+
+                        <!-- Right indicator -->
+                        <TextView
+                            android:id="@+id/map_right_indicator"
+                            fontPath="fonts/Gothic-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Right"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="17sp"/>
 
                     </LinearLayout>
                     <!-- End of Right and Left indicatiors at top -->
@@ -203,19 +205,19 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:background="@color/darkColor"
-                        android:orientation="horizontal" />
+                        android:orientation="horizontal"/>
 
                     <!-- Start of Time update indicator -->
                     <TextView
+                        android:id="@+id/last_updated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:id="@+id/last_updated"
                         android:text="Updated 7:32pm"
-                        android:textColor="@color/colorAccent" />
+                        android:textColor="@color/colorAccent"/>
 
                     <!-- Start of Weight Distribution charts -->
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -223,6 +225,7 @@
 
                         <!-- Start of Holder for Weight Distribution Header and Charts -->
                         <LinearLayout
+                            android:id="@+id/weight_charts"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -236,52 +239,7 @@
                                 android:layout_marginBottom="10dp"
                                 android:text="Weight Distribution"
                                 android:textColor="@color/colorAccent"
-                                android:textSize="20sp" />
-
-                            <!-- Start of Charts (RIGHT) -->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <!-- Right indicator -->
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="Right"
-                                    android:textColor="@color/LavenderPurple"
-                                    android:textSize="17sp" />
-
-                                <!-- Percentage -->
-                                <TextView
-                                    android:id="@+id/right_percentage"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="20dp"
-                                    android:layout_weight="2"
-                                    android:text="25%"
-                                    android:textColor="@color/colorAccent"
-                                    android:textSize="24sp" />
-
-                                <!-- Progress bar -->
-                                <ProgressBar
-                                    android:id="@+id/right_progress"
-                                    style="@android:style/Widget.ProgressBar.Horizontal"
-                                    android:layout_width="100dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:progress="25"
-                                    android:progressBackgroundTint="@color/colorAccent"
-                                    android:progressTint="@color/LavenderPurple" />
-
-                            </LinearLayout>
-                            <!-- End of Charts (RIGHT) -->
-
-                            <!-- A trusty space to give some distance between the charts -->
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp" />
+                                android:textSize="20sp"/>
 
                             <!-- Start of Charts (LEFT) -->
                             <LinearLayout
@@ -293,47 +251,130 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_weight="2"
                                     android:text="Left"
                                     android:textColor="@color/LavenderPurple"
-                                    android:textSize="17sp" />
+                                    android:textSize="17sp"/>
 
                                 <!-- Percentage -->
                                 <TextView
                                     android:id="@+id/left_percentage"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
                                     android:layout_marginRight="20dp"
                                     android:layout_weight="2"
                                     android:text="44%"
+                                    android:textAlignment="textEnd"
                                     android:textColor="@color/colorAccent"
-                                    android:textSize="24sp" />
+                                    android:textSize="28sp"/>
 
                                 <!-- Progress bar -->
                                 <ProgressBar
                                     android:id="@+id/left_progress"
                                     style="@android:style/Widget.ProgressBar.Horizontal"
                                     android:layout_width="100dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
                                     android:layout_weight="2"
                                     android:progress="44"
                                     android:progressBackgroundTint="@color/colorAccent"
-                                    android:progressTint="@color/LavenderPurple" />
+                                    android:progressTint="@color/LavenderPurple"/>
 
                             </LinearLayout>
                             <!-- End of Charts (LEFT) -->
 
+
+                            <!-- A trusty space to give some distance between the charts -->
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"/>
+
+                            <!-- Start of Charts (RIGHT) -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Right indicator -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="2"
+                                    android:text="Right"
+                                    android:textColor="@color/LavenderPurple"
+                                    android:textSize="17sp"/>
+
+                                <!-- Percentage -->
+                                <TextView
+                                    android:id="@+id/right_percentage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_weight="2"
+                                    android:text="25%"
+                                    android:textAlignment="textEnd"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="28sp"/>
+
+                                <!-- Progress bar -->
+                                <ProgressBar
+                                    android:id="@+id/right_progress"
+                                    style="@android:style/Widget.ProgressBar.Horizontal"
+                                    android:layout_width="100dp"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="2"
+                                    android:progress="25"
+                                    android:progressBackgroundTint="@color/colorAccent"
+                                    android:progressTint="@color/LavenderPurple"/>
+
+                            </LinearLayout>
+                            <!-- End of Charts (RIGHT) -->
+
                         </LinearLayout>
                         <!-- End of Holder for Weight Distribution Header and Charts -->
 
-                    </LinearLayout>
+                        <!-- Start of Warning threshold -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignEnd="@id/weight_charts"
+                            android:layout_alignRight="@id/weight_charts"
+                            android:orientation="vertical"
+                            android:paddingRight="-10dp">
+
+                            <!-- Exclamation Point Warning Icon -->
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/misc_circle_white"
+                                android:tint="#ef5f67"
+                                custom:srcCompat="@drawable/ic_warning"/>
+
+                            <!-- Vertical Distribution Threshold Line -->
+                            <ImageView
+                                android:id="@+id/dashed_line"
+                                android:layout_width="115dp"
+                                android:layout_height="120dp"
+                                android:rotation="90"
+                                android:src="@drawable/misc_dashed_line"/>
+
+                        </LinearLayout>
+                        <!-- End of Warning threshold -->
+
+                    </RelativeLayout>
                     <!-- End of Distribution charts -->
 
                 </LinearLayout>
                 <!-- End of indicators, pressure grid, and weight distribution charts -->
 
                 <!-- Bottom Navigation Toolbar -->
-                <include layout="@layout/layout_bottom_navigation_view" />
+                <include layout="@layout/layout_bottom_navigation_view"/>
 
             </RelativeLayout>
             <!-- End of Main Container -->
@@ -351,7 +392,7 @@
             custom:headerLayout="@layout/layout_nav_drawer_header"
             custom:itemIconTint="@color/DarkGrey"
             custom:itemTextColor="@color/DarkGrey"
-            custom:menu="@menu/nav_drawer" />
+            custom:menu="@menu/nav_drawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 

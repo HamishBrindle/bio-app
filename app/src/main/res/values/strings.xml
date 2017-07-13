@@ -35,9 +35,9 @@
     <string name="ulcers_check_text">Have you had ulcers in the past?</string>
     <string name="good_night_text">Good Night %1$s</string>
     <string name="login_register_description">Visual Insight into\n your seated health</string>
-    <string name="good_morning_text">Good morning</string>
-    <string name="good_afternoon_text">Good Afternoon</string>
-    <string name="good_evening_text">Good Evening</string>
+    <string name="good_morning_text">Good morning,</string>
+    <string name="good_afternoon_text">Good Afternoon,</string>
+    <string name="good_evening_text">Good Evening,</string>
     <string name="alert_interval"> </string>
     <string name="biomap_logo">BioMap Logo</string>
     <string name="biomap_text_logo">BioMap Text Logo</string>

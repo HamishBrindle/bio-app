@@ -47,6 +47,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     startActivity(homeIntent);
+
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     finish();
                 } else {
                     // User is signed out
@@ -64,6 +68,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(registerIntent);
+
+                // Make switching between activities blend via fade-in / fade-out
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 finish();
             }
         });
@@ -72,6 +80,10 @@ public class LoginRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(signInIntent);
+
+                // Make switching between activities blend via fade-in / fade-out
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                 finish();
             }
         });

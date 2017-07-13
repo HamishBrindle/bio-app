@@ -10,9 +10,9 @@
 
                 <stroke
                     android:width="4dp"
-                    android:color="#FFFFFF"
+                    android:color="#ef5f67"
                     android:dashGap="10dp"
-                    android:dashWidth="10dp" />
+                    android:dashWidth="5dp" />
 
             </shape>
         </rotate>

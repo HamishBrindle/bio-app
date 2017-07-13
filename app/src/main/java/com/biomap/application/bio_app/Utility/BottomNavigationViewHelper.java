@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
@@ -22,7 +23,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
  * Created by hamis on 2017-06-13.
  */
 
-public class BottomNavigationViewHelper {
+public class BottomNavigationViewHelper extends AppCompatActivity {
 
     private static final String TAG = "BottomNavigationViewHelper";
 
@@ -79,4 +80,5 @@ public class BottomNavigationViewHelper {
             }
         });
     }
+
 }
