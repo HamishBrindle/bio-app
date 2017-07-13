@@ -107,7 +107,7 @@
                 <!-- Start of Date Banner -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/mapping_date_banner"
+                    android:id="@+id/connect_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_analytics_date_banner"

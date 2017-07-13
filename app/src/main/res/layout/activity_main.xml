@@ -169,7 +169,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="8dp"
                         android:background="@drawable/button_menu_connect"
                         android:padding="@dimen/menu_icon_padding"
                         android:scaleType="fitCenter"
@@ -184,14 +184,14 @@
                         app:srcCompat="@drawable/ic_connect_svg"/>
 
                     <TextView
-                        android:id="@+id/VitalsTextView"
+                        android:id="@+id/ConnectTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="38dp"
-                        android:layout_marginRight="38dp"
+                        android:layout_marginEnd="27dp"
+                        android:layout_marginRight="27dp"
                         android:layout_marginTop="5dp"
-                        android:text="@string/vitals_activity_title"
-                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:text="@string/connect_activity_title"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/h3_font_size"
                         app:layout_constraintRight_toRightOf="parent"
@@ -217,18 +217,20 @@
                         app:srcCompat="@drawable/ic_analytics_svg"/>
 
                     <TextView
-                        android:id="@+id/ConnectTextView"
+                        android:id="@+id/VitalsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
                         android:layout_marginTop="8dp"
-                        android:text="@string/connect_activity_title"
+                        android:gravity="center"
+                        android:text="@string/vitals_activity_title"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/h3_font_size"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/menu_button_analytics"/>
+                        app:layout_constraintTop_toBottomOf="@+id/menu_button_analytics"
+                        tools:layout_editor_absoluteX="36dp"/>
 
                 </android.support.constraint.ConstraintLayout>
 

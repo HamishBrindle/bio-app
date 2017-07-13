@@ -29,7 +29,7 @@
 
                 <!-- Start of Date Banner -->
                 <LinearLayout
-                    android:id="@+id/mapping_date_banner"
+                    android:id="@+id/connect_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_mapping_date_banner"
