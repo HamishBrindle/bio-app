@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.AnimationActivity;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,6 +60,7 @@ public class BeginActivity extends AppCompatActivity {
 
             }
         });
+        mBegin.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
         mBegin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

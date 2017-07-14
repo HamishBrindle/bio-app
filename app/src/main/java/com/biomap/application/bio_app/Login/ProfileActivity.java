@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +38,7 @@ import java.util.regex.Pattern;
  */
 public class ProfileActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
 
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "ProfileActivity";
 
     // UI references.
     private TextView mAgeView;
@@ -79,7 +80,8 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
 
         //Setting the font of the description text;
-        font = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Book.otf");
+        mContinueButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        mUlcersCheck.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
 
         //Setting up Gender Spinner
         setupGenderSpinner();

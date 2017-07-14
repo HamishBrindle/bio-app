@@ -13,13 +13,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Analytics.
@@ -39,6 +47,21 @@ public class VitalsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vitals);
         Log.d(TAG, "onCreate: starting.");
+
+        //Setting font for date banner
+        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
+        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
+
+        TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
+        TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+
+        mfullDate.setText(simpleDateFormat.format(date));
+        mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+
 
         setupToolbar();
         setupBottomNavigationView();

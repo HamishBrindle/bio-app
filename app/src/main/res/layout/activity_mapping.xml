@@ -29,7 +29,7 @@
 
                 <!-- Start of Date Banner -->
                 <LinearLayout
-                    android:id="@+id/connect_date_banner"
+                    android:id="@+id/vitals_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_mapping_date_banner"
@@ -156,6 +156,7 @@
 
                             <!-- Header -->
                             <TextView
+                                android:id="@+id/weight_header"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"

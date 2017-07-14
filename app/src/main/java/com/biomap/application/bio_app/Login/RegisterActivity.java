@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -97,6 +98,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         Button emailSignUpButton = (Button) findViewById(R.id.form_button_next);
         LinearLayout googleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
+
+        //Setting the font for the buttons
+        emailSignUpButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        CustomFontsLoader.overrideFonts(this, googleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
 
         // Setup the intents to direct user from the activity.
         logInIntent = new Intent(this, LoginActivity.class);

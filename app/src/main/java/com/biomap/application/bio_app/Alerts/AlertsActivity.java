@@ -65,7 +65,7 @@ public class AlertsActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: starting.");
 
         TextView mPageTitle = (TextView) findViewById(R.id.alerts_page_title);
-        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.connect_date_banner);
+        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
         LinearLayout mCircleButtons = (LinearLayout) findViewById(R.id.circle_buttons);
         ToggleButton mToggleButtonAlarm = (ToggleButton) findViewById(R.id.toggle_button_alarm);
         TextView mTime = (TextView) findViewById(R.id.time);

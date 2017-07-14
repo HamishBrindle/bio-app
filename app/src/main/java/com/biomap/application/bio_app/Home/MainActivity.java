@@ -19,17 +19,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
+import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
+import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Date;
@@ -50,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 2;
 
     private DrawerLayout mDrawer;
-
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +70,16 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+
         // Initialize page elements.
         setupToolbar();
         setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
-        // setupFirebase();
+        setupFirebase();
 
         ConstraintLayout mMenuButtons = (ConstraintLayout) findViewById(R.id.constraintLayout);
         CustomFontsLoader.overrideFonts(this, mMenuButtons, CustomFontsLoader.GOTHAM_BOLD);
@@ -107,9 +118,11 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+
                     // Create the logout activity intent.
                     Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(register_login_intent);
@@ -121,12 +134,14 @@ public class MainActivity extends AppCompatActivity {
         // Get the user's authentication credentials and check if signed in or not.
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
+        final Intent setUpIntent = new Intent(this, ProfileActivity.class);
 
     }
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
      */
+
     private void setupToolbar() {
         // Set a Toolbar to replace the ActionBar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -206,6 +221,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);
+                break;
+            case R.id.nav_sign_out:
+                FirebaseAuth.getInstance().signOut();
+                intent = new Intent(getBaseContext(), LoginRegisterActivity.class);
+                finish();
                 break;
             default:
 

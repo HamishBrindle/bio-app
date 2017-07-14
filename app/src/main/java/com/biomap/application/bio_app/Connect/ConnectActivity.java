@@ -42,7 +42,7 @@ public class ConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         Log.d(TAG, "onCreate: starting.");
 
-        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.connect_date_banner);
+        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
         CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
 
         setupToolbar();
