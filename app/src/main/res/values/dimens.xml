@@ -2,4 +2,11 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="menu_icon_padding">25dp</dimen>
+    <dimen name="menu_icon_corner_radius">25dp</dimen>
+    <dimen name="button_corner_radius">10dp</dimen>
+    <dimen name="menu_icon_dimensions">100dp</dimen>
+    <dimen name="h3_font_size">17sp</dimen>
+    <dimen name="alerts_add_remove_buttons_size">50dp</dimen>
+    <dimen name="biomap_register_login_logo_dim">50dp</dimen>
 </resources>

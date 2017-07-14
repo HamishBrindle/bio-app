@@ -1,0 +1,189 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context="com.biomap.application.bio_app.Login.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <!-- Start of Logo & Wordmark -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logo_login_register_imageview"
+                android:layout_width="@dimen/biomap_register_login_logo_dim"
+                android:layout_height="@dimen/biomap_register_login_logo_dim"
+                android:contentDescription="@string/biomap_logo"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_logo_svg" />
+
+            <!-- Wordmark -->
+            <ImageView
+                android:id="@+id/logo_text_login_register_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/biomap_text_logo"
+                app:srcCompat="@drawable/ic_wordmark_white" />
+
+        </LinearLayout>
+        <!-- End of Logo & Wordmark -->
+
+        <!-- Start of Form Fields and Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- Start of First Name -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/form_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    android:inputType="text"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <!-- End of First Name -->
+
+            <!-- Start of Last Name -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/form_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    android:inputType="text"
+                    android:textSize="14sp"/>
+
+            </android.support.design.widget.TextInputLayout>
+            <!-- End of Last Name -->
+
+            <!-- Start of Email -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/form_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <!-- End of Email -->
+
+            <!-- Start of Password -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/form_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <!-- End of Password -->
+
+            <!-- Start of Confirm Password -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/form_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <!-- End of Confirm Password -->
+
+            <!-- Remember me Checkbox -->
+            <CheckBox
+                android:id="@+id/form_checkbox_ulcer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:checked="true"
+                android:text="@string/form_remember_me" />
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/form_button_next"
+                android:layout_width="170dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_register"
+                android:text="Submit"
+                android:textStyle="bold" />
+
+            <!-- Start of Google Sign-In Button -->
+            <LinearLayout
+                android:id="@+id/google_signin_button"
+                android:layout_width="170dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_google"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!-- Google Icon -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_google" />
+
+                <!-- Google Button Text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Google"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <!-- End of Google Sign-In Button -->
+
+        </LinearLayout>
+        <!-- End of Form Fields and Buttons -->
+
+    </LinearLayout>
+    <!-- End of Main Content -->
+
+</RelativeLayout>
