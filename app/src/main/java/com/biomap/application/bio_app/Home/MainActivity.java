@@ -54,17 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final int ACTIVITY_NUM = 2;
-
     private DrawerLayout mDrawer;
 
-    // Bluetooth Fields
-    private static final int REQUEST_ENABLE_BT = 1;
-    private static final UUID MY_UUID = UUID.fromString("74F6F000-EA13-4881-9E52-36F754875BF5");
-    private BluetoothAdapter mBluetoothAdapter;
-    private Set<BluetoothDevice> pairedDevices;
-    private String MACAddress;
-    private BluetoothDevice mDevice;
-    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-        setupBluetooth();
         setupToolbar();
         setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
-        // setupFirebase();
 
         // TODO: Temp debug button to test animation activity.
         Button mDebugButton = (Button) findViewById(R.id.debug_button);
@@ -98,127 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
-
-    /**
-     * Establish Bluetooth connection to device.
-     */
-    private void setupBluetooth() {
-        requestBluetoothEnable();
-        queryBluetoothDevices();
-        ConnectThread mConnection = new ConnectThread(mDevice);
-        mConnection.run();
-    }
-
-    private void queryBluetoothDevices() {
-
-        pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-        if (pairedDevices.size() > 0) {
-            // There are paired devices. Get the name and address of each paired device.
-            for (BluetoothDevice device : pairedDevices) {
-
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-
-                if (deviceName.compareTo("BioMap") == 0) {
-                    mDevice = device;
-                    MACAddress = deviceHardwareAddress;
-                    Log.d(TAG, "queryBluetoothDevices: Device: " + deviceName + "| Address: " + MACAddress);
-                } else {
-                    Log.e(TAG, "queryBluetoothDevices: Couldn't find the specified BioMap device.");
-                }
-            }
-        }
-    }
-
-    /**
-     * Requests user enable Bluetooth on their device.
-     */
-    private void requestBluetoothEnable() {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (mBluetoothAdapter == null) {
-            // TODO: Handle non-Bluetooth devices.
-            Log.d(TAG, "setupBluetooth: Device doesn't support bluetooth");
-        }
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-    }
-
-    /**
-     * Once connection is made, establish I/O stream.
-     *
-     * @param mmSocket socket made between client and server.
-     */
-    private void manageMyConnectedSocket(BluetoothSocket mmSocket) {
-        Log.d(TAG, "manageMyConnectedSocket: CONNECTION SUCCESSFUL!");
-
-        //BluetoothHelper bluetoothHelper = new BluetoothHelper(mmSocket);
-    }
-
-    /**
-     * Handles making connection to device.
-     */
-    private class ConnectThread extends Thread {
-
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device) {
-            // Use a temporary object that is later assigned to mmSocket
-            // because mmSocket is final.
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try {
-                // Get a BluetoothSocket to connect with the given BluetoothDevice.
-                // MY_UUID is the app's UUID string, also used in the server code.
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-                Log.e(TAG, "Socket's create() method failed", e);
-            }
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            // Cancel discovery because it otherwise slows down the connection.
-            mBluetoothAdapter.cancelDiscovery();
-
-            Log.d(TAG, "ConnectThread: run: Trying to connect.");
-            try {
-                // Connect to the remote device through the socket. This call blocks
-                // until it succeeds or throws an exception.
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                    Log.e(TAG, "Could not close the client socket", closeException);
-                }
-                return;
-            }
-
-            // The connection attempt succeeded. Perform work associated with
-            // the connection in a separate thread.
-            manageMyConnectedSocket(mmSocket);
-        }
-
-        // Closes the client socket and causes the thread to finish.
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the client socket", e);
-            }
-        }
-    }
-
 
     /**
      * Initialize user authentication objects and listeners for authentication state changes.

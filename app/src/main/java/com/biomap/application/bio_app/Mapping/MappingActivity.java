@@ -1,8 +1,5 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.WebView;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,17 +24,12 @@ import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
-import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.io.IOException;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Handler;
 
 /**
  * Draws the pressure map on the Mapping Activity.
@@ -51,6 +44,8 @@ public class MappingActivity extends AppCompatActivity {
     private BitmapSquare[][] gridSquares;
     private GridLayout grid;
     private DrawerLayout mDrawer;
+    private boolean mapBuilt;
+    private MyGLSurfaceView mGLView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +68,20 @@ public class MappingActivity extends AppCompatActivity {
         mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         // Get the Mapping Grid layout to manipulate.
-        grid = (GridLayout) findViewById(R.id.mappingGrid);
+        // TODO: grid = (GridLayout) findViewById(R.id.mappingGrid);
 
         // Make the bottom navigation bar.
-        setupGrid();
+        // setupGrid();
+        setupHeatMap();
         setupToolbar();
         setupBottomNavigationView();
 
+    }
+
+    private void setupHeatMap() {
+        LinearLayout heatMap = (LinearLayout) findViewById(R.id.heatmap_parent);
+        mGLView = new MyGLSurfaceView(this);
+        heatMap.addView(mGLView);
     }
 
     /**
@@ -95,7 +97,7 @@ public class MappingActivity extends AppCompatActivity {
 
         int[][] expandedMatrix = matrix.convert2D(pressure);
 
-        expandedMatrix = matrix.expand(expandedMatrix, 3);
+        expandedMatrix = matrix.expand(expandedMatrix, 2    );
 
         // Set the number of columns and rows in the grid.
         grid.setRowCount(expandedMatrix.length);
@@ -138,26 +140,33 @@ public class MappingActivity extends AppCompatActivity {
                     @Override
                     public void onGlobalLayout() {
 
-                        // Set the space between each button. Keep at zero.
-                        final int MARGIN = 0;
+                        if (!mapBuilt) {
 
-                        int pWidth = grid.getWidth();
-                        int pHeight = (int) (pWidth * heightReduction);
-                        int numOfCol = grid.getColumnCount();
-                        int numOfRow = grid.getRowCount();
-                        int w = pWidth / numOfCol;
-                        int h = pHeight / numOfRow;
+                            // Set the space between each button. Keep at zero.
+                            final int MARGIN = 0;
 
-                        for (int yPos = 0; yPos < numOfRow; yPos++) {
-                            for (int xPos = 0; xPos < numOfCol; xPos++) {
-                                GridLayout.LayoutParams params =
-                                        (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
-                                params.width = w;
-                                params.height = h;
-                                params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
-                                gridSquares[xPos][yPos].setLayoutParams(params);
+                            int pWidth = grid.getWidth();
+                            int pHeight = (int) (pWidth * heightReduction);
+                            int numOfCol = grid.getColumnCount();
+                            int numOfRow = grid.getRowCount();
+                            int w = pWidth / numOfCol;
+                            int h = pHeight / numOfRow;
+
+                            for (int yPos = 0; yPos < numOfRow; yPos++) {
+                                for (int xPos = 0; xPos < numOfCol; xPos++) {
+                                    GridLayout.LayoutParams params =
+                                            (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
+                                    params.width = w;
+                                    params.height = h;
+                                    params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
+                                    gridSquares[xPos][yPos].setLayoutParams(params);
+                                }
                             }
+
+                            mapBuilt = true;
+
                         }
+
                     }
 
                 });
