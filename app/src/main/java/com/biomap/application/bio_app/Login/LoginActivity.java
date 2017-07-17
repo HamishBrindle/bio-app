@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Intent mainIntent;
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
-    private Intent registerIntent;
     private DatabaseReference myRef;
     private Intent setUpIntent;
 
@@ -98,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);
-        registerIntent = new Intent(this, RegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         setUpIntent = new Intent(this, ProfileActivity.class);

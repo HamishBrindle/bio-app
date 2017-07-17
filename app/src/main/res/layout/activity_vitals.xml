@@ -60,7 +60,7 @@
                         <!-- Page Header -->
 
                         <TextView
-                            android:id="@+id/analytics_page_title"
+                            android:id="@+id/vitals_page_title"
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
                             android:layout_centerHorizontal="true"
@@ -76,8 +76,8 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:layout_toLeftOf="@+id/analytics_page_title"
-                            android:layout_toStartOf="@+id/analytics_page_title"
+                            android:layout_toLeftOf="@+id/vitals_page_title"
+                            android:layout_toStartOf="@+id/vitals_page_title"
                             android:padding="10dp"
                             custom:srcCompat="@drawable/ic_analytics_svg"/>
 

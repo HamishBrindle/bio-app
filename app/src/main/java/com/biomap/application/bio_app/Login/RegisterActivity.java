@@ -69,9 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Intent setUpIntent;
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
-    private Intent logInIntent;
     private DatabaseReference myRef;
-    private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
         CustomFontsLoader.overrideFonts(this, googleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
 
         // Setup the intents to direct user from the activity.
-        logInIntent = new Intent(this, LoginActivity.class);
         setUpIntent = new Intent(this, ProfileActivity.class);
         mainIntent = new Intent(this, MainActivity.class);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
 

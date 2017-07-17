@@ -103,12 +103,12 @@ public class BitmapSquare extends View {
         return x;
     }
 
-    public int getYCoordinate() {
-        return y;
-    }
-
     public void setXCoordinate(int x) {
         this.x = x;
+    }
+
+    public int getYCoordinate() {
+        return y;
     }
 
     public void setYCoordinate(int y) {

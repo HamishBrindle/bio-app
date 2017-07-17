@@ -1,7 +1,6 @@
 package com.biomap.application.bio_app.Login;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginRegisterActivity extends AppCompatActivity {
     private static final String TAG = "LoginRegisterActivity";
     TextView mDescriptionText;
-    Typeface font;
     Button mRegisterButton;
     Button mSignInButton;
     Intent registerIntent;
@@ -41,8 +39,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         homeIntent = new Intent(this, MainActivity.class);
 
         FirebaseAuth.AuthStateListener mAuthListener;
-        FirebaseAuth mAuth;
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -54,10 +50,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
                     // Make switching between activities blend via fade-in / fade-out
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
-                } else {
-                    // User is signed out
-
-
                 }
             }
         };

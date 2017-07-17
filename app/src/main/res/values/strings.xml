@@ -29,7 +29,7 @@
     <string name="home_fragment_title">Home</string>
     <string name="mapping_activity_title">Mapping</string>
     <string name="connect_activity_title">Connect</string>
-    <string name="analytics_activity_title">Analytics</string>
+    <string name="analytics_activity_title">Vitals</string>
     <string name="alerts_activity_title">Alerts</string>
 
     <string name="ulcers_check_text">Have you had ulcers in the past?</string>
@@ -43,6 +43,7 @@
     <string name="biomap_text_logo">BioMap Text Logo</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="first_name_placeholder"></string>
     <string name="continue_text">Continue</string>
     <string name="ulcers_true">You have ulcers</string>
     <string name="ulcers_false">You do not have ulcers</string>

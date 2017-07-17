@@ -54,6 +54,7 @@ public class CustomFontsLoader {
 
         fontsLoaded = true;
     }
+
     public static void overrideFonts(final Context context, final View v, int font) {
         try {
             if (v instanceof ViewGroup) {
@@ -65,7 +66,7 @@ public class CustomFontsLoader {
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(CustomFontsLoader.getTypeface(context, font));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

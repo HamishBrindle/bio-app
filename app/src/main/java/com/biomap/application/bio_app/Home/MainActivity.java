@@ -17,13 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
-import com.biomap.application.bio_app.Login.LoginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
-import com.biomap.application.bio_app.Login.ProfileActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
@@ -38,7 +37,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.util.Date;
+import java.util.Calendar;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 /**
  * Home page.
@@ -47,17 +48,15 @@ import java.util.Date;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+    private static final int ACTIVITY_NUM = 2;
     /**
      * Stores information about user's session.
      */
     public static SharedPreferences SHARED_PREFERENCES;
-
-    private static final String TAG = "MainActivity";
-    private static final int ACTIVITY_NUM = 2;
-
-    private DrawerLayout mDrawer;
     FirebaseDatabase database;
     DatabaseReference myRef;
+    private DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-
 
         // Initialize page elements.
+        setupFirebase();
         setupToolbar();
         setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
-        setupFirebase();
 
         ConstraintLayout mMenuButtons = (ConstraintLayout) findViewById(R.id.constraintLayout);
         CustomFontsLoader.overrideFonts(this, mMenuButtons, CustomFontsLoader.GOTHAM_BOLD);
@@ -109,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupFirebase() {
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
 
         FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -122,9 +120,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-
                     // Create the logout activity intent.
-                    Intent logOutIntent = new Intent(getBaseContext(), LoginActivity.class);
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(register_login_intent);
                     finish();
                 }
@@ -134,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         // Get the user's authentication credentials and check if signed in or not.
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuthListener.onAuthStateChanged(mAuth);
-        final Intent setUpIntent = new Intent(this, ProfileActivity.class);
 
     }
 
@@ -153,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
         // Find drawer view
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
+        //finding header of nav bar
+        View header = nvDrawer.getHeaderView(0);
+
         // Setup drawer view
         setupDrawerContent(nvDrawer);
 
@@ -161,6 +160,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mDrawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+        TextView mTimeOfDay = (TextView) header.findViewById(R.id.nav_header_time_of_day);
+        final TextView mNameOfUser = (TextView) header.findViewById(R.id.nav_header_user_name);
+
+        Calendar calender = Calendar.getInstance();
+
+        if (6 < calender.get(Calendar.HOUR_OF_DAY) && calender.get(Calendar.HOUR_OF_DAY) < 12) {
+            mTimeOfDay.setText(getString(R.string.good_morning_text));
+        } else if (12 <= calender.get(Calendar.HOUR_OF_DAY) && calender.get(Calendar.HOUR_OF_DAY) < 17) {
+            mTimeOfDay.setText(getString(R.string.good_afternoon_text));
+        } else {
+            mTimeOfDay.setText(getString(R.string.good_evening_text));
+        }
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
@@ -193,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         selectDrawerItem(menuItem);
                         return true;
                     }
@@ -224,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
+                setupFirebase();
                 intent = new Intent(getBaseContext(), LoginRegisterActivity.class);
                 finish();
                 break;
@@ -296,8 +322,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupDateBanner() {
-
-        Date date = new Date();
 
     }
 
