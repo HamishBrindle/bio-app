@@ -161,7 +161,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_register"
                 android:text="Next"
-                android:textStyle="bold"/>
+                />
 
         </LinearLayout>
         <!-- End of Form Fields and Buttons -->

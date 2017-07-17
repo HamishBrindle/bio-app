@@ -1,4 +1,4 @@
-package com.biomap.application.bio_app.Connect;
+package com.biomap.application.bio_app.Vitals;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -20,12 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
-import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,26 +43,30 @@ import java.util.Locale;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 /**
- * Connect.
+ * Analytics.
  * <p>
  * Created by Hamish Brindle on 2017-06-13.
  */
 
-public class ConnectActivity extends AppCompatActivity {
+public class VitalsActivity extends AppCompatActivity {
 
-    private static final String TAG = "ConnectActivity";
+    private static final String TAG = "VitalsActivity";
 
-    private static final int ACTIVITY_NUM = 4;
+    private static final int ACTIVITY_NUM = 3;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connect);
+        setContentView(R.layout.activity_vitals);
         Log.d(TAG, "onCreate: starting.");
 
-        //Setting the date
+        //Setting font for date banner
+        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
+        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
+
+
         TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
         TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
 
@@ -70,13 +74,8 @@ public class ConnectActivity extends AppCompatActivity {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
 
-
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
-
-
-        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
-        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
 
 //        setupFirebase();
         setupToolbar();
@@ -86,8 +85,10 @@ public class ConnectActivity extends AppCompatActivity {
 
 //    private void setupFirebase() {
 //        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+//
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        myRef = database.getReference();
+//
 //
 //        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
 //            @Override
@@ -141,7 +142,6 @@ public class ConnectActivity extends AppCompatActivity {
                 mDrawer.openDrawer(GravityCompat.START);
             }
         });
-
         TextView mTimeOfDay = (TextView) header.findViewById(R.id.nav_header_time_of_day);
         final TextView mNameOfUser = (TextView) header.findViewById(R.id.nav_header_user_name);
 
@@ -154,7 +154,7 @@ public class ConnectActivity extends AppCompatActivity {
         } else {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
-//
+
 //        myRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -167,6 +167,7 @@ public class ConnectActivity extends AppCompatActivity {
 //
 //            }
 //        });
+
 
     }
 
@@ -257,10 +258,9 @@ public class ConnectActivity extends AppCompatActivity {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(ConnectActivity.this, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(VitalsActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
-
 }

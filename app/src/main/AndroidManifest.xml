@@ -40,7 +40,7 @@
             android:name=".Alerts.AlertsActivity"
             android:launchMode="singleInstance"/>
         <activity
-            android:name=".Analytics.AnalyticsActivity"
+            android:name=".Vitals.VitalsActivity"
             android:launchMode="singleInstance"/>
         <activity
             android:name=".Connect.ConnectActivity"

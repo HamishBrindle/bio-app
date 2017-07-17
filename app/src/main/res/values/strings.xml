@@ -7,7 +7,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -29,7 +29,7 @@
     <string name="home_fragment_title">Home</string>
     <string name="mapping_activity_title">Mapping</string>
     <string name="connect_activity_title">Connect</string>
-    <string name="analytics_activity_title">Analytics</string>
+    <string name="analytics_activity_title">Vitals</string>
     <string name="alerts_activity_title">Alerts</string>
 
     <string name="ulcers_check_text">Have you had ulcers in the past?</string>
@@ -43,6 +43,7 @@
     <string name="biomap_text_logo">BioMap Text Logo</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="first_name_placeholder"></string>
     <string name="continue_text">Continue</string>
     <string name="ulcers_true">You have ulcers</string>
     <string name="ulcers_false">You do not have ulcers</string>
@@ -51,11 +52,15 @@
     <string name="sign_in_button">Sign In</string>
     <string name="form_remember_me">Remember me on this device</string>
     <string name="form_ulcer_prompt">Have a history of pressure ulcers</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="submit_button">Submit</string>
+    <string name="google_button">Google</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_sign_out">Sign Out</string>
     <string name="drawer_account">Account</string>
     <string name="menu_drawer_header">Menu Drawer Header</string>
     <string name="action_settings">Settings</string>
+    <string name="vitals_activity_title">Vitals</string>
 
     <string-array name="menu_drawer">
         <item>Home</item>

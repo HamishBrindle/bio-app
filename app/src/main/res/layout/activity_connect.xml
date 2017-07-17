@@ -7,11 +7,10 @@
                                                  tools:context="com.biomap.application.bio_app.Connect.ConnectActivity">
 
     <!-- This DrawerLayout has two children at the root  -->
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                            xmlns:app="http://schemas.android.com/apk/res-auto"
-                                            android:id="@+id/drawer_layout"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <!-- This LinearLayout represents the contents of the screen  -->
         <LinearLayout
@@ -21,7 +20,7 @@
 
             <!-- The ActionBar displayed at the top -->
             <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                               xmlns:custom="http://schemas.android.com/apk/res-auto"
                                                android:id="@+id/toolbar"
                                                android:layout_width="match_parent"
                                                android:layout_height="wrap_content"
@@ -29,10 +28,10 @@
                                                android:elevation="4dp"
                                                android:fitsSystemWindows="true"
                                                android:minHeight="?attr/actionBarSize"
-                                               app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                                               custom:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                xmlns:custom="http://schemas.android.com/apk/res-auto"
                                 android:id="@+id/toolbar_top"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
@@ -48,7 +47,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:background="@android:color/transparent"
-                        app:srcCompat="@drawable/ic_hamburger_svg"/>
+                        custom:srcCompat="@drawable/ic_hamburger_svg"/>
 
                     <!-- Start of Page Header -->
                     <RelativeLayout
@@ -90,7 +89,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:background="@android:color/transparent"
-                        app:srcCompat="@drawable/ic_account_svg"/>
+                        custom:srcCompat="@drawable/ic_account_svg"/>
 
                 </RelativeLayout>
 
@@ -107,12 +106,12 @@
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:custom="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/vitals_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_connect_date_banner"
                     android:orientation="horizontal"
-                    android:paddingLeft="60dp"
-                    android:id="@+id/date_banner">
+                    android:paddingLeft="60dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -185,10 +184,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:backgroundTint="@color/colorAccent"
-            app:itemTextColor="@color/DarkGrey"
-            app:itemIconTint="@color/DarkGrey"
-            app:headerLayout="@layout/layout_nav_drawer_header"
-            app:menu="@menu/nav_drawer"/>
+            custom:headerLayout="@layout/layout_nav_drawer_header"
+            custom:itemIconTint="@color/DarkGrey"
+            custom:itemTextColor="@color/DarkGrey"
+            custom:menu="@menu/nav_drawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 
