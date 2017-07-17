@@ -1,12 +1,12 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.content.Context;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -24,16 +23,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
-import com.biomap.application.bio_app.Analytics.AnalyticsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.LoginRegisterActivity;
+import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
+import com.biomap.application.bio_app.Vitals.VitalsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 /**
  * Draws the pressure map on the Mapping Activity.
@@ -46,15 +57,16 @@ public class MappingActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 0;
 
     private final double heightReduction = 0.60;
-    private final Random rand = new Random();
     private BitmapSquare[][] gridSquares;
     private GridLayout grid;
     private DrawerLayout mDrawer;
+    private boolean mapBuilt;
+    private MyGLSurfaceView mGLView;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initFonts();
         setContentView(R.layout.activity_mapping);
 
         // Change the fonts in the activity by going through all the children of the parent layout.
@@ -62,25 +74,80 @@ public class MappingActivity extends AppCompatActivity {
         LinearLayout mBannerText = (LinearLayout) findViewById(R.id.banner_text);
         LinearLayout mMappingView = (LinearLayout) findViewById(R.id.mapping_viewGroup);
         LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
+        TextView mWeightHeader = (TextView) findViewById(R.id.weight_header);
+        TextView mLeftPercentage = (TextView) findViewById(R.id.left_percentage);
+        TextView mRightPercentage = (TextView) findViewById(R.id.right_percentage);
+
+
+        //Setting the date banner
+        TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
+        TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+
+        mfullDate.setText(simpleDateFormat.format(date));
+        mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
 
         mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
-        overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
-        overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
+        mWeightHeader.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        mLeftPercentage.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        mRightPercentage.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
 
+        CustomFontsLoader.overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
+        CustomFontsLoader.overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
+        CustomFontsLoader.overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
 
         // Dashed warning line doesn't appear 'dashed' unless the following:
         ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
         mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         // Get the Mapping Grid layout to manipulate.
-        grid = (GridLayout) findViewById(R.id.mappingGrid);
+        // TODO: grid = (GridLayout) findViewById(R.id.mappingGrid);
 
-        // Make the bottom navigation bar.
-        setupGrid();
+        // setupGrid();
+        // setupFirebase();
+        setupHeatMap();
         setupToolbar();
         setupBottomNavigationView();
 
+    }
+//
+//    private void setupFirebase() {
+//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        myRef = database.getReference();
+//
+//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    // User is signed in
+//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+//
+//                } else {
+//                    // User is signed out
+//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+//                    // Create the logout activity intent.
+//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(register_login_intent);
+//                    finish();
+//                }
+//            }
+//        };
+//
+//        // Get the user's authentication credentials and check if signed in or not.
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        mAuthListener.onAuthStateChanged(mAuth);
+//
+//    }
+
+    private void setupHeatMap() {
+        LinearLayout heatMap = (LinearLayout) findViewById(R.id.heatmap_parent);
+        mGLView = new MyGLSurfaceView(this);
+        heatMap.addView(mGLView);
     }
 
     /**
@@ -96,7 +163,7 @@ public class MappingActivity extends AppCompatActivity {
 
         int[][] expandedMatrix = matrix.convert2D(pressure);
 
-        expandedMatrix = matrix.expand(expandedMatrix, 3);
+        expandedMatrix = matrix.expand(expandedMatrix, 2);
 
         // Set the number of columns and rows in the grid.
         grid.setRowCount(expandedMatrix.length);
@@ -138,31 +205,36 @@ public class MappingActivity extends AppCompatActivity {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+                        if (!mapBuilt) {
 
-                        // Set the space between each button. Keep at zero.
-                        final int MARGIN = 0;
+                            // Set the space between each button. Keep at zero.
+                            final int MARGIN = 0;
 
-                        int pWidth = grid.getWidth();
-                        int pHeight = (int) (pWidth * heightReduction);
-                        int numOfCol = grid.getColumnCount();
-                        int numOfRow = grid.getRowCount();
-                        int w = pWidth / numOfCol;
-                        int h = pHeight / numOfRow;
+                            int pWidth = grid.getWidth();
+                            int pHeight = (int) (pWidth * heightReduction);
+                            int numOfCol = grid.getColumnCount();
+                            int numOfRow = grid.getRowCount();
+                            int w = pWidth / numOfCol;
+                            int h = pHeight / numOfRow;
 
-                        for (int yPos = 0; yPos < numOfRow; yPos++) {
-                            for (int xPos = 0; xPos < numOfCol; xPos++) {
-                                GridLayout.LayoutParams params =
-                                        (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
-                                params.width = w;
-                                params.height = h;
-                                params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
-                                gridSquares[xPos][yPos].setLayoutParams(params);
+                            for (int yPos = 0; yPos < numOfRow; yPos++) {
+                                for (int xPos = 0; xPos < numOfCol; xPos++) {
+                                    GridLayout.LayoutParams params =
+                                            (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
+                                    params.width = w;
+                                    params.height = h;
+                                    params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
+                                    gridSquares[xPos][yPos].setLayoutParams(params);
+                                }
                             }
                         }
-                    }
 
+                        mapBuilt = true;
+
+                    }
                 });
-    }
+
+}
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
@@ -178,6 +250,9 @@ public class MappingActivity extends AppCompatActivity {
         // Find drawer view
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
+        //finding header of nav bar
+        View header = nvDrawer.getHeaderView(0);
+
         // Setup drawer view
         setupDrawerContent(nvDrawer);
 
@@ -188,6 +263,32 @@ public class MappingActivity extends AppCompatActivity {
                 mDrawer.openDrawer(GravityCompat.START);
             }
         });
+        TextView mTimeOfDay = (TextView) header.findViewById(R.id.nav_header_time_of_day);
+        final TextView mNameOfUser = (TextView) header.findViewById(R.id.nav_header_user_name);
+
+        Calendar calender = Calendar.getInstance();
+
+        if (6 < calender.get(Calendar.HOUR_OF_DAY) && calender.get(Calendar.HOUR_OF_DAY) < 12) {
+            mTimeOfDay.setText(getString(R.string.good_morning_text));
+        } else if (12 <= calender.get(Calendar.HOUR_OF_DAY) && calender.get(Calendar.HOUR_OF_DAY) < 17) {
+            mTimeOfDay.setText(getString(R.string.good_afternoon_text));
+        } else {
+            mTimeOfDay.setText(getString(R.string.good_evening_text));
+        }
+
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
 
     }
 
@@ -218,7 +319,7 @@ public class MappingActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         selectDrawerItem(menuItem);
                         return true;
                     }
@@ -242,10 +343,17 @@ public class MappingActivity extends AppCompatActivity {
                 intent = new Intent(getBaseContext(), AlertsActivity.class);
                 break;
             case R.id.nav_analytics:
-                intent = new Intent(getBaseContext(), AnalyticsActivity.class);
+                intent = new Intent(getBaseContext(), VitalsActivity.class);
                 break;
             case R.id.nav_connect:
                 intent = new Intent(getBaseContext(), ConnectActivity.class);
+                break;
+            case R.id.nav_sign_out:
+                FirebaseAuth.getInstance().signOut();
+//                setupFirebase();
+                Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                ComponentName cn = logoutintent.getComponent();
+                intent = IntentCompat.makeRestartActivityTask(cn);
                 break;
             default:
 
@@ -299,30 +407,5 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
-    /**
-     * Initialize the custom fonts.
-     */
-    private void initFonts() {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Gotham-Bold.otf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
-    }
-
-    private void overrideFonts(final Context context, final View v, int font) {
-        try {
-            if (v instanceof ViewGroup) {
-                ViewGroup vg = (ViewGroup) v;
-                for (int i = 0; i < vg.getChildCount(); i++) {
-                    View child = vg.getChildAt(i);
-                    overrideFonts(context, child, font);
-                }
-            } else if (v instanceof TextView ) {
-                ((TextView) v).setTypeface(CustomFontsLoader.getTypeface(context, font));
-            }
-        } catch (Exception e) {
-        }
-    }
 
 }

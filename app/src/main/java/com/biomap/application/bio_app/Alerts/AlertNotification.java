@@ -11,11 +11,10 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Vafa on 2017-06-27.
+ * AlarmNotfication sets up the alarms needed to trigger the alerts.
  */
 
-
-public class AlertNotification {
+class AlertNotification {
     private static final String TAG = "AlertNotigication";
     private Calendar calendar;
     private PendingIntent mAlarmSender;
@@ -26,7 +25,7 @@ public class AlertNotification {
      *
      * @param context the context of the class calling this object.
      */
-    public AlertNotification(Context context) {
+    AlertNotification(Context context) {
         calendar = Calendar.getInstance();
         mAlarmSender = PendingIntent.getBroadcast(context, 0, new Intent(context, NotificationPublisher.class), 0);
         am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -49,7 +48,7 @@ public class AlertNotification {
      * @param toAdd  the amount you want to add to the origin.
      * @return the final added time.
      */
-    public long setTime(int origin, int toAdd) {
+    long setTime(int origin, int toAdd) {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(origin, toAdd);
         long scheduledTime = calendar.getTimeInMillis();
@@ -78,21 +77,21 @@ public class AlertNotification {
      * @param notificationTime the first time the alarm goes off
      * @param interval         the interval in which the alarm goes off.
      */
-    public void setAlarmManagerRepeating(long notificationTime, long interval) {
+    void setAlarmManagerRepeating(long notificationTime, long interval) {
         am.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime, interval, mAlarmSender);
     }
 
     /**
      * Cancels the alarm manager.
      */
-    public void cancelAlarm() {
+    void cancelAlarm() {
         am.cancel(mAlarmSender);
     }
 
     /**
      * Reset the alarm.
      */
-    public void resetAlarm(int newInterval) {
+    void resetAlarm(int newInterval) {
         this.cancelAlarm();
         long init = setTime(Calendar.MINUTE, newInterval);
         setAlarmManagerRepeating(init, TimeUnit.MINUTES.toMillis(newInterval));

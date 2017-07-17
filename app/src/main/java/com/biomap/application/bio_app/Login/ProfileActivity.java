@@ -4,7 +4,6 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,28 +37,23 @@ import java.util.regex.Pattern;
  */
 public class ProfileActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
 
-    private static final String TAG = "RegisterActivity";
-
+    private static final String TAG = "ProfileActivity";
     // UI references.
     private TextView mAgeView;
     private TextView mPostCodeView;
     private TextView mWeightView;
-
-    private String firstName;
-    private String lastName;
-    private String gender;
     private Boolean ulcersDBCheck;
-    Typeface font;
-    private Button mContinueButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent beginIntent;
     private Intent registerIntent;
-    private FirebaseDatabase database;
     private DatabaseReference myRef;
     private CheckBox mUlcersCheck;
     private boolean ulcers;
     private Boolean alreadySetUp;
+
+    public ProfileActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +62,11 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
         //Firebase stuff
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
         //Views
-        mContinueButton = (Button) findViewById(R.id.form_button_next);
+        Button continueButton = (Button) findViewById(R.id.form_button_next);
         mUlcersCheck = (CheckBox) findViewById(R.id.form_checkbox_ulcer);
         mAgeView = (TextView) findViewById(R.id.form_age);
         mWeightView = (TextView) findViewById(R.id.form_weight);
@@ -79,7 +74,8 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
 
         //Setting the font of the description text;
-        font = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Book.otf");
+        continueButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        mUlcersCheck.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
 
         //Setting up Gender Spinner
         setupGenderSpinner();
@@ -97,8 +93,8 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.child("Users").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                alreadySetUp = new Boolean((Boolean) dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").getValue());
-                                if (alreadySetUp.booleanValue()) {
+                                alreadySetUp = (Boolean) dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").getValue();
+                                if (alreadySetUp) {
                                     ulcersDBCheck = (Boolean) dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Ulcers").getValue();
                                     if (ulcersDBCheck) {
                                         mUlcersCheck.setChecked(true);
@@ -145,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
             }
         });
 
-        mContinueButton.setOnClickListener(new View.OnClickListener() {
+        continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Verify Ran");
@@ -286,7 +282,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        gender = parent.getItemAtPosition(position).toString();
+        String gender = parent.getItemAtPosition(position).toString();
     }
 
     @Override

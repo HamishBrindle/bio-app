@@ -1,22 +1,23 @@
 package com.biomap.application.bio_app.Login;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginRegisterActivity extends AppCompatActivity {
+    private static final String TAG = "LoginRegisterActivity";
     TextView mDescriptionText;
-    Typeface font;
     Button mRegisterButton;
     Button mSignInButton;
     Intent registerIntent;
@@ -38,31 +39,25 @@ public class LoginRegisterActivity extends AppCompatActivity {
         homeIntent = new Intent(this, MainActivity.class);
 
         FirebaseAuth.AuthStateListener mAuthListener;
-        FirebaseAuth mAuth;
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    Log.d(TAG, "onAuthStateChanged: User is signed in");
                     startActivity(homeIntent);
-
                     // Make switching between activities blend via fade-in / fade-out
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
                     finish();
-                } else {
-                    // User is signed out
-
-
                 }
             }
         };
 
         //Setting the font of the description text;
-        font = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Book.otf");
-        mDescriptionText.setTypeface(font);
+        mDescriptionText.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
+        mRegisterButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+        mSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +67,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 // Make switching between activities blend via fade-in / fade-out
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
-                finish();
+//                finish();
             }
         });
 
@@ -84,7 +79,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 // Make switching between activities blend via fade-in / fade-out
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
-                finish();
+//                finish();
             }
         });
     }

@@ -33,12 +33,12 @@ import android.widget.Toast;
 
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Intent mainIntent;
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
-    private Intent registerIntent;
     private DatabaseReference myRef;
     private Intent setUpIntent;
 
@@ -98,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);
-        registerIntent = new Intent(this, RegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         setUpIntent = new Intent(this, ProfileActivity.class);
@@ -117,6 +115,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         LinearLayout mGoogleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
         mCallbackManager = CallbackManager.Factory.create();
+
+        CustomFontsLoader.overrideFonts(this, mGoogleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
+        mEmailSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+
 
         Log.d(TAG, "onCreate: " + mGoogleSignInButton.getHeight());
         mLoginFormView = findViewById(R.id.login_form);

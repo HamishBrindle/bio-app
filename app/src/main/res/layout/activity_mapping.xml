@@ -19,7 +19,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!-- The ActionBar displayed at the top -->
             <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
                                                xmlns:custom="http://schemas.android.com/apk/res-auto"
                                                android:id="@+id/toolbar"
@@ -97,7 +96,7 @@
 
             </android.support.v7.widget.Toolbar>
 
-            <!-- Start of Main Container -->
+            <!-- The ActionBar displayed at the top -->
             <RelativeLayout
                 android:id="@+id/mainContainer"
                 android:layout_width="match_parent"
@@ -107,7 +106,7 @@
 
                 <!-- Start of Date Banner -->
                 <LinearLayout
-                    android:id="@+id/date_banner"
+                    android:id="@+id/vitals_date_banner"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/misc_mapping_date_banner"
@@ -150,7 +149,7 @@
                               xmlns:tools="http://schemas.android.com/tools"
                               android:id="@+id/mapping_viewGroup"
                               android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
+                              android:layout_height="450dp"
                               android:layout_centerInParent="true"
                               android:layout_marginTop="5dp"
                               android:gravity="center"
@@ -197,7 +196,14 @@
                     </LinearLayout>
                     <!-- End of Right and Left indicatiors at top -->
 
-                    <!-- Pressure map grid -->
+                    <!-- Heatmap -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:id="@+id/heatmap_parent"
+                        android:orientation="vertical" />
+
+                    <!-- Pressure map grid
                     <GridLayout
                         android:id="@+id/mappingGrid"
                         android:layout_width="match_parent"
@@ -206,6 +212,7 @@
                         android:layout_weight="1"
                         android:background="@color/darkColor"
                         android:orientation="horizontal"/>
+                        -->
 
                     <!-- Start of Time update indicator -->
                     <TextView
@@ -234,6 +241,7 @@
 
                             <!-- Header -->
                             <TextView
+                                android:id="@+id/weight_header"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
@@ -377,6 +385,9 @@
                 <include layout="@layout/layout_bottom_navigation_view"/>
 
             </RelativeLayout>
+
+
+            <!-- Start of Main Container -->
             <!-- End of Main Container -->
 
         </LinearLayout>
