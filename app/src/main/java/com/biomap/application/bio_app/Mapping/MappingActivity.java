@@ -1,10 +1,12 @@
 package com.biomap.application.bio_app.Mapping;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +60,7 @@ public class MappingActivity extends AppCompatActivity {
     private GridLayout grid;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
+    private boolean mapBuilt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,42 +105,42 @@ public class MappingActivity extends AppCompatActivity {
         grid = (GridLayout) findViewById(R.id.mappingGrid);
 
         // Make the bottom navigation bar.
-        setupFirebase();
+//        setupFirebase();
         setupGrid();
         setupToolbar();
         setupBottomNavigationView();
 
     }
-
-    private void setupFirebase() {
-        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-
-        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-                    // Create the logout activity intent.
-                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(register_login_intent);
-                    finish();
-                }
-            }
-        };
-
-        // Get the user's authentication credentials and check if signed in or not.
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuthListener.onAuthStateChanged(mAuth);
-
-    }
+//
+//    private void setupFirebase() {
+//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        myRef = database.getReference();
+//
+//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    // User is signed in
+//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+//
+//                } else {
+//                    // User is signed out
+//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+//                    // Create the logout activity intent.
+//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(register_login_intent);
+//                    finish();
+//                }
+//            }
+//        };
+//
+//        // Get the user's authentication credentials and check if signed in or not.
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        mAuthListener.onAuthStateChanged(mAuth);
+//
+//    }
 
     /**
      * Draw the pressure map and add to activity.
@@ -152,7 +155,7 @@ public class MappingActivity extends AppCompatActivity {
 
         int[][] expandedMatrix = matrix.convert2D(pressure);
 
-        expandedMatrix = matrix.expand(expandedMatrix, 3);
+        expandedMatrix = matrix.expand(expandedMatrix, 2);
 
         // Set the number of columns and rows in the grid.
         grid.setRowCount(expandedMatrix.length);
@@ -194,30 +197,37 @@ public class MappingActivity extends AppCompatActivity {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+                        if (!mapBuilt) {
 
-                        // Set the space between each button. Keep at zero.
-                        final int MARGIN = 0;
 
-                        int pWidth = grid.getWidth();
-                        int pHeight = (int) (pWidth * heightReduction);
-                        int numOfCol = grid.getColumnCount();
-                        int numOfRow = grid.getRowCount();
-                        int w = pWidth / numOfCol;
-                        int h = pHeight / numOfRow;
+                            // Set the space between each button. Keep at zero.
+                            final int MARGIN = 0;
 
-                        for (int yPos = 0; yPos < numOfRow; yPos++) {
-                            for (int xPos = 0; xPos < numOfCol; xPos++) {
-                                GridLayout.LayoutParams params =
-                                        (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
-                                params.width = w;
-                                params.height = h;
-                                params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
-                                gridSquares[xPos][yPos].setLayoutParams(params);
+                            int pWidth = grid.getWidth();
+                            int pHeight = (int) (pWidth * heightReduction);
+                            int numOfCol = grid.getColumnCount();
+                            int numOfRow = grid.getRowCount();
+                            int w = pWidth / numOfCol;
+                            int h = pHeight / numOfRow;
+
+                            for (int yPos = 0; yPos < numOfRow; yPos++) {
+                                for (int xPos = 0; xPos < numOfCol; xPos++) {
+                                    GridLayout.LayoutParams params =
+                                            (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
+                                    params.width = w;
+                                    params.height = h;
+                                    params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
+                                    gridSquares[xPos][yPos].setLayoutParams(params);
+                                }
+
                             }
+
+                            mapBuilt = true;
+
                         }
                     }
-
                 });
+
     }
 
     /**
@@ -260,18 +270,18 @@ public class MappingActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
     }
@@ -334,9 +344,10 @@ public class MappingActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-                setupFirebase();
-                intent = new Intent(getBaseContext(), LoginRegisterActivity.class);
-                finish();
+//                setupFirebase();
+                Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                ComponentName cn = logoutintent.getComponent();
+                intent = IntentCompat.makeRestartActivityTask(cn);
                 break;
             default:
 
