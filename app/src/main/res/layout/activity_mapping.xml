@@ -11,7 +11,8 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:translationZ="50dp">
 
         <!-- This LinearLayout represents the contents of the screen  -->
         <LinearLayout
@@ -149,7 +150,7 @@
                               xmlns:tools="http://schemas.android.com/tools"
                               android:id="@+id/mapping_viewGroup"
                               android:layout_width="match_parent"
-                              android:layout_height="450dp"
+                              android:layout_height="wrap_content"
                               android:layout_centerInParent="true"
                               android:layout_marginTop="5dp"
                               android:gravity="center"
@@ -199,9 +200,10 @@
                     <!-- Heatmap -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="300dp"
                         android:id="@+id/heatmap_parent"
-                        android:orientation="vertical" />
+                        android:orientation="vertical"
+                        android:translationZ="-50dp"/>
 
                     <!-- Pressure map grid
                     <GridLayout
