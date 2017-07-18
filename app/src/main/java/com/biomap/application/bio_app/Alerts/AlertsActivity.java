@@ -1,6 +1,5 @@
 package com.biomap.application.bio_app.Alerts;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -105,6 +103,7 @@ public class AlertsActivity extends AppCompatActivity {
 
 
         alertNotification = new AlertNotification(getApplicationContext());
+
         mDonutProgress = (DonutProgress) findViewById(R.id.donut_progress);
 
         // Get the shared preferences for this instance (i.e. if user has logged in, etc.)
@@ -114,41 +113,41 @@ public class AlertsActivity extends AppCompatActivity {
 
 
         // Initialize page elements.
-//        setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupAddRemoveButtons();
         setupBottomNavigationView();
     }
 
-//    private void setupFirebase() {
-//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//
-//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//
-//                    // Create the logout activity intent.
-//                    startActivity(register_login_intent);
-//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//    }
+    private void setupFirebase() {
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+
+                    // Create the logout activity intent.
+                    startActivity(register_login_intent);
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+    }
 
     /**
      * Initializes the add and remove buttons for incrementing and decrementing the Alerts interval.
@@ -165,6 +164,7 @@ public class AlertsActivity extends AppCompatActivity {
         // Get the TextView displaying the time to the user (in middle of donut).
         mTime = (TextView) findViewById(R.id.time);
 
+        //TODO If app is closed twice the button shows as false even if it were true previously, alarms still go off though.
         // Retrieves the Alert preferences, but if it doesn't exist, sets to default value.
         timerInterval = SHARED_PREFERENCES.getInt(getString(R.string.alert_interval),
                 DEFAULT_PROGRESS);
@@ -310,19 +310,19 @@ public class AlertsActivity extends AppCompatActivity {
         } else {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
-//
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -384,10 +384,10 @@ public class AlertsActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-//                setupFirebase();
-                Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
-                ComponentName cn = logoutintent.getComponent();
-                intent = IntentCompat.makeRestartActivityTask(cn);
+                setupFirebase();
+                intent = new Intent(this, LoginRegisterActivity.class);
+                intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
                 break;
             default:
 
@@ -401,6 +401,8 @@ public class AlertsActivity extends AppCompatActivity {
         mDrawer.closeDrawers();
 
         startActivity(intent);
+        finish();
+
     }
 
     /**
@@ -418,4 +420,10 @@ public class AlertsActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
+
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        setupFirebase();
+//    }
 }

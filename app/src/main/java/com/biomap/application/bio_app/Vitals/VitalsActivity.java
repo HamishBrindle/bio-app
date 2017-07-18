@@ -77,43 +77,43 @@ public class VitalsActivity extends AppCompatActivity {
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
 
-//        setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupBottomNavigationView();
 
     }
 
-//    private void setupFirebase() {
-//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-//
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//
-//
-//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//
-//                    // Create the logout activity intent.
-//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(register_login_intent);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//    }
+    private void setupFirebase() {
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+
+                    // Create the logout activity intent.
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(register_login_intent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+    }
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
@@ -155,18 +155,18 @@ public class VitalsActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
@@ -205,6 +205,7 @@ public class VitalsActivity extends AppCompatActivity {
                 });
     }
 
+
     /**
      * Gets user's choice of drawer buttons.
      *
@@ -229,14 +230,17 @@ public class VitalsActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-//                setupFirebase();
-                Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
-                ComponentName cn = logoutintent.getComponent();
-                intent = IntentCompat.makeRestartActivityTask(cn);
+                setupFirebase();
+                intent = new Intent(this, LoginRegisterActivity.class);
+                intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
                 break;
             default:
 
         }
+
+
+
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -263,4 +267,10 @@ public class VitalsActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//
+//        setupFirebase();
+//    }
 }

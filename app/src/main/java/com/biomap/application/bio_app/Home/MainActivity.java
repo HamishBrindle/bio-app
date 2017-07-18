@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Initialize page elements.
-//        setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupDateBanner();
         setupMenuButtons();
@@ -103,36 +103,36 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initialize user authentication objects and listeners for authentication state changes.
      */
-//    private void setupFirebase() {
-//
-//        database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-//
-//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//                    // Create the logout activity intent.
-//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(register_login_intent);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//
-//    }
+    private void setupFirebase() {
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    // Create the logout activity intent.
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(register_login_intent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+
+    }
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
@@ -175,19 +175,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
-//
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -249,8 +249,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-//                setupFirebase();
-                intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                setupFirebase();
+                intent = new Intent(this, LoginRegisterActivity.class);
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
                 break;
@@ -266,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.closeDrawers();
 
         startActivity(intent);
+        finish();
+
 
     }
 
@@ -325,5 +327,12 @@ public class MainActivity extends AppCompatActivity {
     public void setupDateBanner() {
 
     }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//
+//        setupFirebase();
+//    }
 
 }
