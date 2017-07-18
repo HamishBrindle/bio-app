@@ -3,11 +3,14 @@ package com.biomap.application.bio_app.OpenGL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Random;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 public class GLHeatmap {
 
+	private static final String TAG = "GLHeatmap";
 	/** Width of the viewport */
 	private Integer width;
 	/** Height of the viewport */
@@ -57,18 +60,15 @@ public class GLHeatmap {
 			"    );													\n" +
 			"    return color;										\n" +
 			"}";
-// ...
+
 		String output = 
 			"vec4 alphaFun(vec3 color, float intensity){			\n" +
 			"    float alpha = smoothstep(0.0, 1.0, intensity);		\n" +
 			"    return vec4(color*alpha, alpha);					\n" +
 			"}";
-// ...
+
 		this.shader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
-//			"float linstep(float low, float high, float value){		\n" +
-//			"    return clamp((value-low)/(high-low), 0.0, 1.0);	\n" +
-//			"}\n" +
-//			"\n" +
+
 			"float fade(float low, float high, float value){		\n" +
 			"    float mid   = (low+high)*0.5;						\n" +
 			"    float range = (high-low)*0.5;						\n" +
@@ -82,7 +82,7 @@ public class GLHeatmap {
 			"    vec3 color = getColor(intensity);\n" +
 			"    gl_FragColor = alphaFun(color, intensity);\n" +
 			"}");
-// ...
+
 		GLES20.glViewport(0, 0, this.width, this.height);
 		this.quad = new int[Main.NUM_BUFFER];
 		GLES20.glGenBuffers(Main.NUM_BUFFER, this.quad, Main.BUFFER_OFFSET);
@@ -111,12 +111,6 @@ public class GLHeatmap {
 		}
 	}
 	
-//	private String toFixed(double f, int newScale) {
-//		BigDecimal numberBigDecimal = new BigDecimal(f);
-//		numberBigDecimal = numberBigDecimal .setScale(newScale, BigDecimal.ROUND_HALF_UP);
-//		return numberBigDecimal.toString();
-//	}
-	
 	/**
 	 * Display the heatmap.
 	 */
@@ -124,13 +118,6 @@ public class GLHeatmap {
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.quad[Main.BUFFER_OFFSET]);
 		GLES20.glVertexAttribPointer(Main.BIND_ZERO, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, Main.BUFFER_OFFSET);
 		this.heights.nodeFront.bind(Main.BIND_ZERO);
-//		if (this.gradientTexture != null) {
-//			try {
-//				this.gradientTexture.bind(1);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
 		this.shader.use()._int(Main.VARIABLE_UNIFORM_SOURCE, Main.BIND_ZERO);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.NUM_INDICES_RENDER);
 	}
@@ -148,27 +135,6 @@ public class GLHeatmap {
 	public void clear() {
 		this.heights.clear();
 	}
-	
-//	public void clamp(Integer min, Integer max) {
-//		if (min == null) {
-//			min = 0;
-//		}
-//		if (max == null) {
-//			max = 1;
-//		}
-//		this.heights.clamp(min, max);
-//	}
-//	
-//	public void multiplay(Float value) {
-//		if (value == null) {
-//			value = 0.95f;
-//		}
-//		this.heights.multiply(value);
-//	}
-//	
-//	public void blur() {
-//		this.heights.blur();
-//	}
 
 	/* (non-Javadoc)
 	 * 
@@ -177,14 +143,96 @@ public class GLHeatmap {
 	public void addPoint(float x, float y, float size, float intensity) {
 		this.heights.addPoint(x, y, size, intensity);
 	}
-	
-//	public void addPoints(MyItem[] items) {
-//		MyItem item;
-//		//_results = [];
-//		for (int i = 0; i < items.length; i++) {
-//			item = items[i];
-//			this.addPoint(item.x, item.y, item.size, item.intensity);
-//		}
-//	}
-	
+
+	public Integer getWidth() {
+		return width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void plotHeatMap() {
+
+		int[][] pressure = convert2DArray(getRandomPressure());
+
+		float intensity;
+		float radius = 400;
+
+		int numOfRow = pressure.length + 2;
+		int numOfCol = pressure[0].length + 2;
+
+		float rowSize = getHeight() / numOfRow; // 131
+		float colSize = getWidth() / numOfCol; // 166
+
+		float rowOffset = rowSize / 2f;
+		float colOffset = colSize / 2f;
+
+		int index = 0;
+
+		// rows and columns = 10
+		for (int yPos = 0; yPos < numOfRow + 1; yPos++) {
+			for (int xPos = 0; xPos < numOfCol + 1; xPos++) {
+				if ((yPos > 0 && yPos < numOfRow - 1) && (xPos > 0 && xPos < numOfCol - 1)) {
+					intensity = pressure[xPos - 1][yPos - 1] / 100.0f;
+					addPoint((xPos * colSize) + colOffset, (yPos * rowSize) + rowOffset, radius, intensity);
+					Log.d(TAG, "plotHeatMap: Adding point.");
+				} else {
+					Log.d(TAG, "plotHeatMap: Skipping point.");
+				}
+
+			}
+		}
+	}
+
+	private int[] getRandomPressure() {
+		int[] array = new int[64];
+		Random rand = new Random();
+
+		for (int i = 0; i < 64; i++)
+			array[i] = rand.nextInt(50);
+
+		return array;
+	}
+
+	/**
+	 * Gets a pressure-reading array of values for each node.
+	 *
+	 * @return The pressure map array of values.
+	 */
+	private int[] getPressure() {
+
+		// TODO: This will eventually get information from the nodes and create an array.
+
+		return new int[]{
+				5 ,10,5 ,15,5 ,5 ,10,5 ,
+				10,20,10,20,20,10,20,10,
+				15,30,15,0 ,0 ,15,30,15,
+				20,40,20,0 ,0 ,20,40,20,
+				20,40,20,0 ,0 ,20,40,20,
+				15,30,15,0 ,0 ,15,30,15,
+				10,20,10,0 ,0 ,10,20,10,
+				5 ,10,5 ,0 ,0 ,5 ,10,5
+		};
+	}
+
+	/**
+	 * Convert a 1D matrix into a
+	 *
+	 * @param input Array to be converted.
+	 * @return Converted array.
+	 */
+	private int[][] convert2DArray(int[] input) {
+		int resolution = (int) Math.sqrt(input.length);
+		int[][] output = new int[resolution][resolution];
+		int count = 0;
+
+		for (int yPos = 0; yPos < resolution; yPos++) {
+			for (int xPos = 0; xPos < resolution; xPos++) {
+				output[xPos][yPos] = input[count++];
+			}
+		}
+		return output;
+	}
+
 }

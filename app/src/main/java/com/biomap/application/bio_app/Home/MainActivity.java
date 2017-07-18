@@ -31,13 +31,19 @@ import android.widget.TextView;
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
+import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.io.IOException;
@@ -53,6 +59,8 @@ import no.nordicsemi.android.support.v18.scanner.ScanCallback;
 import no.nordicsemi.android.support.v18.scanner.ScanFilter;
 import no.nordicsemi.android.support.v18.scanner.ScanResult;
 import no.nordicsemi.android.support.v18.scanner.ScanSettings;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 /**
  * Home page.
@@ -173,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
                 scanner.stopScan(scanCallback);
 
-            } else {
-                // Log.e(TAG, "onBatchScanResults: Device list is empty");
             }
         }
 
@@ -196,10 +202,6 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-
-        // Initialize page elements.
-        // setupFirebase();
-
         /* Initiate Bluetooth
         requestPermissions(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION},
@@ -207,16 +209,18 @@ public class MainActivity extends AppCompatActivity {
         initBluetooth();
         */
 
-        // setupBluetooth();
+        // setupFirebase();
+        setupDebugButton();
         setupToolbar();
-        setupDateBanner();
         setupMenuButtons();
         setupBottomNavigationView();
 
         ConstraintLayout mMenuButtons = (ConstraintLayout) findViewById(R.id.constraintLayout);
         CustomFontsLoader.overrideFonts(this, mMenuButtons, CustomFontsLoader.GOTHAM_BOLD);
 
+    }
 
+    private void setupDebugButton() {
         // TODO: Temp debug button to test animation activity.
         //Remove before deploying
         ImageView mDebugButton = (ImageView) findViewById(R.id.biomap_logo_imageView);
@@ -257,156 +261,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Establish Bluetooth connection to device.
-     */
-    private void setupBluetooth() {
-        requestBluetoothEnable();
-        queryBluetoothDevices();
-        ConnectThread mConnection = new ConnectThread(mDevice);
-        mConnection.run();
-    }
-
-    private void queryBluetoothDevices() {
-
-        pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-        if (pairedDevices.size() > 0) {
-            // There are paired devices. Get the name and address of each paired device.
-            for (BluetoothDevice device : pairedDevices) {
-
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-
-                if (deviceName.compareTo("BioMap") == 0) {
-                    mDevice = device;
-                    MACAddress = deviceHardwareAddress;
-                    Log.d(TAG, "queryBluetoothDevices: Device: " + deviceName + "| Address: " + MACAddress);
-                } else {
-                    Log.e(TAG, "queryBluetoothDevices: Couldn't find the specified BioMap device.");
-                }
-            }
-        }
-    }
-
-    /**
-     * Requests user enable Bluetooth on their device.
-     */
-    private void requestBluetoothEnable() {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (mBluetoothAdapter == null) {
-            // TODO: Handle non-Bluetooth devices.
-            Log.d(TAG, "setupBluetooth: Device doesn't support bluetooth");
-        }
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-    }
-
-    /**
-     * Once connection is made, establish I/O stream.
-     *
-     * @param mmSocket socket made between client and server.
-     */
-    private void manageMyConnectedSocket(BluetoothSocket mmSocket) {
-        Log.d(TAG, "manageMyConnectedSocket: CONNECTION SUCCESSFUL!");
-
-        //BluetoothHelper bluetoothHelper = new BluetoothHelper(mmSocket);
-    }
-
-    /**
-     * Handles making connection to device.
-     */
-    private class ConnectThread extends Thread {
-
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device) {
-            // Use a temporary object that is later assigned to mmSocket
-            // because mmSocket is final.
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try {
-                // Get a BluetoothSocket to connect with the given BluetoothDevice.
-                // MY_UUID is the app's UUID string, also used in the server code.
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-                Log.e(TAG, "Socket's create() method failed", e);
-            }
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            // Cancel discovery because it otherwise slows down the connection.
-            mBluetoothAdapter.cancelDiscovery();
-
-            Log.d(TAG, "ConnectThread: run: Trying to connect.");
-            try {
-                // Connect to the remote device through the socket. This call blocks
-                // until it succeeds or throws an exception.
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                    Log.e(TAG, "Could not close the client socket", closeException);
-                }
-                return;
-            }
-
-            // The connection attempt succeeded. Perform work associated with
-            // the connection in a separate thread.
-            manageMyConnectedSocket(mmSocket);
-        }
-
-        // Closes the client socket and causes the thread to finish.
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the client socket", e);
-            }
-        }
-    }
-
-    /**
      * Initialize user authentication objects and listeners for authentication state changes.
      */
-//    private void setupFirebase() {
-//
-//        database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-//
-//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//                    // Create the logout activity intent.
-//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(register_login_intent);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//
-//    }
+    private void setupFirebase() {
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    // Create the logout activity intent.
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(register_login_intent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+
+    }
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
@@ -448,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
-//
+
 //        myRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -591,9 +477,4 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
-
-    public void setupDateBanner() {
-
-    }
-
 }

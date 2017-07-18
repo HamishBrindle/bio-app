@@ -2,9 +2,11 @@ package com.biomap.application.bio_app.Mapping;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,17 +27,15 @@ import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
+import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
@@ -63,22 +62,29 @@ public class MappingActivity extends AppCompatActivity {
     private boolean mapBuilt;
     private MyGLSurfaceView mGLView;
     private DatabaseReference myRef;
+    private NavigationView nvDrawer;
+    private GLHeatmap mHeatmap;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapping);
 
-        // Change the fonts in the activity by going through all the children of the parent layout.
-        TextView mPageTitle = (TextView) findViewById(R.id.mapping_page_title);
-        LinearLayout mBannerText = (LinearLayout) findViewById(R.id.banner_text);
-        LinearLayout mMappingView = (LinearLayout) findViewById(R.id.mapping_viewGroup);
-        LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
-        TextView mWeightHeader = (TextView) findViewById(R.id.weight_header);
-        TextView mLeftPercentage = (TextView) findViewById(R.id.left_percentage);
-        TextView mRightPercentage = (TextView) findViewById(R.id.right_percentage);
+        // Dashed warning line doesn't appear 'dashed' unless the following:
+        ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
+        mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
+        // setupFirebase();
+        setupDateBanner();
+        setupFonts();
+        setupToolbar();
+        setupHeatMap();
+        setupBottomNavigationView();
 
+    }
+
+    private void setupDateBanner() {
         //Setting the date banner
         TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
         TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
@@ -89,6 +95,17 @@ public class MappingActivity extends AppCompatActivity {
 
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+    }
+
+    private void setupFonts() {
+        // Change the fonts in the activity by going through all the children of the parent layout.
+        TextView mPageTitle = (TextView) findViewById(R.id.mapping_page_title);
+        LinearLayout mBannerText = (LinearLayout) findViewById(R.id.banner_text);
+        LinearLayout mMappingView = (LinearLayout) findViewById(R.id.mapping_viewGroup);
+        LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
+        TextView mWeightHeader = (TextView) findViewById(R.id.weight_header);
+        TextView mLeftPercentage = (TextView) findViewById(R.id.left_percentage);
+        TextView mRightPercentage = (TextView) findViewById(R.id.right_percentage);
 
         mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
         mWeightHeader.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
@@ -98,143 +115,82 @@ public class MappingActivity extends AppCompatActivity {
         CustomFontsLoader.overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
         CustomFontsLoader.overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
         CustomFontsLoader.overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
+    }
 
-        // Dashed warning line doesn't appear 'dashed' unless the following:
-        ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
-        mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    private void setupFirebase() {
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
-        // Get the Mapping Grid layout to manipulate.
-        // TODO: grid = (GridLayout) findViewById(R.id.mappingGrid);
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
 
-        // setupGrid();
-        // setupFirebase();
-        setupHeatMap();
-        setupToolbar();
-        setupBottomNavigationView();
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                    // Create the logout activity intent.
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(register_login_intent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
 
     }
-//
-//    private void setupFirebase() {
-//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//
-//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//                    // Create the logout activity intent.
-//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(register_login_intent);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//
-//    }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupHeatMap() {
-        LinearLayout heatMap = (LinearLayout) findViewById(R.id.heatmap_parent);
+        LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
         mGLView = new MyGLSurfaceView(this);
-        heatMap.addView(mGLView);
+        heatMapView.addView(mGLView);
+    }
+
+    private void plotHeatMap() {
+
+        int[][] pressure = convert2DArray(getPressure());
+
+        float intensity;
+        float radius = 400;
+
+        float row = mHeatmap.getHeight() / pressure.length;
+        float col = mHeatmap.getWidth() / pressure[0].length;
+
+        for (int i = 0; i < pressure.length; i++) {
+            for (int j = 0; j < pressure[0].length; j++) {
+                intensity = pressure[j][i] / 100;
+                mHeatmap.addPoint(row * i, col * j, radius, intensity);
+            }
+        }
     }
 
     /**
-     * Draw the pressure map and add to activity.
+     * Convert a 1D matrix into a
+     *
+     * @param input Array to be converted.
+     * @return Converted array.
      */
-    private void setupGrid() {
+    int[][] convert2DArray(int[] input) {
+        int resolution = (int) Math.sqrt(input.length);
+        int[][] output = new int[resolution][resolution];
+        int count = 0;
 
-        // Make a mock pressure-chart; this will be 8x8.
-        int[] pressure = getPressure();
-
-        // Expand the 8x8 pressure inputs to MAP_RESOLUTION.
-        MappingMatrix matrix = new MappingMatrix();
-
-        int[][] expandedMatrix = matrix.convert2D(pressure);
-
-        expandedMatrix = matrix.expand(expandedMatrix, 2);
-
-        // Set the number of columns and rows in the grid.
-        grid.setRowCount(expandedMatrix.length);
-        grid.setColumnCount(expandedMatrix[0].length);
-
-        // Get the number of columns and rows to be displayed in the Mapping Grid.
-        int numOfCol = grid.getColumnCount();
-        int numOfRow = grid.getRowCount();
-
-        // Make an array of all the Squares in the Mapping Grid
-        gridSquares = new BitmapSquare[numOfCol][numOfRow];
-
-        // Initialize gridId to start.
-        int gridId = 0;
-
-
-        // Create squares for the pressure map and add them to the grid. Also, make an array for
-        // the squares so we can make further changes to the grid.
-        for (int yPos = 0; yPos < numOfRow; yPos++) {
-            for (int xPos = 0; xPos < numOfCol; xPos++) {
-                BitmapSquare tView = new BitmapSquare(
-                        this, // View
-                        xPos, // X position
-                        yPos, // Y Position
-                        gridId,
-                        expandedMatrix[xPos][yPos] // The pressure value from array
-                );
-                tView.setId(gridId++);
-                gridSquares[xPos][yPos] = tView;
-                grid.addView(tView);
+        for (int yPos = 0; yPos < resolution; yPos++) {
+            for (int xPos = 0; xPos < resolution; xPos++) {
+                output[xPos][yPos] = input[count++];
             }
         }
+        return output;
+    }
 
-        /* Create listeners for each Mapping Grid Square.
-         * TODO: Produces strange error message in logcat:
-         * "horizontal constraints [...] are inconsistent; permanently removing: [...]"
-         */
-        grid.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (!mapBuilt) {
-
-                            // Set the space between each button. Keep at zero.
-                            final int MARGIN = 0;
-
-                            int pWidth = grid.getWidth();
-                            int pHeight = (int) (pWidth * heightReduction);
-                            int numOfCol = grid.getColumnCount();
-                            int numOfRow = grid.getRowCount();
-                            int w = pWidth / numOfCol;
-                            int h = pHeight / numOfRow;
-
-                            for (int yPos = 0; yPos < numOfRow; yPos++) {
-                                for (int xPos = 0; xPos < numOfCol; xPos++) {
-                                    GridLayout.LayoutParams params =
-                                            (GridLayout.LayoutParams) gridSquares[xPos][yPos].getLayoutParams();
-                                    params.width = w;
-                                    params.height = h;
-                                    params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
-                                    gridSquares[xPos][yPos].setLayoutParams(params);
-                                }
-                            }
-                        }
-
-                        mapBuilt = true;
-
-                    }
-                });
-
-}
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
@@ -248,7 +204,7 @@ public class MappingActivity extends AppCompatActivity {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Find drawer view
-        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
         //finding header of nav bar
         View header = nvDrawer.getHeaderView(0);
