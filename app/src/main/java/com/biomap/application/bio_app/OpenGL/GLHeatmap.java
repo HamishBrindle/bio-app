@@ -154,7 +154,7 @@ public class GLHeatmap {
 
 	public void plotHeatMap() {
 
-		int[][] pressure = convert2DArray(getRandomPressure());
+		int[][] pressure = convert2DArray(getPressure());
 
 		float intensity;
 		float radius = 400;
@@ -205,14 +205,14 @@ public class GLHeatmap {
 		// TODO: This will eventually get information from the nodes and create an array.
 
 		return new int[]{
-				5 ,10,5 ,15,5 ,5 ,10,5 ,
-				10,20,10,20,20,10,20,10,
-				15,30,15,0 ,0 ,15,30,15,
-				20,40,20,0 ,0 ,20,40,20,
-				20,40,20,0 ,0 ,20,40,20,
-				15,30,15,0 ,0 ,15,30,15,
-				10,20,10,0 ,0 ,10,20,10,
-				5 ,10,5 ,0 ,0 ,5 ,10,5
+				5 , 25, 45, 50, 60, 45, 25, 5 ,
+				10, 20, 12, 20, 20, 12, 20, 10,
+				15, 30, 15, 17, 19, 15, 30, 15,
+				20, 40, 20, 10, 10, 20, 40, 20,
+				20, 40, 20, 0 , 0 , 20, 40, 20,
+				15, 30, 15, 0 , 0 , 15, 30, 15,
+				10, 20, 10, 0 , 0 , 10, 20, 10,
+				15, 30, 15, 0 , 0 , 15, 30, 15
 		};
 	}
 
