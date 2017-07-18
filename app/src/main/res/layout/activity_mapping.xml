@@ -11,7 +11,8 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:translationZ="50dp">
 
         <!-- This LinearLayout represents the contents of the screen  -->
         <LinearLayout
@@ -196,15 +197,12 @@
                     </LinearLayout>
                     <!-- End of Right and Left indicatiors at top -->
 
-                    <!-- Pressure map grid -->
-                    <GridLayout
-                        android:id="@+id/mappingGrid"
+                    <!-- Heatmap -->
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:background="@color/darkColor"
-                        android:orientation="horizontal"/>
+                        android:layout_height="300dp"
+                        android:id="@+id/heatmap_parent"
+                        android:orientation="vertical" />
 
                     <!-- Start of Time update indicator -->
                     <TextView
@@ -395,7 +393,7 @@
             custom:headerLayout="@layout/layout_nav_drawer_header"
             custom:itemIconTint="@color/DarkGrey"
             custom:itemTextColor="@color/DarkGrey"
-            custom:menu="@menu/nav_drawer"/>
+            custom:menu="@menu/nav_drawer" />
 
     </android.support.v4.widget.DrawerLayout>
 
