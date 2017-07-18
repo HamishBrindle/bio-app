@@ -1,8 +1,14 @@
 package com.biomap.application.bio_app.Mapping.Heatmap;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.MotionEvent;
+
+import com.biomap.application.bio_app.R;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -13,6 +19,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	private final MyGLRenderer mRenderer;
 
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	public MyGLSurfaceView(Context context) {
 		super(context);
 
@@ -21,10 +28,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 		// Set the Renderer for drawing on the GLSurfaceView
 		mRenderer = new MyGLRenderer();
+
+		// Don't fucking change this unless you know what you're doing.
+		//setZOrderOnTop(true);
+		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+		getHolder().setFormat(PixelFormat.RGBA_8888);
 		setRenderer(mRenderer);
 
-		// Render the view only when there is a change in the drawing data
-		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 	}
 
 
