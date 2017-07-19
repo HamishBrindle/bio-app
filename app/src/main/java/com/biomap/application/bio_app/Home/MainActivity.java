@@ -1,12 +1,12 @@
 package com.biomap.application.bio_app.Home;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
@@ -39,19 +40,16 @@ import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.SynchronousQueue;
 import java.util.logging.Handler;
 
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat;
@@ -95,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             UUID.fromString("74F6F008-EA13-4881-9E52-36F754875BF5")
     };
 
+    private BluetoothHelper bluetoothHelper;
     private BluetoothAdapter mBluetoothAdapter;
     private Set<BluetoothDevice> pairedDevices;
     private String MACAddress;
@@ -111,26 +110,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+        public void onServicesDiscovered(final BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
 
             Log.e("BluetoothLeService", "onServicesDiscovered()");
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
 
-                List<BluetoothGattService> gattServices = mGatt.getServices();
+                List<BluetoothGattService> gattServices = gatt.getServices();
 
                 Log.e("onServicesDiscovered", "Services count: " + gattServices.size());
 
                 for (BluetoothGattService gattService : gattServices) {
                     String serviceUUID = gattService.getUuid().toString();
                     if (serviceUUID.compareTo(MY_UUID.toString()) == 0) {
-                        Log.e("onServicesDiscovered", "Service uuid: " + serviceUUID);
                         bluetoothGattCharacteristics = gattService.getCharacteristics();
-                        for (BluetoothGattCharacteristic characteristic :
-                                bluetoothGattCharacteristics) {
-                            mGatt.readCharacteristic(characteristic);
-                        }
+                        // requestCharacteristics(gatt);
                     }
                 }
             } else {
@@ -140,11 +135,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        public void requestCharacteristics(final BluetoothGatt gatt) {
+            Log.d(TAG, "requestCharacteristics: TRYING TO READ CHARACTERISTIC");
+            gatt.readCharacteristic(bluetoothGattCharacteristics.get(bluetoothGattCharacteristics.size() - 1));
+        }
+
+
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
-
             Log.d(TAG, "onCharacteristicRead: Reading characteristic: " + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0));
+
+            bluetoothGattCharacteristics.remove(bluetoothGattCharacteristics.get(bluetoothGattCharacteristics.size() - 1));
+
 
         }
 
@@ -202,12 +205,11 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-        /* Initiate Bluetooth
+        //Initiate Bluetooth
         requestPermissions(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
         initBluetooth();
-        */
 
         // setupFirebase();
         setupDebugButton();
