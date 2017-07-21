@@ -88,6 +88,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged: user is in profile and sifned in");
                     //User is signed in
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
