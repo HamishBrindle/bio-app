@@ -34,7 +34,6 @@ import android.widget.Toast;
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
-import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -85,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent mainIntent;
     private GoogleApiClient mGoogleApiClient;
-    private CallbackManager mCallbackManager;
+
     private DatabaseReference myRef;
     private Intent setUpIntent;
 
@@ -114,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         LinearLayout mGoogleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
-        mCallbackManager = CallbackManager.Factory.create();
+
 
         CustomFontsLoader.overrideFonts(this, mGoogleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
         mEmailSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
@@ -220,7 +219,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
