@@ -9,4 +9,6 @@
     <dimen name="h3_font_size">17sp</dimen>
     <dimen name="alerts_add_remove_buttons_size">50dp</dimen>
     <dimen name="biomap_register_login_logo_dim">50dp</dimen>
+    <dimen name="vitals_scrollview_margin">40dp</dimen>
+    <dimen name="vitals_header_textSize">20sp</dimen>
 </resources>

@@ -61,6 +61,7 @@
     <string name="menu_drawer_header">Menu Drawer Header</string>
     <string name="action_settings">Settings</string>
     <string name="vitals_activity_title">Vitals</string>
+    <string name="header_body_temperature">Body Temperature</string>
 
     <string-array name="menu_drawer">
         <item>Home</item>

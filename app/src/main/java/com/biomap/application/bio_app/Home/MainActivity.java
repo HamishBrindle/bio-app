@@ -1,17 +1,11 @@
 package com.biomap.application.bio_app.Home;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
@@ -28,8 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
-import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -38,25 +32,14 @@ import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
-import java.util.logging.Handler;
-
-import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat;
-import no.nordicsemi.android.support.v18.scanner.ScanCallback;
-import no.nordicsemi.android.support.v18.scanner.ScanFilter;
-import no.nordicsemi.android.support.v18.scanner.ScanResult;
-import no.nordicsemi.android.support.v18.scanner.ScanSettings;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -68,125 +51,20 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
     private static final int ACTIVITY_NUM = 2;
-    /**
-     * Stores information about user's session.
-     */
+
     public static SharedPreferences SHARED_PREFERENCES;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+
+    private FirebaseDatabase database;
+
+    private DatabaseReference myRef;
+
     private DrawerLayout mDrawer;
 
-    // Bluetooth Fields
-    private static final int REQUEST_ENABLE_BT = 1;
+    private BluetoothHelper bluetoothHelper;
 
-    private static final UUID MY_UUID = UUID.fromString("74F6F000-EA13-4881-9E52-36F754875BF5");
-
-    private static final UUID[] SENSOR_GROUPS = {
-            UUID.fromString("74F6F001-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F002-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F003-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F004-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F005-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F006-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F007-EA13-4881-9E52-36F754875BF5"),
-            UUID.fromString("74F6F008-EA13-4881-9E52-36F754875BF5")
-    };
-
-    private BluetoothAdapter mBluetoothAdapter;
-    private Set<BluetoothDevice> pairedDevices;
-    private String MACAddress;
-    private BluetoothDevice mDevice;
-    private Handler mHandler;
-    private BluetoothLeScannerCompat scanner;
-    private BluetoothGatt mGatt;
-    private List<BluetoothGattCharacteristic> bluetoothGattCharacteristics;
-    private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
-        @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            super.onConnectionStateChange(gatt, status, newState);
-            gatt.discoverServices();
-        }
-
-        @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            super.onServicesDiscovered(gatt, status);
-
-            Log.e("BluetoothLeService", "onServicesDiscovered()");
-
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-
-                List<BluetoothGattService> gattServices = mGatt.getServices();
-
-                Log.e("onServicesDiscovered", "Services count: " + gattServices.size());
-
-                for (BluetoothGattService gattService : gattServices) {
-                    String serviceUUID = gattService.getUuid().toString();
-                    if (serviceUUID.compareTo(MY_UUID.toString()) == 0) {
-                        Log.e("onServicesDiscovered", "Service uuid: " + serviceUUID);
-                        bluetoothGattCharacteristics = gattService.getCharacteristics();
-                        for (BluetoothGattCharacteristic characteristic :
-                                bluetoothGattCharacteristics) {
-                            mGatt.readCharacteristic(characteristic);
-                        }
-                    }
-                }
-            } else {
-
-                Log.w(TAG, "onServicesDiscovered received: " + status);
-
-            }
-        }
-
-        @Override
-        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicRead(gatt, characteristic, status);
-
-            Log.d(TAG, "onCharacteristicRead: Reading characteristic: " + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0));
-
-        }
-
-        @Override
-        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicWrite(gatt, characteristic, status);
-        }
-    };
-
-    private final ScanCallback scanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-        }
-
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            super.onBatchScanResults(results);
-            if (!results.isEmpty()) {
-                ScanResult result = results.get(0);
-                BluetoothDevice device = result.getDevice();
-
-                if (device.getName().compareTo("BioMap") == 0) {
-                    mDevice = device;
-                    Log.d(TAG, "onBatchScanResults: GOT BIOMAP BITCH");
-                }
-
-                String deviceAddress = device.getAddress();
-
-                Log.e(TAG, "onBatchScanResults: Device Address: " + deviceAddress);
-
-                // Device detected, we can automatically connect to it and stop the scan
-                mGatt = mDevice.connectGatt(getBaseContext(), true, mGattCallback);
-
-                scanner.stopScan(scanCallback);
-
-            }
-        }
-
-        @Override
-        public void onScanFailed(int errorCode) {
-            super.onScanFailed(errorCode);
-        }
-    };
+    private Map<UUID, byte[]> sensorValues;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -200,15 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 "com.biomap.application.bio_app", Context.MODE_PRIVATE
         );
 
-        /* Initiate Bluetooth
+        // Request permission for Bluetooth
         requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION},
+                        Manifest.permission.BLUETOOTH},
                 1);
-        initBluetooth();
-        */
 
-        // Initialize page elements.
-        setupFirebase();
+        // setupFirebase();
+        // bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
         setupToolbar();
         setupMenuButtons();
@@ -219,45 +95,50 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A debug button used for various executions (animation, bluetooth, etc.)
+     */
     private void setupDebugButton() {
         // TODO: Temp debug button to test animation activity.
         //Remove before deploying
         ImageView mDebugButton = (ImageView) findViewById(R.id.biomap_logo_imageView);
+
         mDebugButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
                 startActivity(debugIntent);
-
-                // Make switching between activities blend via fade-in / fade-out
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
                 finish();
+                */
+
+                Map<UUID, byte[]> reversedMap = new TreeMap<>(bluetoothHelper.getCharacteristicValues());
+
+                for (Map.Entry entry : reversedMap.entrySet()) {
+                    byte[] bytes = ((byte[]) entry.getValue());
+                    Log.e(TAG, "Print sensor values of " + entry.getKey() + ": [HEX] " + byteToHex(bytes));
+                }
             }
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void initBluetooth() {
+    /**
+     * Convert a byte array to a hex string. Used for printing hex values from the micro-controller.
+     *
+     * @param bytes from characteristic
+     * @return String of hex values for the characteristic.
+     */
+    private String byteToHex(byte[] bytes) {
 
-        scanner = BluetoothLeScannerCompat.getScanner();
-        ScanSettings settings = new ScanSettings.Builder()
-                .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
-                .setReportDelay(1000)
-                .setUseHardwareBatchingIfSupported(false).build();
-        List<ScanFilter> filters = new ArrayList<>();
-
-        Log.e(TAG, "initBluetooth: Size of filters: " + filters.size());
-
-        for (ScanFilter scanFilter :
-                filters) {
-            Log.d(TAG, "initBluetooth: Device = " + scanFilter);
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X ", b));
         }
 
-        filters.add(new ScanFilter.Builder().setDeviceAddress("FC:08:04:93:81:D4").build());
-
-        scanner.startScan(filters, settings, scanCallback);
+        return sb.toString();
     }
+
 
     /**
      * Initialize user authentication objects and listeners for authentication state changes.
@@ -268,22 +149,21 @@ public class MainActivity extends AppCompatActivity {
         myRef = database.getReference();
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
 
-        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+        FirebaseAuth.AuthStateListener mAuthListener = firebaseAuth -> {
 
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-                    // Create the logout activity intent.
-                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(register_login_intent);
-                    finish();
-                }
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+
+            if (user != null) {
+                // User is signed in
+                Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+            } else {
+                // User is signed out
+                Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+                // Create the logout activity intent.
+                register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(register_login_intent);
+                finish();
             }
         };
 
@@ -314,12 +194,7 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
         ImageButton hamburger = (ImageButton) findViewById(R.id.toolbar_hamburger);
-        hamburger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawer.openDrawer(GravityCompat.START);
-            }
-        });
+        hamburger.setOnClickListener(v -> mDrawer.openDrawer(GravityCompat.START));
 
         TextView mTimeOfDay = (TextView) header.findViewById(R.id.nav_header_time_of_day);
         final TextView mNameOfUser = (TextView) header.findViewById(R.id.nav_header_user_name);
@@ -334,18 +209,18 @@ public class MainActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
 
@@ -374,12 +249,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
+                menuItem -> {
+                    selectDrawerItem(menuItem);
+                    return true;
                 });
     }
 
@@ -443,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates the menu buttons for the menu fragment.
+     * Creates the menu buttons for the home activity.
      */
     public void setupMenuButtons() {
 
@@ -465,14 +337,11 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < numMenuButtons; i++) {
             final int finalI = i;
-            menuButtons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), menuActivities[finalI]);
-                    startActivity(intent);
-                    // Make switching between activities blend via fade-in / fade-out
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }
+            menuButtons[i].setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), menuActivities[finalI]);
+                startActivity(intent);
+                // Make switching between activities blend via fade-in / fade-out
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             });
         }
     }

@@ -55,15 +55,10 @@ public class MappingActivity extends AppCompatActivity {
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
 
-    private final double heightReduction = 0.60;
-    private BitmapSquare[][] gridSquares;
-    private GridLayout grid;
     private DrawerLayout mDrawer;
-    private boolean mapBuilt;
-    private MyGLSurfaceView mGLView;
-    private DatabaseReference myRef;
-    private NavigationView nvDrawer;
-    private GLHeatmap mHeatmap;
+
+    public MappingActivity() {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -120,7 +115,7 @@ public class MappingActivity extends AppCompatActivity {
     private void setupFirebase() {
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+        DatabaseReference myRef = database.getReference();
 
         FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -150,26 +145,8 @@ public class MappingActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupHeatMap() {
         LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
-        mGLView = new MyGLSurfaceView(this);
+        MyGLSurfaceView mGLView = new MyGLSurfaceView(this);
         heatMapView.addView(mGLView);
-    }
-
-    private void plotHeatMap() {
-
-        int[][] pressure = convert2DArray(getPressure());
-
-        float intensity;
-        float radius = 400;
-
-        float row = mHeatmap.getHeight() / pressure.length;
-        float col = mHeatmap.getWidth() / pressure[0].length;
-
-        for (int i = 0; i < pressure.length; i++) {
-            for (int j = 0; j < pressure[0].length; j++) {
-                intensity = pressure[j][i] / 100;
-                mHeatmap.addPoint(row * i, col * j, radius, intensity);
-            }
-        }
     }
 
     /**
@@ -204,7 +181,7 @@ public class MappingActivity extends AppCompatActivity {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Find drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
         //finding header of nav bar
         View header = nvDrawer.getHeaderView(0);

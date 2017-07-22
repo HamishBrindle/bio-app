@@ -1,12 +1,10 @@
 package com.biomap.application.bio_app.Vitals;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -77,7 +75,7 @@ public class VitalsActivity extends AppCompatActivity {
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
 
-        setupFirebase();
+        // setupFirebase();
         setupToolbar();
         setupBottomNavigationView();
 
@@ -155,6 +153,7 @@ public class VitalsActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
+        /* Firebase stuff
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -167,6 +166,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             }
         });
+        */
 
 
     }
