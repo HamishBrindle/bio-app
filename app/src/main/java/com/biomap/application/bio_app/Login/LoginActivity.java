@@ -33,12 +33,11 @@ import android.widget.Toast;
 
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
-import com.facebook.CallbackManager;
+import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -85,8 +84,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Intent mainIntent;
     private GoogleApiClient mGoogleApiClient;
-    private CallbackManager mCallbackManager;
-    private Intent registerIntent;
     private DatabaseReference myRef;
     private Intent setUpIntent;
 
@@ -98,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);
-        registerIntent = new Intent(this, RegisterActivity.class);
+        Intent registerIntent = new Intent(this, RegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         setUpIntent = new Intent(this, ProfileActivity.class);
@@ -116,7 +113,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         LinearLayout mGoogleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
-        mCallbackManager = CallbackManager.Factory.create();
+
+        CustomFontsLoader.overrideFonts(this, mGoogleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
+        mEmailSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
+
 
         Log.d(TAG, "onCreate: " + mGoogleSignInButton.getHeight());
         mLoginFormView = findViewById(R.id.login_form);
@@ -147,7 +147,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.child("Users").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                 Log.d(TAG, "onDataChange: GOING TO MAIN");
-
                                 startActivity(mainIntent);
 
                                 // Make switching between activities blend via fade-in / fade-out
@@ -155,6 +154,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 finish();
                             } else {
+                                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mAuth.getCurrentUser().getDisplayName());
+                                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Email").setValue(mAuth.getCurrentUser().getEmail());
+                                myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
                                 Log.d(TAG, "onDataChange: GOING TO SETUP");
                                 startActivity(setUpIntent);
 
@@ -171,14 +173,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         }
                     });
-                    startActivity(mainIntent);
-
-                    // Make switching between activities blend via fade-in / fade-out
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-                    Toast.makeText(LoginActivity.this, "Redirecting",
-                            Toast.LENGTH_SHORT).show();
-                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged.Login:signed_out");
@@ -218,7 +212,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
