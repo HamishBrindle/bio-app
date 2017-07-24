@@ -16,10 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -35,10 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -56,12 +53,23 @@ public class ConnectActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 4;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
+    private ImageButton mAccountSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
         Log.d(TAG, "onCreate: starting.");
+
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
 
         Button mLearnMore = (Button) findViewById(R.id.help_learn_more);
         mLearnMore.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
@@ -76,7 +84,7 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
 
-        // setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupBottomNavigationView();
 
@@ -153,18 +161,18 @@ public class ConnectActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -231,6 +239,9 @@ public class ConnectActivity extends AppCompatActivity {
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
                 break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
             default:
 
         }
@@ -265,11 +276,9 @@ public class ConnectActivity extends AppCompatActivity {
         item.setChecked(true);
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//
-//        setupFirebase();
-//    }
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+    }
 }

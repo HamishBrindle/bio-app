@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -28,8 +29,11 @@ import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +58,7 @@ public class VitalsActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 3;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
+    private ImageButton mAccountSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,11 +66,22 @@ public class VitalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vitals);
         Log.d(TAG, "onCreate: starting.");
 
+
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
+
         // Setup ScrollView
         ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollview);
         mScrollView.setFadingEdgeLength(150);
 
-        // setupFirebase();
+        setupFirebase();
         setupDateBanner();
         setupHelpButtons();
         setupToolbar();
@@ -208,7 +224,6 @@ public class VitalsActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-        /* Firebase stuff
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -221,7 +236,6 @@ public class VitalsActivity extends AppCompatActivity {
 
             }
         });
-        */
 
 
     }
@@ -290,6 +304,9 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
                 break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
             default:
 
         }
@@ -324,10 +341,10 @@ public class VitalsActivity extends AppCompatActivity {
         MenuItem item = menu.getItem(ACTIVITY_NUM);
         item.setChecked(true);
     }
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//
-//        setupFirebase();
-//    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+    }
 }

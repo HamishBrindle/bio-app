@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -31,8 +32,11 @@ import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
@@ -67,6 +71,8 @@ public class AlertsActivity extends AppCompatActivity {
     private AlertNotification alertNotification;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
+    private ImageButton mAccountSettings;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +82,16 @@ public class AlertsActivity extends AppCompatActivity {
 
         ToggleButton mToggleButtonAlarm = (ToggleButton) findViewById(R.id.toggle_button_alarm);
 
+
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
 
         //Setting the date banner
         TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
@@ -102,7 +118,7 @@ public class AlertsActivity extends AppCompatActivity {
 
 
         // Initialize page elements.
-        // setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupAddRemoveButtons();
         setupBottomNavigationView();
@@ -300,18 +316,18 @@ public class AlertsActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -378,6 +394,9 @@ public class AlertsActivity extends AppCompatActivity {
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
                 break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
             default:
 
         }
@@ -414,9 +433,9 @@ public class AlertsActivity extends AppCompatActivity {
         item.setChecked(true);
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        setupFirebase();
-//    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+    }
 }

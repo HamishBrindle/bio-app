@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,22 +23,24 @@ import android.widget.TextView;
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
-import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Calendar;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Map<UUID, byte[]> sensorValues;
 
+    private ImageButton mAccountSettings;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +87,17 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.BLUETOOTH},
                 1);
 
-        // setupFirebase();
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
+
+        setupFirebase();
         // bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
         setupToolbar();
@@ -210,18 +223,18 @@ public class MainActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -284,6 +297,9 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, LoginRegisterActivity.class);
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
+                break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
                 break;
             default:
 
@@ -349,5 +365,11 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             });
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
     }
 }

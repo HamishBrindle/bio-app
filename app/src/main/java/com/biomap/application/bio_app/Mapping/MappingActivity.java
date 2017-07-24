@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
 import com.biomap.application.bio_app.R;
@@ -31,8 +32,11 @@ import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
@@ -51,8 +55,10 @@ public class MappingActivity extends AppCompatActivity {
 
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
-
+    DatabaseReference myRef;
+    FirebaseDatabase database;
     private DrawerLayout mDrawer;
+    private ImageButton mAccountSettings;
 
     public MappingActivity() {
     }
@@ -67,7 +73,18 @@ public class MappingActivity extends AppCompatActivity {
         ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
         mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        // setupFirebase();
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
+
+
+        setupFirebase();
         setupDateBanner();
         setupToolbar();
         setupHeatMap();
@@ -90,8 +107,8 @@ public class MappingActivity extends AppCompatActivity {
 
     private void setupFirebase() {
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -185,18 +202,18 @@ public class MappingActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
@@ -259,10 +276,13 @@ public class MappingActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-//                setupFirebase();
+                setupFirebase();
                 Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
                 ComponentName cn = logoutintent.getComponent();
                 intent = IntentCompat.makeRestartActivityTask(cn);
+                break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
                 break;
             default:
 
@@ -320,5 +340,10 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+    }
 
 }
