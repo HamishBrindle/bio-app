@@ -70,7 +70,6 @@ public class VitalsActivity extends AppCompatActivity {
         setupHelpButtons();
         setupToolbar();
         setupBottomNavigationView();
-        initFonts();
 
     }
 
@@ -81,23 +80,6 @@ public class VitalsActivity extends AppCompatActivity {
      * <p>
      * Unless you want to change everything by hand, don't change this.
      */
-    private void initFonts() {
-
-        // ViewGroup holding all the sections of the UI
-        LinearLayout mSections = (LinearLayout) findViewById(R.id.sections);
-
-        // Set all fonts to BOLD, then change the headers to BOOK
-        CustomFontsLoader.overrideFonts(this, mSections, CustomFontsLoader.GOTHAM_BOLD);
-
-        // Get a section from the parent ViewGroup and find it's header TextView
-        for (int i = 0; i < mSections.getChildCount(); i++) {
-            LinearLayout outerChild = (LinearLayout) mSections.getChildAt(i);
-            LinearLayout innerChild = (LinearLayout) outerChild.getChildAt(0);
-            TextView sectionHeader = (TextView) innerChild.getChildAt(0);
-            sectionHeader.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
-        }
-
-    }
 
     private void setupDateBanner() {
         // Setup Date Banner

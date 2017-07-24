@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
@@ -17,7 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginRegisterActivity extends AppCompatActivity {
     private static final String TAG = "LoginRegisterActivity";
-    TextView mDescriptionText;
     Button mRegisterButton;
     Button mSignInButton;
     Intent registerIntent;
@@ -31,7 +29,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_register);
 
         //Initializing all items
-        mDescriptionText = (TextView) findViewById(R.id.login_register_description_text);
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mSignInButton = (Button) findViewById(R.id.sign_in_button);
         signInIntent = new Intent(this, LoginActivity.class);
@@ -55,7 +52,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         };
 
         //Setting the font of the description text;
-        mDescriptionText.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
         mRegisterButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
         mSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
 

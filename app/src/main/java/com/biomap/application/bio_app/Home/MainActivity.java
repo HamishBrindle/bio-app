@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
         setupMenuButtons();
         setupBottomNavigationView();
 
-        ConstraintLayout mMenuButtons = (ConstraintLayout) findViewById(R.id.constraintLayout);
-        CustomFontsLoader.overrideFonts(this, mMenuButtons, CustomFontsLoader.GOTHAM_BOLD);
 
     }
 

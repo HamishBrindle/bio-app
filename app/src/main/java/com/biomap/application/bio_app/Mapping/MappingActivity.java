@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,10 +26,8 @@ import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
-import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
-import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,7 +69,6 @@ public class MappingActivity extends AppCompatActivity {
 
         // setupFirebase();
         setupDateBanner();
-        setupFonts();
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
@@ -90,26 +86,6 @@ public class MappingActivity extends AppCompatActivity {
 
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
-    }
-
-    private void setupFonts() {
-        // Change the fonts in the activity by going through all the children of the parent layout.
-        TextView mPageTitle = (TextView) findViewById(R.id.mapping_page_title);
-        LinearLayout mBannerText = (LinearLayout) findViewById(R.id.banner_text);
-        LinearLayout mMappingView = (LinearLayout) findViewById(R.id.mapping_viewGroup);
-        LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
-        TextView mWeightHeader = (TextView) findViewById(R.id.weight_header);
-        TextView mLeftPercentage = (TextView) findViewById(R.id.left_percentage);
-        TextView mRightPercentage = (TextView) findViewById(R.id.right_percentage);
-
-        mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        mWeightHeader.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        mLeftPercentage.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        mRightPercentage.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-
-        CustomFontsLoader.overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
-        CustomFontsLoader.overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
-        CustomFontsLoader.overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
     }
 
     private void setupFirebase() {

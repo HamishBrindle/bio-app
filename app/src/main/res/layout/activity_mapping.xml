@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  xmlns:custom="http://schemas.android.com/apk/res-auto"
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:id="@+id/mapping_parent_layout"
@@ -59,7 +60,7 @@
                         android:gravity="center">
 
                         <!-- "Mapping" Page title -->
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/mapping_page_title"
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
@@ -71,7 +72,9 @@
                             android:includeFontPadding="true"
                             android:text="@string/mapping_activity_title"
                             android:textColor="@color/colorAccent"
-                            android:textSize="24sp"/>
+                            android:textSize="24sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                         <!-- Mapping icon next to page title -->
                         <ImageView
@@ -126,19 +129,21 @@
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/date_weekday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Monday"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/date_month_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="July 8, 2017"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                     </LinearLayout>
 
@@ -171,7 +176,7 @@
                         android:weightSum="2">
 
                         <!-- Left Indicator -->
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/map_left_indicator"
                             fontPath="fonts/Gothic-Bold.otf"
                             android:layout_width="wrap_content"
@@ -180,10 +185,12 @@
                             android:gravity="center"
                             android:text="Left"
                             android:textColor="@color/colorAccent"
-                            android:textSize="17sp"/>
+                            android:textSize="17sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                         <!-- Right indicator -->
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/map_right_indicator"
                             fontPath="fonts/Gothic-Bold.otf"
                             android:layout_width="wrap_content"
@@ -192,26 +199,30 @@
                             android:gravity="center"
                             android:text="Right"
                             android:textColor="@color/colorAccent"
-                            android:textSize="17sp"/>
+                            android:textSize="17sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                     </LinearLayout>
                     <!-- End of Right and Left indicatiors at top -->
 
                     <!-- Heatmap -->
                     <LinearLayout
+                        android:id="@+id/heatmap_parent"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
-                        android:id="@+id/heatmap_parent"
-                        android:orientation="vertical" />
+                        android:orientation="vertical"/>
 
                     <!-- Start of Time update indicator -->
-                    <TextView
+                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                         android:id="@+id/last_updated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="Updated 7:32pm"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorAccent"
+                        app:font="@string/font_name_gotham"
+                        app:textStyle="@integer/font_style_book"/>
 
                     <!-- Start of Weight Distribution charts -->
                     <RelativeLayout
@@ -230,14 +241,16 @@
                             android:orientation="vertical">
 
                             <!-- Header -->
-                            <TextView
+                            <com.biomap.application.bio_app.Utility.CustomFontTextView
                                 android:id="@+id/weight_header"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
                                 android:text="Weight Distribution"
                                 android:textColor="@color/colorAccent"
-                                android:textSize="20sp"/>
+                                android:textSize="20sp"
+                                app:font="@string/font_name_gotham"
+                                app:textStyle="@integer/font_style_bold"/>
 
                             <!-- Start of Charts (LEFT) -->
                             <LinearLayout
@@ -246,17 +259,19 @@
                                 android:orientation="horizontal">
 
                                 <!-- Right indicator -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_weight="2"
                                     android:text="Left"
                                     android:textColor="@color/LavenderPurple"
-                                    android:textSize="17sp"/>
+                                    android:textSize="17sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Percentage -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:id="@+id/left_percentage"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -266,7 +281,9 @@
                                     android:text="44%"
                                     android:textAlignment="textEnd"
                                     android:textColor="@color/colorAccent"
-                                    android:textSize="28sp"/>
+                                    android:textSize="28sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_bold"/>
 
                                 <!-- Progress bar -->
                                 <ProgressBar
@@ -296,17 +313,19 @@
                                 android:orientation="horizontal">
 
                                 <!-- Right indicator -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_weight="2"
                                     android:text="Right"
                                     android:textColor="@color/LavenderPurple"
-                                    android:textSize="17sp"/>
+                                    android:textSize="17sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Percentage -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:id="@+id/right_percentage"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -316,7 +335,9 @@
                                     android:text="25%"
                                     android:textAlignment="textEnd"
                                     android:textColor="@color/colorAccent"
-                                    android:textSize="28sp"/>
+                                    android:textSize="28sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_bold"/>
 
                                 <!-- Progress bar -->
                                 <ProgressBar
@@ -393,7 +414,7 @@
             custom:headerLayout="@layout/layout_nav_drawer_header"
             custom:itemIconTint="@color/DarkGrey"
             custom:itemTextColor="@color/DarkGrey"
-            custom:menu="@menu/nav_drawer" />
+            custom:menu="@menu/nav_drawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 
