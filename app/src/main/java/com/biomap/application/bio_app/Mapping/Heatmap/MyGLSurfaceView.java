@@ -27,10 +27,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		mRenderer = new MyGLRenderer();
 
 		// Don't fucking change this unless you know what you're doing.
-		setZOrderOnTop(true);
+		setZOrderOnTop(false);
 		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 		getHolder().setFormat(PixelFormat.RGBA_8888);
 		setRenderer(mRenderer);
+
 
 	}
 

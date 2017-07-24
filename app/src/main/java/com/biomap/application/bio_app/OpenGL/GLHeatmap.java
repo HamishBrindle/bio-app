@@ -21,10 +21,10 @@ public class GLHeatmap {
 	private Heights heights;
 	/** A Shader */
 	private Shader shader;
-	
+
 	/**
 	 * Create a GLHeatmap object.
-	 * 
+	 *
 	 * @param width Width of the viewport
 	 * @param height Height of the viewport
 	 * @param intensityToAlpha Not in use
@@ -36,7 +36,7 @@ public class GLHeatmap {
 
 		this.width = width;
 		this.height = height;
-		
+
 		// ...
 		GLES20.glEnableVertexAttribArray(Main.BIND_ZERO);
 		//MyGLRenderer.checkGlError("glEnableVertexAttribArray");
@@ -45,11 +45,11 @@ public class GLHeatmap {
 // ...
 		String getColorFun  =
 			"vec3 getColor(float intensity){						\n" +
-			"    vec3 blue   = vec3(0.0, 0.0, 1.0);					\n" +
-			"    vec3 cyan   = vec3(0.0, 1.0, 1.0);					\n" +
-			"    vec3 green  = vec3(0.0, 1.0, 0.0);					\n" +
-			"    vec3 yellow = vec3(1.0, 1.0, 0.0);					\n" +
-			"    vec3 red    = vec3(1.0, 0.0, 0.0);					\n" +
+			"    vec3 blue   = vec3(0.5, 0.0, 1.0);					\n" +
+			"    vec3 cyan   = vec3(0.5, 1.0, 1.0);					\n" +
+			"    vec3 green  = vec3(0.5, 1.0, 0.5);	 				\n" +
+			"    vec3 yellow = vec3(1.0, 1.0, 0.5);					\n" +
+			"    vec3 red    = vec3(1.0, 0.5, 0.5);					\n" +
 			"    \n" +
 			"    vec3 color = (\n" +
 			"        fade(-0.25, 0.25, intensity)*blue +			\n" +
@@ -61,13 +61,13 @@ public class GLHeatmap {
 			"    return color;										\n" +
 			"}";
 
-		String output = 
+		String output =
 			"vec4 alphaFun(vec3 color, float intensity){			\n" +
 			"    float alpha = smoothstep(0.0, 1.0, intensity);		\n" +
 			"    return vec4(color*alpha, alpha);					\n" +
 			"}";
 
-		this.shader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
+		this.shader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit +
 
 			"float fade(float low, float high, float value){		\n" +
 			"    float mid   = (low+high)*0.5;						\n" +
@@ -95,10 +95,10 @@ public class GLHeatmap {
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, Main.BUFFER_NULL);
 		this.heights = new Heights(this, this.width, this.height);
 	}
-	
+
 	/**
 	 * Set a new size.
-	 * 
+	 *
 	 * @param width Width of the viewport.
 	 * @param height Height of the viewport.
 	 */
@@ -110,7 +110,7 @@ public class GLHeatmap {
 			this.heights.resize(this.width, this.height);
 		}
 	}
-	
+
 	/**
 	 * Display the heatmap.
 	 */
@@ -121,14 +121,14 @@ public class GLHeatmap {
 		this.shader.use()._int(Main.VARIABLE_UNIFORM_SOURCE, Main.BIND_ZERO);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.NUM_INDICES_RENDER);
 	}
-	
+
 	/**
 	 * Update the {@link Heights} object by call {@link Heights#update()}.
 	 */
 	public void update() {
 		this.heights.update();
 	}
-	
+
 	/**
 	 * Clear the {@link Heights} by call {@link Heights#clear()}.
 	 */
@@ -137,7 +137,7 @@ public class GLHeatmap {
 	}
 
 	/* (non-Javadoc)
-	 * 
+	 *
 	 * @see Heights#addPoint(float, float, float, float);
 	 */
 	public void addPoint(float x, float y, float size, float intensity) {

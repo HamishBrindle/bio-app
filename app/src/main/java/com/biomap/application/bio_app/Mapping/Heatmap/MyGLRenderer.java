@@ -1,14 +1,14 @@
 package com.biomap.application.bio_app.Mapping.Heatmap;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
 import com.biomap.application.bio_app.OpenGL.GLHeatmap;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Provides drawing instructions for a GLSurfaceView object.
@@ -25,13 +25,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+        // Set the background frame color
+        GLES20.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     }
 
     @Override
     public void onDrawFrame(GL10 unused) {
 
-        // Set the background frame color
-        GLES20.glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -115,7 +115,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     void onTouchEvent(float x, float y) {
-        float i = 0.5f;
+        float i = 0.3f;
         Log.i(LOG, "intensity=" + i);
         mHeatmap.addPoint(x, y, 400, i);
     }
