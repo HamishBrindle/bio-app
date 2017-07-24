@@ -6,7 +6,7 @@
     <color name="toolbarBorder">#4c4c4c</color>
     <color name="darkColor">@color/background_material_dark</color>
 
-    <!-- Christine's specified palette -->
+    <!-- Old swatches -->
     <color name="colorLightGray">#464646</color>
     <color name="MaroonRed">#96294a</color>
     <color name="RustOrange">#b66655</color>
@@ -17,5 +17,12 @@
     <color name="LavenderPurple">#888bb6</color>
     <color name="DarkPurple">#41416d</color>
     <color name="DarkGrey">#2c2c2c</color>
+
+    <!-- New Swatches -->
+    <color name="mapping_purple">#868ab5</color>
+    <color name="connect_green">#81c679</color>
+    <color name="vitals_blue">#0a9fbf</color>
+    <color name="alerts_orange">#e68b38</color>
+    <color name="home_default">#ede791</color>
 
 </resources>

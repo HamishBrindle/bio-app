@@ -19,6 +19,7 @@ class AlertNotification {
     private Calendar calendar;
     private PendingIntent mAlarmSender;
     private AlarmManager am;
+    Intent intent;
 
     /**
      * The constructor of this class, setting up the instance variables.
@@ -27,9 +28,9 @@ class AlertNotification {
      */
     AlertNotification(Context context) {
         calendar = Calendar.getInstance();
-        mAlarmSender = PendingIntent.getBroadcast(context, 0, new Intent(context, NotificationPublisher.class), 0);
+        intent = new Intent(context, NotificationPublisher.class);
+        mAlarmSender = PendingIntent.getBroadcast(context, 0, intent, 0);
         am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
     }
 
     /**
@@ -97,4 +98,16 @@ class AlertNotification {
         setAlarmManagerRepeating(init, TimeUnit.MINUTES.toMillis(newInterval));
     }
 
+    boolean isset(Context context) {
+        PendingIntent piCheck = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
+
+        if (piCheck != null) {
+            Log.d(TAG, "piCheck returned NOT NULL and probably returned pi");
+            return true;
+        } else {
+            Log.d(TAG, "piCheck returned NULL pi does not exist");
+            return false;
+        }
+
+    }
 }

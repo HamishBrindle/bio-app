@@ -1,12 +1,11 @@
 package com.biomap.application.bio_app.Connect;
 
-import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +14,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -35,10 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -50,11 +47,13 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 public class ConnectActivity extends AppCompatActivity {
 
+    private static final String BIOMAP_WEBPAGE = "http://biomap.ca/";
     private static final String TAG = "ConnectActivity";
 
     private static final int ACTIVITY_NUM = 4;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
+    private ImageButton mAccountSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,57 +61,64 @@ public class ConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         Log.d(TAG, "onCreate: starting.");
 
-        //Setting the date
-        TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
-        TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
-        Date date = new Date();
-        Calendar cal = Calendar.getInstance();
+            }
+        });
 
+        Button mLearnMore = (Button) findViewById(R.id.help_learn_more);
+        mLearnMore.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
+        mLearnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        mfullDate.setText(simpleDateFormat.format(date));
-        mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+                /* For now, this opens the BioMap webpage, but in the future, may want to consider
+                 * a WebView to a more thorough online resource.
+                 */
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BIOMAP_WEBPAGE)));
+            }
+        });
 
-
-        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
-        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
-
-//        setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupBottomNavigationView();
 
     }
 
-//    private void setupFirebase() {
-//        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        myRef = database.getReference();
-//
-//        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
-//
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
-//
-//                    // Create the logout activity intent.
-//                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(register_login_intent);
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        // Get the user's authentication credentials and check if signed in or not.
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuthListener.onAuthStateChanged(mAuth);
-//    }
+    private void setupFirebase() {
+        final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+
+                    // Create the logout activity intent.
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(register_login_intent);
+                    finish();
+                }
+            }
+        };
+
+        // Get the user's authentication credentials and check if signed in or not.
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuthListener.onAuthStateChanged(mAuth);
+    }
 
     /**
      * Setup the top-action-bar for navigation, page title, and settings.
@@ -154,19 +160,19 @@ public class ConnectActivity extends AppCompatActivity {
         } else {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
-//
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -228,10 +234,13 @@ public class ConnectActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-//                setupFirebase();
-                Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
-                ComponentName cn = logoutintent.getComponent();
-                intent = IntentCompat.makeRestartActivityTask(cn);
+                setupFirebase();
+                intent = new Intent(this, LoginRegisterActivity.class);
+                intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
+                break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
                 break;
             default:
 
@@ -256,6 +265,10 @@ public class ConnectActivity extends AppCompatActivity {
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+
+        // Set color of selected item in the navbar (unique to each activity)
+        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_connect));
+
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(ConnectActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
@@ -263,4 +276,9 @@ public class ConnectActivity extends AppCompatActivity {
         item.setChecked(true);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+    }
 }

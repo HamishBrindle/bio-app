@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private CheckBox mUlcersCheck;
     private boolean ulcers;
     private Boolean alreadySetUp;
+    private Spinner spinner;
 
     public ProfileActivity() {
     }
@@ -82,12 +84,12 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
         //Intents
         registerIntent = new Intent(this, LoginRegisterActivity.class);
-        beginIntent = new Intent(this, BeginActivity.class);
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged: user is in profile and sifned in");
                     //User is signed in
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -101,6 +103,10 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
                                     } else {
                                         mUlcersCheck.setChecked(false);
                                     }
+                                    mAgeView.setText(dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Age").getValue().toString());
+                                    mPostCodeView.setText(dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("PostCode").getValue().toString());
+                                    mWeightView.setText(dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Weight").getValue().toString());
+                                    checkForGender();
 
                                 }
                             } else {
@@ -237,16 +243,24 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private void update() {
         Log.d(TAG, "update: RUNNING UPDATE");
         FirebaseUser user = mAuth.getCurrentUser();
+        if (alreadySetUp) {
+            beginIntent = new Intent(this, MainActivity.class);
+        } else {
+            beginIntent = new Intent(this, BeginActivity.class);
+
+        }
         myRef.child("Users").child(user.getUid()).child("SetUp").setValue(true);
         myRef.child("Users").child(user.getUid()).child("Weight").setValue(mWeightView.getText().toString());
         myRef.child("Users").child(user.getUid()).child("Age").setValue(mAgeView.getText().toString());
         myRef.child("Users").child(user.getUid()).child("PostCode").setValue(mPostCodeView.getText().toString());
+        myRef.child("Users").child(user.getUid()).child("Gender").setValue(spinner.getSelectedItem().toString());
         if (ulcers) {
             myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Ulcers").setValue(true);
         } else {
             myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Ulcers").setValue(false);
         }
         Log.d(TAG, "update: ABOUT TO REDIRECT");
+
         startActivity(beginIntent);
 
         // Make switching between activities blend via fade-in / fade-out
@@ -258,7 +272,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private void setupGenderSpinner() {
 
         // Spinner element
-        Spinner spinner = (Spinner) findViewById(R.id.form_gender_spinner);
+        spinner = (Spinner) findViewById(R.id.form_gender_spinner);
 
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
@@ -278,6 +292,37 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+
+    }
+
+    private void checkForGender() {
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: SPINNER");
+                String gender = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Gender").getValue().toString();
+                Log.d(TAG, "onDataChange: " + gender);
+                if (gender.equalsIgnoreCase("male")) {
+                    Log.d(TAG, "onDataChange: male");
+                    spinner.setSelection(0, false);
+                } else if (gender.equalsIgnoreCase("female")) {
+                    Log.d(TAG, "onDataChange: female");
+                    spinner.setSelection(1, false);
+                } else if (gender.equalsIgnoreCase("other")) {
+                    Log.d(TAG, "onDataChange: other");
+                    spinner.setSelection(2, false);
+                } else if (gender.equalsIgnoreCase("undisclosed")) {
+                    Log.d(TAG, "onDataChange: undsclosed");
+                    spinner.setSelection(3, false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

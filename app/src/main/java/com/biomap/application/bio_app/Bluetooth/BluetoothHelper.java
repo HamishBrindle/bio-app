@@ -1,127 +1,138 @@
 package com.biomap.application.bio_app.Bluetooth;
 
-import android.bluetooth.BluetoothSocket;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.polidea.rxandroidble.RxBleClient;
+import com.polidea.rxandroidble.RxBleConnection;
+import com.polidea.rxandroidble.RxBleDevice;
 
-/**
- * Sets up the Bluetooth connection.
- * <p>
- * Created by Hamish Brindle on 2017-07-13.
- */
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import rx.Observable;
+
 public class BluetoothHelper {
 
     private static final String TAG = "BluetoothHelper";
-    private Handler mHandler; // handler that gets info from Bluetooth service
-    private BluetoothSocket mmSocket;
 
-    // Defines several constants used when transmitting messages between the
-    // service and the UI.
-    private interface MessageConstants {
-        int MESSAGE_READ = 0;
-        int MESSAGE_WRITE = 1;
-        int MESSAGE_TOAST = 2;
+    private static final String MAC_ADDRESS = "FC:08:04:93:81:D4";
 
-        // ... (Add other message types here as needed.)
+    private static final UUID[] SERVICE_UUID = {
+            UUID.fromString("74F6F000-EA13-4881-9E52-36F754875BF5")
+    };
+
+    private static final UUID[] CHARS_UUID = {
+            UUID.fromString("74F6F001-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F002-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F003-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F004-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F005-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F006-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F007-EA13-4881-9E52-36F754875BF5"),
+            UUID.fromString("74F6F008-EA13-4881-9E52-36F754875BF5")
+    };
+
+    private RxBleClient bleClient;
+
+    private RxBleDevice bleDevice;
+
+    private Context context;
+
+    private final Map<UUID, byte[]> characteristicValues = new HashMap<>();
+
+    public BluetoothHelper(Context context) {
+
+        this.context = context;
+        this.bleClient = RxBleClient.create(context);
+        this.bleDevice = bleClient.getBleDevice(MAC_ADDRESS);
+
+        initBle();
+
     }
 
-    public BluetoothHelper(Handler mHandler, BluetoothSocket mmSocket) {
-        this.mHandler = mHandler;
-        this.mmSocket = mmSocket;
+    /**
+     * Initialize bluetooth device scanning and reading of characteristics within specified service
+     * UUID.
+     */
+    private void initBle() {
+
+        final UUID serviceUuid = SERVICE_UUID[0]; // your service UUID
+
+        final Observable<RxBleConnection> connectionObservable = prepareConnectionObservable(); // your connectionObservable
+
+        Log.e(TAG, "initBle: Trying to connect to Bluetooth device.");
+
+        connectionObservable
+                .flatMap( // get the characteristics from the service you're interested in
+                        connection -> connection
+                                .discoverServices()
+                                .flatMap(services -> services
+                                        .getService(serviceUuid)
+                                        .map(BluetoothGattService::getCharacteristics)
+                                ),
+                        Pair::new
+                )
+                .flatMap(connectionAndCharacteristics -> {
+                    final RxBleConnection connection = connectionAndCharacteristics.first;
+                    final List<BluetoothGattCharacteristic> characteristics = connectionAndCharacteristics.second;
+                    return readInitialValues(connection, characteristics);
+                            // .concatWith(setupNotifications(connection, characteristics));
+                })
+                .subscribe(
+                        pair -> {
+                            characteristicValues.put(pair.first.getUuid(), pair.second);
+                        },
+                        throwable -> {
+                            Log.e(TAG, "initBle: Unable to subscribe Bluetooth device.");
+                        }
+                );
     }
 
-    public void run() {
-        ConnectedThread connectedThread = new ConnectedThread(mmSocket);
-        connectedThread.run();
+    /**
+     * Read the values from the characteristics.
+     */
+    private Observable<Pair<BluetoothGattCharacteristic, byte[]>> readInitialValues(RxBleConnection connection,
+                                                                                    List<BluetoothGattCharacteristic> characteristics) {
+        Log.e(TAG, "readInitialValues: Reading characteristics");
+        return Observable.from(characteristics) // deal with every characteristic separately
+                .filter(characteristic -> (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0) // filter characteristics that have read property
+                .flatMap(connection::readCharacteristic, // read characteristic
+                        Pair::new); // merge characteristic with byte[] to keep track from which characteristic the bytes came
     }
 
-    private class ConnectedThread extends Thread {
+    /**
+     * Setup the notifications for the characteristic connections. I'm not sure we need this just yet.
+     */
+    private Observable<Pair<BluetoothGattCharacteristic, byte[]>> setupNotifications(RxBleConnection connection,
+                                                                                     List<BluetoothGattCharacteristic> characteristics) {
+        Log.e(TAG, "readInitialValues: Setting-up notifications.]");
+        return Observable.from(characteristics) // deal with every characteristic separately
+                .filter(characteristic -> (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) // filter characteristics that have notify property
+                .flatMap(characteristic -> connection
+                                .setupNotification(characteristic) // setup notification for each
+                                .flatMap(observable -> observable), // to get the raw bytes from notification
+                        Pair::new); // merge characteristic with byte[] to keep track from which characteristic the bytes came
+    }
 
-        private final BluetoothSocket mmSocket;
-        private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
-        private byte[] mmBuffer; // mmBuffer store for the stream
+    /**
+     * Get a connection from the Bluetooth device.
+     */
+    private Observable<RxBleConnection> prepareConnectionObservable() {
+        return bleDevice.establishConnection(true);
+    }
 
-        public ConnectedThread(BluetoothSocket socket) {
-
-            mmSocket = socket;
-            InputStream tmpIn = null;
-            OutputStream tmpOut = null;
-
-            // Get the input and output streams; using temp objects because
-            // member streams are final.
-            try {
-                tmpIn = socket.getInputStream();
-            } catch (IOException e) {
-                Log.e(TAG, "Error occurred when creating input stream", e);
-            }
-            try {
-                tmpOut = socket.getOutputStream();
-            } catch (IOException e) {
-                Log.e(TAG, "Error occurred when creating output stream", e);
-            }
-
-            mmInStream = tmpIn;
-            mmOutStream = tmpOut;
-        }
-
-        public void run() {
-            mmBuffer = new byte[1024];
-            int numBytes; // bytes returned from read()
-
-            // Keep listening to the InputStream until an exception occurs.
-            while (true) {
-                try {
-                    // Read from the InputStream.
-                    numBytes = mmInStream.read(mmBuffer);
-                    // Send the obtained bytes to the UI activity.
-                    Message readMsg = mHandler.obtainMessage(
-                            MessageConstants.MESSAGE_READ, numBytes, -1,
-                            mmBuffer);
-                    readMsg.sendToTarget();
-                } catch (IOException e) {
-                    Log.d(TAG, "Input stream was disconnected", e);
-                    break;
-                }
-            }
-        }
-
-        // Call this from the main activity to send data to the remote device.
-        public void write(byte[] bytes) {
-            try {
-                mmOutStream.write(bytes);
-
-                // Share the sent message with the UI activity.
-                Message writtenMsg = mHandler.obtainMessage(
-                        MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
-                writtenMsg.sendToTarget();
-            } catch (IOException e) {
-                Log.e(TAG, "Error occurred when sending data", e);
-
-                // Send a failure message back to the activity.
-                Message writeErrorMsg =
-                        mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST);
-                Bundle bundle = new Bundle();
-                bundle.putString("toast",
-                        "Couldn't send data to the other device");
-                writeErrorMsg.setData(bundle);
-                mHandler.sendMessage(writeErrorMsg);
-            }
-        }
-
-        // Call this method from the main activity to shut down the connection.
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the connect socket", e);
-            }
-        }
+    /**
+     * Getter for characteristic values Map.
+     *
+     * @return map.
+     */
+    public Map<UUID, byte[]> getCharacteristicValues() {
+        return characteristicValues;
     }
 }

@@ -59,7 +59,7 @@
                         android:gravity="center">
                         <!-- Page Header -->
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/vitals_page_title"
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
@@ -71,7 +71,9 @@
                             android:includeFontPadding="true"
                             android:text="@string/analytics_activity_title"
                             android:textColor="@color/colorAccent"
-                            android:textSize="24sp"/>
+                            android:textSize="24sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                         <ImageView
                             android:layout_width="50dp"
@@ -125,25 +127,511 @@
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/date_weekday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/date_month_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                     </LinearLayout>
 
                 </LinearLayout>
                 <!-- End of Date Banner -->
 
+                <ScrollView
+                    android:id="@+id/scrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/bottom_navigation"
+                    android:layout_below="@+id/vitals_date_banner"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/vitals_scrollview_margin"
+                    android:requiresFadingEdge="vertical">
+
+                    <!-- Main Scrollview Content Child -->
+                    <LinearLayout
+                        android:id="@+id/sections"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Start of Vitals Section [Body Temperature] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/body_temperature"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_body_temperature"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/body_temperature_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
+
+                                <!-- Temperature (C and F) -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2">
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="37° C"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginStart="10dp"
+                                        android:text="(98° F)"
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
+
+                                </LinearLayout>
+                                <!-- Temperature (C and F) -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_weight="1"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Body Temperature] -->
+
+                        <!-- Start of Vitals Section [Blood Pressure] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/blood_pressure"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_blood_pressure"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/blood_pressure_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Blood Pressure -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="120/80"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
+
+                                </LinearLayout>
+                                <!-- End of Blood Pressure -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Blood Pressure] -->
+
+                        <!-- Start of Vitals Section [Respiratory Rate] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/respiratory_rate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_respiratory_rate"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/respiratory_rate_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Respiratory Rate -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="15"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=" (breath / minute)"
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
+
+                                </LinearLayout>
+                                <!-- End of Respiratory Rate -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Respiratory Rate] -->
+
+                        <!-- Start of Vitals Section [Body Mass Index] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/body_mass_index"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_body_mass_index"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/body_mass_index_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Body Mass Index -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="15%"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=" bmi"
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
+
+                                </LinearLayout>
+                                <!-- End of Body Mass Index -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Body Mass Index] -->
+
+                        <!-- Start of Vitals Section [Offloading Frequency] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/offload_frequency"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_offloading_frequency"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/offload_frequency_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Offloading Frequency -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="35"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
+
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=" minutes"
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
+
+                                </LinearLayout>
+                                <!-- End of Offloading Frequency -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_warning"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Offloading Frequency] -->
+
+                    </LinearLayout>
+                    <!-- End of Main Scrollview Content Child -->
+
+                </ScrollView>
+
                 <!-- Bottom Toolbar -->
-                <include layout="@layout/layout_bottom_navigation_view"/>
+                <include
+                    android:id="@+id/bottom_navigation"
+                    layout="@layout/layout_bottom_navigation_view"/>
 
             </RelativeLayout>
             <!-- End of Main Container -->

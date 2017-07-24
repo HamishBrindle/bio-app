@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
-import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -68,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity {
     private Intent mainIntent;
     private Intent setUpIntent;
     private GoogleApiClient mGoogleApiClient;
-    private CallbackManager mCallbackManager;
     private DatabaseReference myRef;
 
     @Override
@@ -99,7 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Setting the font for the buttons
         emailSignUpButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        CustomFontsLoader.overrideFonts(this, googleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
 
         // Setup the intents to direct user from the activity.
         setUpIntent = new Intent(this, ProfileActivity.class);
@@ -107,7 +104,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
-        mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
 
         // Listener for any password field editing.
@@ -189,7 +185,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
