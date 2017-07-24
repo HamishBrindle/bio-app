@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Connect;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 public class ConnectActivity extends AppCompatActivity {
 
+    private static final String BIOMAP_WEBPAGE = "http://biomap.ca/";
     private static final String TAG = "ConnectActivity";
 
     private static final int ACTIVITY_NUM = 4;
@@ -60,23 +63,20 @@ public class ConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         Log.d(TAG, "onCreate: starting.");
 
-        //Setting the date
-        TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
-        TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
+        Button mLearnMore = (Button) findViewById(R.id.help_learn_more);
+        mLearnMore.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
+        mLearnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
-        Date date = new Date();
-        Calendar cal = Calendar.getInstance();
+                /* For now, this opens the BioMap webpage, but in the future, may want to consider
+                 * a WebView to a more thorough online resource.
+                 */
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BIOMAP_WEBPAGE)));
+            }
+        });
 
-
-        mfullDate.setText(simpleDateFormat.format(date));
-        mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
-
-
-        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
-        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
-
-        setupFirebase();
+        // setupFirebase();
         setupToolbar();
         setupBottomNavigationView();
 
@@ -153,18 +153,18 @@ public class ConnectActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
 
@@ -254,6 +254,10 @@ public class ConnectActivity extends AppCompatActivity {
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+
+        // Set color of selected item in the navbar (unique to each activity)
+        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_connect));
+
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(ConnectActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();

@@ -62,6 +62,10 @@
     <string name="action_settings">Settings</string>
     <string name="vitals_activity_title">Vitals</string>
     <string name="header_body_temperature">Body Temperature</string>
+    <string name="header_blood_pressure">Blood Pressure</string>
+    <string name="header_respiratory_rate">Respiratory Rate</string>
+    <string name="header_body_mass_index">Body Mass Index</string>
+    <string name="header_offloading_frequency">Offloading Frequency</string>
 
     <string-array name="menu_drawer">
         <item>Home</item>
@@ -71,4 +75,14 @@
         <item>Connect</item>
         <item>Settings</item>
     </string-array>
+
+    <!-- Fonts -->
+    <string name="font_name_gotham">gotham</string>
+    <string name="connect_help_intro_content">We have many resources available for our customers to ensure their safety and to make life easier. If you would like to read more about how to get started using BioMap, please click the link below for a redirection to our web-page. Welcome!</string>
+    <string name="connect_help_intro_header">This stuff can be tricky!</string>
+    <string name="connect_faq_intro">
+        Our community is growing every day - and we all need help sometimes! So, here are some
+        frequently asked questions by fellow users:
+    </string>
+
 </resources>

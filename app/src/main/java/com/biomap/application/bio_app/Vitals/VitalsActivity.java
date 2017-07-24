@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
@@ -26,11 +28,8 @@ import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +40,9 @@ import java.util.Locale;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 /**
- * Analytics.
+ * Vitals.
+ * <p>
+ * TODO: This activity was not developed beyond it's layout. There's no functionality.
  * <p>
  * Created by Hamish Brindle on 2017-06-13.
  */
@@ -60,25 +61,97 @@ public class VitalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vitals);
         Log.d(TAG, "onCreate: starting.");
 
-        //Setting font for date banner
+        // Setup ScrollView
+        ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollview);
+        mScrollView.setFadingEdgeLength(150);
+
+        // setupFirebase();
+        setupDateBanner();
+        setupHelpButtons();
+        setupToolbar();
+        setupBottomNavigationView();
+        initFonts();
+
+    }
+
+    /**
+     * This is a shit method. Basically, the way the layout XML is right now, this method goes
+     * through and finds the headers for each section and sets the type-face to the BOOK variation,
+     * but only after setting every other View's type-face to BOLD.
+     * <p>
+     * Unless you want to change everything by hand, don't change this.
+     */
+    private void initFonts() {
+
+        // ViewGroup holding all the sections of the UI
+        LinearLayout mSections = (LinearLayout) findViewById(R.id.sections);
+
+        // Set all fonts to BOLD, then change the headers to BOOK
+        CustomFontsLoader.overrideFonts(this, mSections, CustomFontsLoader.GOTHAM_BOLD);
+
+        // Get a section from the parent ViewGroup and find it's header TextView
+        for (int i = 0; i < mSections.getChildCount(); i++) {
+            LinearLayout outerChild = (LinearLayout) mSections.getChildAt(i);
+            LinearLayout innerChild = (LinearLayout) outerChild.getChildAt(0);
+            TextView sectionHeader = (TextView) innerChild.getChildAt(0);
+            sectionHeader.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
+        }
+
+    }
+
+    private void setupDateBanner() {
+        // Setup Date Banner
         LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
         CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
-
-
         TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
         TextView mfullDate = (TextView) findViewById(R.id.date_month_day);
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
-
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+    }
 
-        // setupFirebase();
-        setupToolbar();
-        setupBottomNavigationView();
+    private void setupHelpButtons() {
+        // Setup Help buttons
+        ImageButton mBodyTempButton = (ImageButton) findViewById(R.id.body_temperature_button);
+        ImageButton mBloodPressureButton = (ImageButton) findViewById(R.id.blood_pressure_button);
+        ImageButton mRespiratoryRateButton = (ImageButton) findViewById(R.id.respiratory_rate_button);
+        ImageButton mBodyMassIndexButton = (ImageButton) findViewById(R.id.body_mass_index_button);
+        ImageButton mOffloadingFrequencyButton = (ImageButton) findViewById(R.id.offload_frequency_button);
 
+        mBodyTempButton.setOnClickListener(onClickListener(1));
+        mBloodPressureButton.setOnClickListener(onClickListener(2));
+        mRespiratoryRateButton.setOnClickListener(onClickListener(3));
+        mBodyMassIndexButton.setOnClickListener(onClickListener(4));
+        mOffloadingFrequencyButton.setOnClickListener(onClickListener(5));
+    }
+
+    private ImageButton.OnClickListener onClickListener(final int style) {
+        return v -> {
+            if (style == 1) {
+                buildDialog(R.style.DialogAnimationFade, "Body Temperature", "Some place-holder information about what this is.");
+            } else if (style == 2) {
+                buildDialog(R.style.DialogAnimationSlideHorizontal, "Blood Pressure", "Some place-holder information about what this is.");
+            } else if (style == 3) {
+                buildDialog(R.style.DialogAnimationSlideVertical, "Respiratory Rate", "Some place-holder information about what this is.");
+            } else if (style == 4) {
+                buildDialog(R.style.DialogAnimationSlideHorizontal, "Body Mass Index", "Some place-holder information about what this is.");
+            } else if (style == 5) {
+                buildDialog(R.style.DialogAnimationFade, "Offloading Frequency", "Some place-holder information about what this is.");
+            }
+        };
+    }
+
+    private void buildDialog(int animationSource, String header, String content) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(header);
+        builder.setMessage(content);
+        builder.setNegativeButton("OK", null);
+        builder.setIcon(getDrawable(R.drawable.ic_help));
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = animationSource;
+        dialog.show();
     }
 
     private void setupFirebase() {
@@ -240,8 +313,6 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
 
-
-
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
@@ -261,6 +332,10 @@ public class VitalsActivity extends AppCompatActivity {
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+
+        // Set color of selected item in the navbar (unique to each activity)
+        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_vitals));
+
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(VitalsActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();

@@ -7,12 +7,12 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="data.json"
-        app:lottie_loop="false"/>
+        app:lottie_fileName="animation.json"
+        app:lottie_loop="false"
+        android:layout_gravity="center"/>
 
     <Space
         android:layout_width="match_parent"

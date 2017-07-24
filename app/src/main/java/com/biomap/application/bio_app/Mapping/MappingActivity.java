@@ -312,6 +312,10 @@ public class MappingActivity extends AppCompatActivity {
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+
+        // Set color of selected item in the navbar (unique to each activity)
+        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_mapping));
+
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(MappingActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();

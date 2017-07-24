@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  xmlns:custom="http://schemas.android.com/apk/res-auto"
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
@@ -102,71 +103,198 @@
                 android:layout_height="match_parent"
                 tools:ignore="MissingPrefix">
 
-                <!-- Start of Date Banner -->
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/vitals_date_banner"
+                <!-- Main Content -->
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@drawable/misc_connect_date_banner"
-                    android:orientation="horizontal"
-                    android:paddingLeft="60dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/connect_scrollview_margin">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        custom:srcCompat="@drawable/ic_calendar_svg"/>
-
+                    <!-- Main Content -->
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/date_weekday"
-                            android:layout_width="wrap_content"
+                        <!-- Start of Help Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Monday"
-                            android:textSize="18sp"/>
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/date_month_day"
-                            android:layout_width="wrap_content"
+                            <!-- Help Header -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="@dimen/page_margin_side"
+                                android:background="@drawable/misc_connect_header_left">
+
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/page_margin_side"
+                                    android:text="Need Assistance?"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="20sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_medium"/>
+
+                            </LinearLayout>
+                            <!-- End of Help Header -->
+
+                            <!-- Start of Text Content -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/page_margin_side"
+                                android:layout_marginRight="@dimen/page_margin_side"
+                                android:background="@drawable/misc_text_background"
+                                android:orientation="vertical"
+                                android:padding="15dp">
+
+                                <!-- Heading 2 -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10sp"
+                                    android:text="@string/connect_help_intro_header"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="16sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_medium"/>
+
+                                <!-- Content -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingMultiplier="1.25"
+                                    android:text="@string/connect_help_intro_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="14sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_light"/>
+
+                                <!-- Link Button -->
+                                <Button
+                                    android:id="@+id/help_learn_more"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/button_register"
+                                    android:paddingEnd="10dp"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:paddingStart="10dp"
+                                    android:text="Learn More"
+                                    android:textSize="10sp"/>
+
+                            </LinearLayout>
+                            <!-- End of Text Content -->
+
+                        </LinearLayout>
+                        <!-- End of the Help Section -->
+
+                        <!-- Start of Help Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="July 8, 2017"
-                            android:textSize="20sp"/>
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical">
+
+                            <!-- Help Header -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="@dimen/page_margin_side"
+                                android:background="@drawable/misc_connect_header_right">
+
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/page_margin_side"
+                                    android:text="Have Questions?"
+                                    android:textAlignment="textEnd"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="20sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_medium"/>
+
+                            </LinearLayout>
+                            <!-- End of Help Header -->
+
+                            <!-- Start of Example FAQ -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/page_margin_side"
+                                android:layout_marginRight="@dimen/page_margin_side"
+                                android:background="@drawable/misc_text_background"
+                                android:orientation="vertical"
+                                android:padding="15dp">
+
+                                <!-- Heading 2 -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10sp"
+                                    android:text="F.A.Q."
+                                    android:textAlignment="textEnd"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="16sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_medium"/>
+
+                                <!-- Example Content -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingMultiplier="1.25"
+                                    android:text="@string/connect_faq_intro"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="14sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_light"/>
+
+                                <!-- Example List Header -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingMultiplier="1.25"
+                                    android:padding="20dp"
+                                    android:text="1. How do I connect to my device?"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="16sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_medium"/>
+
+                                <!-- These would all be made programmatically obviously... -->
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingMultiplier="1.25"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"
+                                    android:text="Turn it on, dumby."
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="14sp"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_light"/>
+
+                            </LinearLayout>
+                            <!-- End of Text Content -->
+
+                        </LinearLayout>
+                        <!-- End of the Help Section -->
 
                     </LinearLayout>
+                    <!-- End of Main Content -->
 
-                </LinearLayout>
-                <!-- End of Date Banner -->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/connected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:text="Am I connected?"
-                        android:textSize="30sp"/>
-
-                    <Button
-                        android:id="@+id/bluetooth_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="40dp"
-                        android:text="ON"/>
-
-
-                </LinearLayout>
+                </ScrollView>
+                <!-- End of Main Content -->
 
                 <!-- Bottom Toolbar -->
                 <include layout="@layout/layout_bottom_navigation_view"/>

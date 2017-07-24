@@ -83,7 +83,7 @@
                     android:layout_width="257dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:paddingBottom="0dp">
+                    android:paddingBottom="50dp">
 
                     <ImageView
                         android:id="@+id/biomap_logo_imageView"
@@ -204,7 +204,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/button_menu_analytics"
+                        android:background="@drawable/button_menu_vitals"
                         android:padding="@dimen/menu_icon_padding"
                         android:scaleType="fitCenter"
                         android:scaleX="1"
@@ -235,8 +235,8 @@
                 </android.support.constraint.ConstraintLayout>
 
                 <!-- bottom navigation -->
-                <include layout="@layout/layout_bottom_navigation_view"/>
-
+                <include layout="@layout/layout_bottom_navigation_view"
+                    android:id="@+id/bottom_nav_bar"/>
 
             </RelativeLayout>
             <!-- End of Page Content -->

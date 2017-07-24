@@ -11,7 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/misc_border_top"
-            app:menu="@menu/nav_bottom"/>
+            app:menu="@menu/nav_bottom"
+            app:itemIconTint="@color/colorAccent"/>
 
     </RelativeLayout>
 

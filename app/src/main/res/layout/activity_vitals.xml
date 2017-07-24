@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.biomap.application.bio_app.Vitals.VitalsActivity">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context="com.biomap.application.bio_app.Vitals.VitalsActivity">
 
     <!-- This DrawerLayout has two children at the root  -->
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/drawer_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent">
 
         <!-- This LinearLayout represents the contents of the screen  -->
         <LinearLayout
@@ -22,25 +22,25 @@
 
             <!-- The ActionBar displayed at the top -->
             <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimaryDark"
-                android:elevation="4dp"
-                android:fitsSystemWindows="true"
-                android:minHeight="?attr/actionBarSize"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                               android:id="@+id/toolbar"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="wrap_content"
+                                               android:background="?attr/colorPrimaryDark"
+                                               android:elevation="4dp"
+                                               android:fitsSystemWindows="true"
+                                               android:minHeight="?attr/actionBarSize"
+                                               app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/toolbar_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="16dp"
-                    android:paddingStart="0dp">
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/toolbar_top"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:paddingEnd="16dp"
+                                android:paddingLeft="0dp"
+                                android:paddingRight="16dp"
+                                android:paddingStart="0dp">
 
                     <ImageButton
                         android:id="@+id/toolbar_hamburger"
@@ -49,7 +49,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:background="@android:color/transparent"
-                        app:srcCompat="@drawable/ic_hamburger_svg" />
+                        app:srcCompat="@drawable/ic_hamburger_svg"/>
 
                     <!-- Start of Page Header -->
                     <RelativeLayout
@@ -71,7 +71,7 @@
                             android:includeFontPadding="true"
                             android:text="@string/analytics_activity_title"
                             android:textColor="@color/colorAccent"
-                            android:textSize="24sp" />
+                            android:textSize="24sp"/>
 
                         <ImageView
                             android:layout_width="50dp"
@@ -79,7 +79,7 @@
                             android:layout_toLeftOf="@+id/vitals_page_title"
                             android:layout_toStartOf="@+id/vitals_page_title"
                             android:padding="10dp"
-                            custom:srcCompat="@drawable/ic_analytics_svg" />
+                            custom:srcCompat="@drawable/ic_analytics_svg"/>
 
                     </RelativeLayout>
                     <!-- End of Page Header -->
@@ -91,7 +91,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:background="@android:color/transparent"
-                        app:srcCompat="@drawable/ic_account_svg" />
+                        app:srcCompat="@drawable/ic_account_svg"/>
 
                 </RelativeLayout>
 
@@ -106,18 +106,18 @@
 
                 <!-- Start of Date Banner -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/vitals_date_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@drawable/misc_analytics_date_banner"
-                    android:orientation="horizontal"
-                    android:paddingLeft="60dp">
+                              xmlns:custom="http://schemas.android.com/apk/res-auto"
+                              android:id="@+id/vitals_date_banner"
+                              android:layout_width="match_parent"
+                              android:layout_height="60dp"
+                              android:background="@drawable/misc_analytics_date_banner"
+                              android:orientation="horizontal"
+                              android:paddingLeft="60dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        custom:srcCompat="@drawable/ic_calendar_svg" />
+                        custom:srcCompat="@drawable/ic_calendar_svg"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -129,13 +129,13 @@
                             android:id="@+id/date_weekday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"/>
 
                         <TextView
                             android:id="@+id/date_month_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"/>
 
                     </LinearLayout>
 
@@ -143,40 +143,461 @@
                 <!-- End of Date Banner -->
 
                 <ScrollView
+                    android:id="@+id/scrollview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_above="@id/bottom_navigation"
                     android:layout_below="@+id/vitals_date_banner"
                     android:layout_centerHorizontal="true"
-                    android:layout_margin="@dimen/vitals_scrollview_margin">
+                    android:layout_margin="@dimen/vitals_scrollview_margin"
+                    android:requiresFadingEdge="vertical">
 
-                    <!-- Start of Vitals Section [Body Temperature] -->
+                    <!-- Main Scrollview Content Child -->
                     <LinearLayout
-                        android:id="@+id/body_temperature"
+                        android:id="@+id/sections"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <!-- Section Title -->
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <!-- Start of Vitals Section [Body Temperature] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/header_body_temperature"
-                            android:textSize="@dimen/vitals_header_textSize"
-                            android:textColor="#0a9fbf" />
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
 
-                    <include layout="@layout/layout_help_button"
-                        android:id="@+id/help_button" />
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/body_temperature"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_body_temperature"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/body_temperature_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
+
+                                <!-- Temperature (C and F) -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="37° C"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginStart="10dp"
+                                        android:text="(98° F)"
+                                        android:textSize="20sp"/>
+
+                                </LinearLayout>
+                                <!-- Temperature (C and F) -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_weight="1"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Body Temperature] -->
+
+                        <!-- Start of Vitals Section [Blood Pressure] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/blood_pressure"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_blood_pressure"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/blood_pressure_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Blood Pressure -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="120/80"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"/>
+
+                                </LinearLayout>
+                                <!-- End of Blood Pressure -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Blood Pressure] -->
+
+                        <!-- Start of Vitals Section [Respiratory Rate] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/respiratory_rate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_respiratory_rate"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/respiratory_rate_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Respiratory Rate -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="15"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=" (breath / minute)"
+                                        android:textSize="20sp"/>
+
+                                </LinearLayout>
+                                <!-- End of Respiratory Rate -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Respiratory Rate] -->
+
+                        <!-- Start of Vitals Section [Body Mass Index] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/body_mass_index"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_body_mass_index"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/body_mass_index_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Body Mass Index -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="15%"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=" bmi"
+                                        android:textSize="20sp"/>
+
+                                </LinearLayout>
+                                <!-- End of Body Mass Index -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_check_box"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Body Mass Index] -->
+
+                        <!-- Start of Vitals Section [Offloading Frequency] -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/section_spacing"
+                            android:orientation="vertical">
+
+                            <!-- Section Header -->
+                            <LinearLayout
+                                android:id="@+id/offload_frequency"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Section Title -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/header_offloading_frequency"
+                                    android:textColor="#0a9fbf"
+                                    android:textSize="@dimen/vitals_header_textSize"/>
+
+                                <!-- Space -->
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <!-- Help Icon -->
+                                <ImageButton
+                                    android:id="@+id/offload_frequency_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/misc_circle_white"
+                                    android:backgroundTint="#1963a2"
+                                    android:tint="@color/colorAccent"
+                                    app:srcCompat="@drawable/ic_help"/>
+
+                            </LinearLayout>
+                            <!-- End of Section Header -->
+
+                            <!-- Section Data Text and Warning -->
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <!-- Offloading Frequency -->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="35"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="30sp"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text=" minutes"
+                                        android:textSize="20sp"/>
+
+                                </LinearLayout>
+                                <!-- End of Offloading Frequency -->
+
+                                <!-- Checkbox / Warning -->
+                                <ImageView
+                                    android:layout_width="@dimen/vitals_symbol_size"
+                                    android:layout_height="@dimen/vitals_symbol_size"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:tint="@color/colorAccent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_warning"/>
+
+                            </android.support.constraint.ConstraintLayout>
+                            <!-- End of Section Data Text and Warning -->
+
+                        </LinearLayout>
+                        <!-- End of Vitals Section [Offloading Frequency] -->
 
                     </LinearLayout>
-                    <!-- End of Vitals Section [Body Temperature] -->
+                    <!-- End of Main Scrollview Content Child -->
 
                 </ScrollView>
 
                 <!-- Bottom Toolbar -->
                 <include
                     android:id="@+id/bottom_navigation"
-                    layout="@layout/layout_bottom_navigation_view" />
+                    layout="@layout/layout_bottom_navigation_view"/>
 
             </RelativeLayout>
             <!-- End of Main Container -->
@@ -194,7 +615,7 @@
             app:headerLayout="@layout/layout_nav_drawer_header"
             app:itemIconTint="@color/DarkGrey"
             app:itemTextColor="@color/DarkGrey"
-            app:menu="@menu/nav_drawer" />
+            app:menu="@menu/nav_drawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -106,19 +107,21 @@ public class MainActivity extends AppCompatActivity {
         mDebugButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+
                 Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
                 startActivity(debugIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
-                */
 
+
+                /*
                 Map<UUID, byte[]> reversedMap = new TreeMap<>(bluetoothHelper.getCharacteristicValues());
 
                 for (Map.Entry entry : reversedMap.entrySet()) {
                     byte[] bytes = ((byte[]) entry.getValue());
                     Log.e(TAG, "Print sensor values of " + entry.getKey() + ": [HEX] " + byteToHex(bytes));
                 }
+                */
             }
         });
     }
@@ -307,6 +310,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+
+        // Set color of selected item in the navbar (unique to each activity)
+        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_main));
+
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
