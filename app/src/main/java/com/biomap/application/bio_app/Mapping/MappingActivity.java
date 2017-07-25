@@ -1,7 +1,9 @@
 package com.biomap.application.bio_app.Mapping;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,8 +28,6 @@ import android.widget.TextView;
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
-import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
-import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontsLoader;
@@ -42,6 +42,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+
+import ca.hss.heatmaplib.HeatMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -54,12 +58,12 @@ public class MappingActivity extends AppCompatActivity {
 
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
+    private static final float RADIUS_FACTOR = 20;
 
     private DrawerLayout mDrawer;
+    private HeatMap mHeatmap;
 
-    public MappingActivity() {
-    }
-
+    @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,9 +148,17 @@ public class MappingActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupHeatMap() {
-        LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
-        MyGLSurfaceView mGLView = new MyGLSurfaceView(this);
-        heatMapView.addView(mGLView);
+
+        mHeatmap = (HeatMap) findViewById(R.id.heatmap);
+
+        mHeatmap.setMinimum(0.0);
+        mHeatmap.setMaximum(100.0);
+
+        //set the radius to 300 pixels.
+        mHeatmap.setRadius(1000);
+
+        plotHeatMap();
+
     }
 
     /**
@@ -309,6 +321,7 @@ public class MappingActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
@@ -344,5 +357,119 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
+    public void plotHeatMap() {
+
+        int[][] pressure = convert2DArray(getPressure());
+
+        double intensity;
+
+        int numOfRow = pressure.length + 2;
+        int numOfCol = pressure[0].length + 2;
+
+        float rowSize = 1.0f / numOfRow;
+        float colSize = 1.0f / numOfCol;
+
+        float rowOffset = rowSize / 2.0f;
+        float colOffset = colSize / 2.0f;
+
+        mHeatmap.clearData();
+
+        // rows and columns = 10
+//        for (int yPos = 0; yPos < numOfRow + 1; yPos++) {
+//            for (int xPos = 0; xPos < numOfCol + 1; xPos++) {
+//                if ((yPos > 0 && yPos < numOfRow - 1) && (xPos > 0 && xPos < numOfCol - 1)) {
+//                    intensity = pressure[xPos - 1][yPos - 1];
+//                    // addPoint((xPos * colSize) + colOffset, (yPos * rowSize) + rowOffset, radius, intensity);
+//                    HeatMap.DataPoint point = new HeatMap.DataPoint((xPos * colSize), (yPos * rowSize), intensity * 100);
+//                    mHeatmap.addData(point);
+//                    Log.d(TAG, "plotHeatMap: Adding point.");
+//                } else {
+//                    Log.d(TAG, "plotHeatMap: Skipping point.");
+//                }
+//
+//            }
+//        }
+
+//        Random rand = new Random();
+//        for (int i = 0; i < numOfRow; i++) {
+//            for (int j = 0; j < numOfRow; j++) {
+//                intensity = pressure[j][i];
+//                HeatMap.DataPoint point = new HeatMap.DataPoint(j * colSize, i * rowSize, rand.nextDouble() * 100);
+//                mHeatmap.addData(point);
+//            }
+//        }
+
+        Map<Float, Integer> colors = new ArrayMap<>();
+        //build a color gradient in HSV from red at the center to green at the outside
+        for (int i = 0; i < 21; i++) {
+            float stop = ((float) i) / 20.0f;
+            int color = doGradient(i * 5, 0, 100, 0xff1963a2, 0xffff3333);
+            colors.put(stop, color);
+        }
+
+        mHeatmap.setColorStops(colors);
+
+
+
+        for (int yPos = 0; yPos < numOfRow + 1; yPos++) {
+            for (int xPos = 0; xPos < numOfCol + 1; xPos++) {
+                if ((yPos > 0 && yPos < numOfRow - 1) && (xPos > 0 && xPos < numOfCol - 1)) {
+                    intensity = pressure[xPos - 1][yPos - 1] / 75;
+                    HeatMap.DataPoint point = new HeatMap.DataPoint(
+                            clamp((xPos * colSize) + colOffset, 0.0f, 1.0f),
+                            clamp((yPos * rowSize) + rowOffset, 0.0f, 1.0f),
+                            clamp(intensity, 0.00, 100.0)
+                    );
+
+                    mHeatmap.setRadius(1400); // The one is so radius isn't 0.
+                    mHeatmap.addData(point);
+
+                }
+            }
+        }
+
+        mHeatmap.forceRefresh();
+    }
+
+    private int[] getRandomPressure() {
+        int[] array = new int[64];
+        Random rand = new Random();
+
+        for (int i = 0; i < 64; i++)
+            array[i] = rand.nextInt(50);
+
+        return array;
+    }
+
+    private float clamp(float value, float min, float max) {
+        return value * (max - min) + min;
+    }
+
+    private double clamp(double value, double min, double max) {
+        return value * (max - min) + min;
+    }
+
+    private static int doGradient(double value, double min, double max, int min_color, int max_color) {
+        if (value >= max) {
+            return max_color;
+        }
+        if (value <= min) {
+            return min_color;
+        }
+        float[] hsvmin = new float[3];
+        float[] hsvmax = new float[3];
+        float frac = (float) ((value - min) / (max - min));
+        Color.RGBToHSV(Color.red(min_color), Color.green(min_color), Color.blue(min_color), hsvmin);
+        Color.RGBToHSV(Color.red(max_color), Color.green(max_color), Color.blue(max_color), hsvmax);
+        float[] retval = new float[3];
+        for (int i = 0; i < 3; i++) {
+            retval[i] = interpolate(hsvmin[i], hsvmax[i], frac);
+        }
+        return Color.HSVToColor(retval);
+    }
+
+    private static float interpolate(float a, float b, float proportion) {
+        return (a + ((b - a) * proportion));
+    }
 
 }

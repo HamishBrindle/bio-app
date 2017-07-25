@@ -39,7 +39,6 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Calendar;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -307,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
