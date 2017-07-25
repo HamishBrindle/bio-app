@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="287dp"
         android:gravity="center_horizontal"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
-        app:layout_constraintHorizontal_bias="0.498">
+        tools:layout_constraintTop_creator="1">
 
         <com.biomap.application.bio_app.Utility.CustomFontTextView
             android:id="@+id/helloText"
@@ -53,11 +53,13 @@
     <!--Update Profile Button-->
     <Button
         android:id="@+id/account_update_profile"
-        android:layout_width="wrap_content"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:background="@drawable/button_google"
-        android:text="Update Profile"
+        android:gravity="center"
+        android:text="Update\nProfile"
+        android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/greeting_container"
@@ -67,10 +69,11 @@
     <!--Sign out Button-->
     <Button
         android:id="@+id/account_signOut_button"
-        android:layout_width="wrap_content"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_register"
+        android:gravity="center"
         android:text="Sign Out"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

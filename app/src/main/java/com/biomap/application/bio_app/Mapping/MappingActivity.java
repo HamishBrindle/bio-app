@@ -2,6 +2,8 @@ package com.biomap.application.bio_app.Mapping;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
@@ -29,6 +32,7 @@ import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
+import com.biomap.application.bio_app.Utility.CustomFontTextView;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,6 +63,11 @@ public class MappingActivity extends AppCompatActivity {
     FirebaseDatabase database;
     private DrawerLayout mDrawer;
     private ImageButton mAccountSettings;
+    private CustomFontTextView leftWeightText;
+    private CustomFontTextView rightWeightText;
+    private ProgressBar leftProgress;
+    private ProgressBar rightProgress;
+
 
     public MappingActivity() {
     }
@@ -72,6 +81,13 @@ public class MappingActivity extends AppCompatActivity {
         // Dashed warning line doesn't appear 'dashed' unless the following:
         ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
         mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+
+        leftWeightText = (CustomFontTextView) findViewById(R.id.left_percentage);
+        rightWeightText = (CustomFontTextView) findViewById(R.id.right_percentage);
+        leftProgress = (ProgressBar) findViewById(R.id.left_progress);
+        rightProgress = (ProgressBar) findViewById(R.id.right_progress);
+
 
         mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
         mAccountSettings.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +105,7 @@ public class MappingActivity extends AppCompatActivity {
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
+        calculateDistribution(getPressure());
 
     }
 
@@ -305,6 +322,7 @@ public class MappingActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
@@ -340,10 +358,41 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
+    public void calculateDistribution(int[] dataArray) {
+        int[][] twoDdataArray = convert2DArray(dataArray);
+        Log.d(TAG, "calculateDistribution: " + twoDdataArray.toString());
+        double leftWeight = 0;
+        double rightWeight = 0;
+        double total = 0;
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 8; j++) {
+                leftWeight += twoDdataArray[i][j];
+                Log.d(TAG, "calculateDistribution: left " + leftWeight);
+            }
+
+        }
+        for (int i = 4; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                rightWeight += twoDdataArray[i][j];
+                Log.d(TAG, "calculateDistribution:right  " + rightWeight);
+            }
+
+        }
+        total = leftWeight + rightWeight;
+        leftWeight = (leftWeight / total) * 100;
+        rightWeight = (rightWeight / total) * 100;
+        leftWeightText.setText(String.valueOf((int) leftWeight) + "%");
+        rightWeightText.setText(String.valueOf((int) rightWeight) + "%");
+        leftProgress.setProgress((int) leftWeight);
+        rightProgress.setProgress((int) rightWeight);
+    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         setupFirebase();
     }
+
 
 }
