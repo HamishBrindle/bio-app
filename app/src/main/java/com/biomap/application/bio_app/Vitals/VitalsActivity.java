@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Vitals;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -81,7 +82,7 @@ public class VitalsActivity extends AppCompatActivity {
         ScrollView mScrollView = (ScrollView) findViewById(R.id.scrollview);
         mScrollView.setFadingEdgeLength(150);
 
-        setupFirebase();
+//        setupFirebase();
         setupDateBanner();
         setupHelpButtons();
         setupToolbar();
@@ -146,7 +147,9 @@ public class VitalsActivity extends AppCompatActivity {
         builder.setTitle(header);
         builder.setMessage(content);
         builder.setNegativeButton("OK", null);
-        builder.setIcon(getDrawable(R.drawable.ic_help));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setIcon(getDrawable(R.drawable.ic_help));
+        }
         AlertDialog dialog = builder.create();
         dialog.getWindow().getAttributes().windowAnimations = animationSource;
         dialog.show();
@@ -224,18 +227,18 @@ public class VitalsActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
     }
@@ -333,7 +336,9 @@ public class VitalsActivity extends AppCompatActivity {
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
 
         // Set color of selected item in the navbar (unique to each activity)
-        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_vitals));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_vitals));
+        }
 
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(VitalsActivity.this, bottomNavigationViewEx);
