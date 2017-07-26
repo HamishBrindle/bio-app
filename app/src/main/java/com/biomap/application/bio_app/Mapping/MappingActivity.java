@@ -1,9 +1,9 @@
 package com.biomap.application.bio_app.Mapping;
 
-import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.IntentCompat;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,29 +22,31 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
+import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
-import com.biomap.application.bio_app.Utility.CustomFontsLoader;
+import com.biomap.application.bio_app.Utility.CustomFontTextView;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-
-import ca.hss.heatmaplib.HeatMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -58,12 +59,19 @@ public class MappingActivity extends AppCompatActivity {
 
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
-    private static final float RADIUS_FACTOR = 20;
-
+    DatabaseReference myRef;
+    FirebaseDatabase database;
     private DrawerLayout mDrawer;
-    private HeatMap mHeatmap;
+    private ImageButton mAccountSettings;
+    private CustomFontTextView leftWeightText;
+    private CustomFontTextView rightWeightText;
+    private ProgressBar leftProgress;
+    private ProgressBar rightProgress;
 
-    @TargetApi(Build.VERSION_CODES.M)
+
+    public MappingActivity() {
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,12 +82,30 @@ public class MappingActivity extends AppCompatActivity {
         ImageView mDashedLine = (ImageView) findViewById(R.id.dashed_line);
         mDashedLine.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        // setupFirebase();
+
+        leftWeightText = (CustomFontTextView) findViewById(R.id.left_percentage);
+        rightWeightText = (CustomFontTextView) findViewById(R.id.right_percentage);
+        leftProgress = (ProgressBar) findViewById(R.id.left_progress);
+        rightProgress = (ProgressBar) findViewById(R.id.right_progress);
+
+
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
+
+
+        setupFirebase();
         setupDateBanner();
-        setupFonts();
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
+        calculateDistribution(getPressure());
 
     }
 
@@ -96,30 +122,10 @@ public class MappingActivity extends AppCompatActivity {
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
     }
 
-    private void setupFonts() {
-        // Change the fonts in the activity by going through all the children of the parent layout.
-        TextView mPageTitle = (TextView) findViewById(R.id.mapping_page_title);
-        LinearLayout mBannerText = (LinearLayout) findViewById(R.id.banner_text);
-        LinearLayout mMappingView = (LinearLayout) findViewById(R.id.mapping_viewGroup);
-        LinearLayout mLeftRight = (LinearLayout) findViewById(R.id.weight_charts);
-        TextView mWeightHeader = (TextView) findViewById(R.id.weight_header);
-        TextView mLeftPercentage = (TextView) findViewById(R.id.left_percentage);
-        TextView mRightPercentage = (TextView) findViewById(R.id.right_percentage);
-
-        mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        mWeightHeader.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        mLeftPercentage.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-        mRightPercentage.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
-
-        CustomFontsLoader.overrideFonts(this, mBannerText, CustomFontsLoader.GOTHAM_BOOK);
-        CustomFontsLoader.overrideFonts(this, mMappingView, CustomFontsLoader.GOTHAM_MEDIUM);
-        CustomFontsLoader.overrideFonts(this, mLeftRight, CustomFontsLoader.GOTHAM_BOOK);
-    }
-
     private void setupFirebase() {
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -148,17 +154,9 @@ public class MappingActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupHeatMap() {
-
-        mHeatmap = (HeatMap) findViewById(R.id.heatmap);
-
-        mHeatmap.setMinimum(0.0);
-        mHeatmap.setMaximum(100.0);
-
-        //set the radius to 300 pixels.
-        mHeatmap.setRadius(1000);
-
-        plotHeatMap();
-
+        LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
+        MyGLSurfaceView mGLView = new MyGLSurfaceView(this);
+        heatMapView.addView(mGLView);
     }
 
     /**
@@ -221,18 +219,18 @@ public class MappingActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
@@ -295,10 +293,13 @@ public class MappingActivity extends AppCompatActivity {
                 break;
             case R.id.nav_sign_out:
                 FirebaseAuth.getInstance().signOut();
-//                setupFirebase();
+                setupFirebase();
                 Intent logoutintent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
                 ComponentName cn = logoutintent.getComponent();
                 intent = IntentCompat.makeRestartActivityTask(cn);
+                break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
                 break;
             default:
 
@@ -357,119 +358,41 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
-    public void plotHeatMap() {
+    public void calculateDistribution(int[] dataArray) {
+        int[][] twoDdataArray = convert2DArray(dataArray);
+        Log.d(TAG, "calculateDistribution: " + twoDdataArray.toString());
+        double leftWeight = 0;
+        double rightWeight = 0;
+        double total = 0;
 
-        int[][] pressure = convert2DArray(getPressure());
-
-        double intensity;
-
-        int numOfRow = pressure.length + 2;
-        int numOfCol = pressure[0].length + 2;
-
-        float rowSize = 1.0f / numOfRow;
-        float colSize = 1.0f / numOfCol;
-
-        float rowOffset = rowSize / 2.0f;
-        float colOffset = colSize / 2.0f;
-
-        mHeatmap.clearData();
-
-        // rows and columns = 10
-//        for (int yPos = 0; yPos < numOfRow + 1; yPos++) {
-//            for (int xPos = 0; xPos < numOfCol + 1; xPos++) {
-//                if ((yPos > 0 && yPos < numOfRow - 1) && (xPos > 0 && xPos < numOfCol - 1)) {
-//                    intensity = pressure[xPos - 1][yPos - 1];
-//                    // addPoint((xPos * colSize) + colOffset, (yPos * rowSize) + rowOffset, radius, intensity);
-//                    HeatMap.DataPoint point = new HeatMap.DataPoint((xPos * colSize), (yPos * rowSize), intensity * 100);
-//                    mHeatmap.addData(point);
-//                    Log.d(TAG, "plotHeatMap: Adding point.");
-//                } else {
-//                    Log.d(TAG, "plotHeatMap: Skipping point.");
-//                }
-//
-//            }
-//        }
-
-//        Random rand = new Random();
-//        for (int i = 0; i < numOfRow; i++) {
-//            for (int j = 0; j < numOfRow; j++) {
-//                intensity = pressure[j][i];
-//                HeatMap.DataPoint point = new HeatMap.DataPoint(j * colSize, i * rowSize, rand.nextDouble() * 100);
-//                mHeatmap.addData(point);
-//            }
-//        }
-
-        Map<Float, Integer> colors = new ArrayMap<>();
-        //build a color gradient in HSV from red at the center to green at the outside
-        for (int i = 0; i < 21; i++) {
-            float stop = ((float) i) / 20.0f;
-            int color = doGradient(i * 5, 0, 100, 0xff1963a2, 0xffff3333);
-            colors.put(stop, color);
-        }
-
-        mHeatmap.setColorStops(colors);
-
-
-
-        for (int yPos = 0; yPos < numOfRow + 1; yPos++) {
-            for (int xPos = 0; xPos < numOfCol + 1; xPos++) {
-                if ((yPos > 0 && yPos < numOfRow - 1) && (xPos > 0 && xPos < numOfCol - 1)) {
-                    intensity = pressure[xPos - 1][yPos - 1] / 75;
-                    HeatMap.DataPoint point = new HeatMap.DataPoint(
-                            clamp((xPos * colSize) + colOffset, 0.0f, 1.0f),
-                            clamp((yPos * rowSize) + rowOffset, 0.0f, 1.0f),
-                            clamp(intensity, 0.00, 100.0)
-                    );
-
-                    mHeatmap.setRadius(1400); // The one is so radius isn't 0.
-                    mHeatmap.addData(point);
-
-                }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 8; j++) {
+                leftWeight += twoDdataArray[i][j];
+                Log.d(TAG, "calculateDistribution: left " + leftWeight);
             }
+
         }
+        for (int i = 4; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                rightWeight += twoDdataArray[i][j];
+                Log.d(TAG, "calculateDistribution:right  " + rightWeight);
+            }
 
-        mHeatmap.forceRefresh();
-    }
-
-    private int[] getRandomPressure() {
-        int[] array = new int[64];
-        Random rand = new Random();
-
-        for (int i = 0; i < 64; i++)
-            array[i] = rand.nextInt(50);
-
-        return array;
-    }
-
-    private float clamp(float value, float min, float max) {
-        return value * (max - min) + min;
-    }
-
-    private double clamp(double value, double min, double max) {
-        return value * (max - min) + min;
-    }
-
-    private static int doGradient(double value, double min, double max, int min_color, int max_color) {
-        if (value >= max) {
-            return max_color;
         }
-        if (value <= min) {
-            return min_color;
-        }
-        float[] hsvmin = new float[3];
-        float[] hsvmax = new float[3];
-        float frac = (float) ((value - min) / (max - min));
-        Color.RGBToHSV(Color.red(min_color), Color.green(min_color), Color.blue(min_color), hsvmin);
-        Color.RGBToHSV(Color.red(max_color), Color.green(max_color), Color.blue(max_color), hsvmax);
-        float[] retval = new float[3];
-        for (int i = 0; i < 3; i++) {
-            retval[i] = interpolate(hsvmin[i], hsvmax[i], frac);
-        }
-        return Color.HSVToColor(retval);
+        total = leftWeight + rightWeight;
+        leftWeight = (leftWeight / total) * 100;
+        rightWeight = (rightWeight / total) * 100;
+        leftWeightText.setText(String.valueOf((int) leftWeight) + "%");
+        rightWeightText.setText(String.valueOf((int) rightWeight) + "%");
+        leftProgress.setProgress((int) leftWeight);
+        rightProgress.setProgress((int) rightWeight);
     }
 
-    private static float interpolate(float a, float b, float proportion) {
-        return (a + ((b - a) * proportion));
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
     }
+
 
 }

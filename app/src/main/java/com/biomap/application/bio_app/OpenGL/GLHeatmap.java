@@ -45,11 +45,11 @@ public class GLHeatmap {
 // ...
 		String getColorFun  =
 			"vec3 getColor(float intensity){						\n" +
-			"    vec3 blue   = vec3(0.0, 0.0, 1.0);					\n" +
-			"    vec3 cyan   = vec3(0.0, 1.0, 1.0);					\n" +
-			"    vec3 green  = vec3(0.0, 1.0, 0.0);					\n" +
-			"    vec3 yellow = vec3(1.0, 1.0, 0.0);					\n" +
-			"    vec3 red    = vec3(1.0, 0.0, 0.0);					\n" +
+			"    vec3 blue   = vec3(0.09, 0.38, 0.63);					\n" +
+			"    vec3 cyan   = vec3(0.03, 0.62, 0.74);					\n" +
+			"    vec3 green  = vec3(0.12, 0.58, 0.45);					\n" +
+			"    vec3 yellow = vec3(0.92, 0.90, 0.56);					\n" +
+			"    vec3 red    = vec3(0.93, 0.37, 0.4);					\n" +
 			"    \n" +
 			"    vec3 color = (\n" +
 			"        fade(-0.25, 0.25, intensity)*blue +			\n" +

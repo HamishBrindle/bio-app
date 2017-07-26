@@ -3,6 +3,7 @@ package com.biomap.application.bio_app.Alerts;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,11 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
@@ -70,6 +71,8 @@ public class AlertsActivity extends AppCompatActivity {
     private AlertNotification alertNotification;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
+    private ImageButton mAccountSettings;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,12 +80,18 @@ public class AlertsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alerts);
         Log.d(TAG, "onCreate: starting.");
 
-        TextView mPageTitle = (TextView) findViewById(R.id.alerts_page_title);
-        LinearLayout mDateBanner = (LinearLayout) findViewById(R.id.vitals_date_banner);
-        LinearLayout mCircleButtons = (LinearLayout) findViewById(R.id.circle_buttons);
         ToggleButton mToggleButtonAlarm = (ToggleButton) findViewById(R.id.toggle_button_alarm);
-        TextView mTime = (TextView) findViewById(R.id.time);
 
+
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
 
         //Setting the date banner
         TextView mDayofWeek = (TextView) findViewById(R.id.date_weekday);
@@ -95,10 +104,6 @@ public class AlertsActivity extends AppCompatActivity {
         mfullDate.setText(simpleDateFormat.format(date));
         mDayofWeek.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
 
-        mPageTitle.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
-        CustomFontsLoader.overrideFonts(this, mDateBanner, CustomFontsLoader.GOTHAM_BOOK);
-        CustomFontsLoader.overrideFonts(this, mCircleButtons, CustomFontsLoader.GOTHAM_BOOK);
-        mTime.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
         mToggleButtonAlarm.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
 
 
@@ -113,7 +118,7 @@ public class AlertsActivity extends AppCompatActivity {
 
 
         // Initialize page elements.
-        // setupFirebase();
+        setupFirebase();
         setupToolbar();
         setupAddRemoveButtons();
         setupBottomNavigationView();
@@ -311,18 +316,18 @@ public class AlertsActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -389,6 +394,9 @@ public class AlertsActivity extends AppCompatActivity {
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
                 break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
             default:
 
         }
@@ -415,8 +423,9 @@ public class AlertsActivity extends AppCompatActivity {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         // Set color of selected item in the navbar (unique to each activity)
-        bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_alerts));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bottomNavigationViewEx.setIconTintList(ACTIVITY_NUM, getColorStateList(R.color.bottom_nav_alerts));
+        }
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(AlertsActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
@@ -424,9 +433,9 @@ public class AlertsActivity extends AppCompatActivity {
         item.setChecked(true);
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        setupFirebase();
-//    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+    }
 }

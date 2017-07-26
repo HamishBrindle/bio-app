@@ -156,14 +156,15 @@
                         android:src="@drawable/ic_google"/>
 
                     <!-- Google Button Text -->
-                    <TextView
+                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:text="Google"
                         android:textAllCaps="true"
                         android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        app:font="@string/font_name_gotham"
+                        app:textStyle="@integer/font_style_bold"/>
 
                 </LinearLayout>
                 <!-- End of Google Sign-In Button -->

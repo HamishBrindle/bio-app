@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,12 +23,12 @@ import android.widget.TextView;
 import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
+import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
-import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Map<UUID, byte[]> sensorValues;
 
+    private ImageButton mAccountSettings;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,16 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.BLUETOOTH},
                 1);
 
+        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(accountIntent);
+
+            }
+        });
+
         // setupFirebase();
         // bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
@@ -90,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
         setupMenuButtons();
         setupBottomNavigationView();
 
-        ConstraintLayout mMenuButtons = (ConstraintLayout) findViewById(R.id.constraintLayout);
-        CustomFontsLoader.overrideFonts(this, mMenuButtons, CustomFontsLoader.GOTHAM_BOLD);
 
     }
 
@@ -286,6 +295,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
                 break;
+            case R.id.nav_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
             default:
 
         }
@@ -351,5 +363,11 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             });
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
     }
 }

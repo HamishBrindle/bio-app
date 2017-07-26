@@ -59,7 +59,7 @@
                         android:gravity="center">
                         <!-- Page Header -->
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/vitals_page_title"
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
@@ -71,7 +71,9 @@
                             android:includeFontPadding="true"
                             android:text="@string/analytics_activity_title"
                             android:textColor="@color/colorAccent"
-                            android:textSize="24sp"/>
+                            android:textSize="24sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                         <ImageView
                             android:layout_width="50dp"
@@ -125,17 +127,21 @@
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/date_weekday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
-                        <TextView
+                        <com.biomap.application.bio_app.Utility.CustomFontTextView
                             android:id="@+id/date_month_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp"
+                            app:font="@string/font_name_gotham"
+                            app:textStyle="@integer/font_style_book"/>
 
                     </LinearLayout>
 
@@ -174,12 +180,14 @@
                                 android:orientation="horizontal">
 
                                 <!-- Section Title -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/header_body_temperature"
                                     android:textColor="#0a9fbf"
-                                    android:textSize="@dimen/vitals_header_textSize"/>
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Space -->
                                 <Space
@@ -212,20 +220,24 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="2">
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="37° C"
                                         android:textColor="@color/colorAccent"
-                                        android:textSize="30sp"/>
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="10dp"
                                         android:layout_marginStart="10dp"
                                         android:text="(98° F)"
-                                        android:textSize="20sp"/>
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
 
                                 </LinearLayout>
                                 <!-- Temperature (C and F) -->
@@ -266,12 +278,14 @@
                                 android:orientation="horizontal">
 
                                 <!-- Section Title -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/header_blood_pressure"
                                     android:textColor="#0a9fbf"
-                                    android:textSize="@dimen/vitals_header_textSize"/>
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Space -->
                                 <Space
@@ -302,12 +316,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="120/80"
                                         android:textColor="@color/colorAccent"
-                                        android:textSize="30sp"/>
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
 
                                 </LinearLayout>
                                 <!-- End of Blood Pressure -->
@@ -346,12 +362,14 @@
                                 android:orientation="horizontal">
 
                                 <!-- Section Title -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/header_respiratory_rate"
                                     android:textColor="#0a9fbf"
-                                    android:textSize="@dimen/vitals_header_textSize"/>
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Space -->
                                 <Space
@@ -382,18 +400,22 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="15"
                                         android:textColor="@color/colorAccent"
-                                        android:textSize="30sp"/>
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text=" (breath / minute)"
-                                        android:textSize="20sp"/>
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
 
                                 </LinearLayout>
                                 <!-- End of Respiratory Rate -->
@@ -432,12 +454,14 @@
                                 android:orientation="horizontal">
 
                                 <!-- Section Title -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/header_body_mass_index"
                                     android:textColor="#0a9fbf"
-                                    android:textSize="@dimen/vitals_header_textSize"/>
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Space -->
                                 <Space
@@ -468,18 +492,22 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="15%"
                                         android:textColor="@color/colorAccent"
-                                        android:textSize="30sp"/>
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text=" bmi"
-                                        android:textSize="20sp"/>
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
 
                                 </LinearLayout>
                                 <!-- End of Body Mass Index -->
@@ -518,12 +546,14 @@
                                 android:orientation="horizontal">
 
                                 <!-- Section Title -->
-                                <TextView
+                                <com.biomap.application.bio_app.Utility.CustomFontTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/header_offloading_frequency"
                                     android:textColor="#0a9fbf"
-                                    android:textSize="@dimen/vitals_header_textSize"/>
+                                    android:textSize="@dimen/vitals_header_textSize"
+                                    app:font="@string/font_name_gotham"
+                                    app:textStyle="@integer/font_style_book"/>
 
                                 <!-- Space -->
                                 <Space
@@ -554,18 +584,22 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="35"
                                         android:textColor="@color/colorAccent"
-                                        android:textSize="30sp"/>
+                                        android:textSize="30sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_bold"/>
 
-                                    <TextView
+                                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text=" minutes"
-                                        android:textSize="20sp"/>
+                                        android:textSize="20sp"
+                                        app:font="@string/font_name_gotham"
+                                        app:textStyle="@integer/font_style_book"/>
 
                                 </LinearLayout>
                                 <!-- End of Offloading Frequency -->

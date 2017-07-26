@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.biomap.application.bio_app.Home.MainActivity;
 import com.biomap.application.bio_app.R;
@@ -15,9 +14,10 @@ import com.biomap.application.bio_app.Utility.CustomFontsLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 public class LoginRegisterActivity extends AppCompatActivity {
     private static final String TAG = "LoginRegisterActivity";
-    TextView mDescriptionText;
     Button mRegisterButton;
     Button mSignInButton;
     Intent registerIntent;
@@ -31,31 +31,15 @@ public class LoginRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_register);
 
         //Initializing all items
-        mDescriptionText = (TextView) findViewById(R.id.login_register_description_text);
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mSignInButton = (Button) findViewById(R.id.sign_in_button);
         signInIntent = new Intent(this, LoginActivity.class);
         registerIntent = new Intent(this, RegisterActivity.class);
         homeIntent = new Intent(this, MainActivity.class);
 
-        FirebaseAuth.AuthStateListener mAuthListener;
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged: User is signed in");
-                    startActivity(homeIntent);
-                    // Make switching between activities blend via fade-in / fade-out
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                }
-            }
-        };
+        setupFirebase();
 
         //Setting the font of the description text;
-        mDescriptionText.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOOK));
         mRegisterButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
         mSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
 
@@ -82,5 +66,40 @@ public class LoginRegisterActivity extends AppCompatActivity {
 //                finish();
             }
         });
+    }
+
+    public void setupFirebase() {
+
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                final Intent register_login_intent = new Intent(getApplicationContext(), LoginRegisterActivity.class);
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged: User is signed in");
+                    startActivity(homeIntent);
+                    // Make switching between activities blend via fade-in / fade-out
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged.Main:signed_out");
+
+                    // Create the logout activity intent.
+                    startActivity(register_login_intent);
+                    register_login_intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                }
+            }
+        };
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupFirebase();
+
     }
 }

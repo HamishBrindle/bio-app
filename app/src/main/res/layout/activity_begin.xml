@@ -1,17 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    tools:context="com.biomap.application.bio_app.Login.LoginActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                tools:context="com.biomap.application.bio_app.Login.LoginActivity">
 
     <!-- Start of Main Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true">
 
         <!-- Start of Logo & Wordmark -->
         <LinearLayout
@@ -27,7 +28,7 @@
                 android:layout_height="@dimen/biomap_register_login_logo_dim"
                 android:contentDescription="@string/biomap_logo"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_logo_svg" />
+                app:srcCompat="@drawable/ic_logo_svg"/>
 
             <!-- Wordmark -->
             <ImageView
@@ -36,7 +37,7 @@
                 android:layout_height="65dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/biomap_text_logo"
-                app:srcCompat="@drawable/ic_wordmark_tagline" />
+                app:srcCompat="@drawable/ic_wordmark_tagline"/>
 
         </LinearLayout>
         <!-- End of Logo & Wordmark -->
@@ -50,19 +51,23 @@
             android:orientation="vertical">
 
             <!-- Timely Greeting -->
-            <TextView
+            <com.biomap.application.bio_app.Utility.CustomFontTextView
                 android:id="@+id/greeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:font="@string/font_name_gotham"
+                app:textStyle="@integer/font_style_book"/>
 
             <!-- User Name -->
-            <TextView
+            <com.biomap.application.bio_app.Utility.CustomFontTextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="22sp"/>
+                android:textSize="22sp"
+                app:font="@string/font_name_gotham"
+                app:textStyle="@integer/font_style_book"/>
 
         </LinearLayout>
         <!-- End of Greeting & User name -->
@@ -72,10 +77,10 @@
             android:id="@+id/button_begin"
             android:layout_width="170dp"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_marginTop="48dp"
             android:background="@drawable/button_signin"
-            android:text="Let's Begin!"
-            android:layout_gravity="center" />
+            android:text="Let's Begin!"/>
 
     </LinearLayout>
     <!-- End of Main Content -->

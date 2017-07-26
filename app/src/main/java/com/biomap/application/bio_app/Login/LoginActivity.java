@@ -114,7 +114,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         LinearLayout mGoogleSignInButton = (LinearLayout) findViewById(R.id.google_signin_button);
 
-        CustomFontsLoader.overrideFonts(this, mGoogleSignInButton, CustomFontsLoader.GOTHAM_BOLD);
         mEmailSignInButton.setTypeface(CustomFontsLoader.getTypeface(this, CustomFontsLoader.GOTHAM_BOLD));
 
 

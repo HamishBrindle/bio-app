@@ -105,7 +105,6 @@
                         android:id="@+id/menu_button_mapping"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="40dp"
                         android:background="@drawable/button_menu_mapping"
@@ -118,26 +117,26 @@
                         app:layout_constraintTop_toBottomOf="@+id/biomap_logo_imageView"
                         app:srcCompat="@drawable/ic_mapping_svg"/>
 
-                    <TextView
+                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                         android:id="@+id/MappingTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="5dp"
                         android:text="@string/mapping_activity_title"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/h3_font_size"
+                        app:font="@string/font_name_gotham"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/menu_button_mapping"/>
+                        app:layout_constraintTop_toBottomOf="@+id/menu_button_mapping"
+                        app:textStyle="@integer/font_style_bold"/>
 
                     <ImageButton
                         android:id="@+id/menu_button_alerts"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginTop="40dp"
                         android:background="@drawable/button_menu_alerts"
                         android:padding="@dimen/menu_icon_padding"
@@ -150,19 +149,20 @@
                         app:layout_constraintTop_toBottomOf="@+id/biomap_logo_imageView"
                         app:srcCompat="@drawable/ic_alerts_svg"/>
 
-                    <TextView
+                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                         android:id="@+id/AlertsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="38dp"
-                        android:layout_marginRight="38dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/alerts_activity_title"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/h3_font_size"
+                        app:font="@string/font_name_gotham"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/menu_button_alerts"/>
+                        app:layout_constraintTop_toBottomOf="@+id/menu_button_alerts"
+                        app:textStyle="@integer/font_style_bold"/>
 
                     <ImageButton
                         android:id="@+id/menu_button_connect"
@@ -183,25 +183,25 @@
                         app:layout_constraintVertical_bias="0.59"
                         app:srcCompat="@drawable/ic_connect_svg"/>
 
-                    <TextView
+                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                         android:id="@+id/ConnectTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="27dp"
-                        android:layout_marginRight="27dp"
                         android:layout_marginTop="5dp"
                         android:gravity="center_horizontal"
                         android:text="@string/connect_activity_title"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/h3_font_size"
+                        app:font="@string/font_name_gotham"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/menu_button_connect"/>
+                        app:layout_constraintTop_toBottomOf="@+id/menu_button_connect"
+                        app:textStyle="@integer/font_style_bold"/>
 
                     <ImageButton
                         android:id="@+id/menu_button_analytics"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/button_menu_vitals"
@@ -216,27 +216,30 @@
                         app:layout_constraintTop_toBottomOf="@+id/MappingTextView"
                         app:srcCompat="@drawable/ic_analytics_svg"/>
 
-                    <TextView
+                    <com.biomap.application.bio_app.Utility.CustomFontTextView
                         android:id="@+id/VitalsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="center"
                         android:text="@string/vitals_activity_title"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/h3_font_size"
+                        app:font="@string/font_name_gotham"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/menu_button_analytics"
-                        tools:layout_editor_absoluteX="36dp"/>
+                        app:textStyle="@integer/font_style_bold"
+                        />
 
                 </android.support.constraint.ConstraintLayout>
 
                 <!-- bottom navigation -->
-                <include layout="@layout/layout_bottom_navigation_view"
-                    android:id="@+id/bottom_nav_bar"/>
+                <include
+                    android:id="@+id/bottom_nav_bar"
+                    layout="@layout/layout_bottom_navigation_view"/>
 
             </RelativeLayout>
             <!-- End of Page Content -->
