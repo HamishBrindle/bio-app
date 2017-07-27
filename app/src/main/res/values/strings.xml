@@ -84,5 +84,7 @@
         Our community is growing every day - and we all need help sometimes! So, here are some
         frequently asked questions by fellow users:
     </string>
+    <string name="account">account_page_title</string>
+    <string name="account_page_title">Account</string>
 
 </resources>

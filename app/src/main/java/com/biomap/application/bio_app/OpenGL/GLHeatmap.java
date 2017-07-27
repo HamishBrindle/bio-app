@@ -5,6 +5,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -36,7 +37,6 @@ public class GLHeatmap {
 
 		this.width = width;
 		this.height = height;
-		
 		// ...
 		GLES20.glEnableVertexAttribArray(Main.BIND_ZERO);
 		//MyGLRenderer.checkGlError("glEnableVertexAttribArray");
@@ -152,9 +152,9 @@ public class GLHeatmap {
 		return height;
 	}
 
-	public void plotHeatMap() {
+	public void plotHeatMap(int[] input) {
 
-		int[][] pressure = convert2DArray(getPressure());
+		int[][] pressure = convert2DArray(input);
 
 		float intensity;
 		float radius = 400;
@@ -196,27 +196,6 @@ public class GLHeatmap {
 	}
 
 	/**
-	 * Gets a pressure-reading array of values for each node.
-	 *
-	 * @return The pressure map array of values.
-	 */
-	private int[] getPressure() {
-
-		// TODO: This will eventually get information from the nodes and create an array.
-
-		return new int[]{
-				5 , 25, 45, 50, 60, 45, 25, 5 ,
-				10, 20, 12, 20, 20, 12, 20, 10,
-				15, 30, 15, 17, 19, 15, 30, 15,
-				20, 40, 20, 10, 10, 20, 40, 20,
-				20, 40, 20, 0 , 0 , 20, 40, 20,
-				15, 30, 15, 0 , 0 , 15, 30, 15,
-				10, 20, 10, 0 , 0 , 10, 20, 10,
-				15, 30, 15, 0 , 0 , 15, 30, 15
-		};
-	}
-
-	/**
 	 * Convert a 1D matrix into a
 	 *
 	 * @param input Array to be converted.
@@ -234,5 +213,6 @@ public class GLHeatmap {
 		}
 		return output;
 	}
+
 
 }

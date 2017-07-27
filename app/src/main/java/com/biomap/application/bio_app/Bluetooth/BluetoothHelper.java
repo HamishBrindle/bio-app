@@ -45,6 +45,7 @@ public class BluetoothHelper {
     private Context context;
 
     private final Map<UUID, byte[]> characteristicValues = new HashMap<>();
+    private boolean connected;
 
     public BluetoothHelper(Context context) {
 
@@ -66,32 +67,43 @@ public class BluetoothHelper {
 
         final Observable<RxBleConnection> connectionObservable = prepareConnectionObservable(); // your connectionObservable
 
-        Log.e(TAG, "initBle: Trying to connect to Bluetooth device.");
+        new Thread(new Runnable() {
 
-        connectionObservable
-                .flatMap( // get the characteristics from the service you're interested in
-                        connection -> connection
-                                .discoverServices()
-                                .flatMap(services -> services
-                                        .getService(serviceUuid)
-                                        .map(BluetoothGattService::getCharacteristics)
-                                ),
-                        Pair::new
-                )
-                .flatMap(connectionAndCharacteristics -> {
-                    final RxBleConnection connection = connectionAndCharacteristics.first;
-                    final List<BluetoothGattCharacteristic> characteristics = connectionAndCharacteristics.second;
-                    return readInitialValues(connection, characteristics);
-                            // .concatWith(setupNotifications(connection, characteristics));
-                })
-                .subscribe(
-                        pair -> {
-                            characteristicValues.put(pair.first.getUuid(), pair.second);
-                        },
-                        throwable -> {
-                            Log.e(TAG, "initBle: Unable to subscribe Bluetooth device.");
-                        }
-                );
+            @Override
+            public void run() {
+
+                Log.e(TAG, "initBle: Trying to connect to Bluetooth device.");
+
+                connectionObservable
+                        .flatMap( // get the characteristics from the service you're interested in
+                                connection -> connection
+                                        .discoverServices()
+                                        .flatMap(services -> services
+                                                .getService(serviceUuid)
+                                                .map(BluetoothGattService::getCharacteristics)
+                                        ),
+                                Pair::new
+                        )
+                        .flatMap(connectionAndCharacteristics -> {
+                            final RxBleConnection connection = connectionAndCharacteristics.first;
+                            final List<BluetoothGattCharacteristic> characteristics = connectionAndCharacteristics.second;
+                            return readInitialValues(connection, characteristics);
+                            //.concatWith(setupNotifications(connection, characteristics));
+                        })
+                        .subscribe(
+                                pair -> {
+                                    characteristicValues.put(pair.first.getUuid(), pair.second);
+                                    connected = true;
+                                },
+                                throwable -> {
+                                    Log.e(TAG, "initBle: Unable to subscribe Bluetooth device.");
+                                    connected = false;
+                                }
+                        );
+
+            }
+
+        }).start();
     }
 
     /**

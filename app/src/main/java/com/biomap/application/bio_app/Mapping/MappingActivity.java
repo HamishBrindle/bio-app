@@ -3,8 +3,6 @@ package com.biomap.application.bio_app.Mapping;
 import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +29,7 @@ import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
+import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontTextView;
@@ -68,6 +67,7 @@ public class MappingActivity extends AppCompatActivity {
     private CustomFontTextView rightWeightText;
     private ProgressBar leftProgress;
     private ProgressBar rightProgress;
+    private GLHeatmap heatmap;
 
 
     public MappingActivity() {
@@ -102,7 +102,7 @@ public class MappingActivity extends AppCompatActivity {
         });
 
 
-//        setupFirebase();
+        setupFirebase();
         setupDateBanner();
         setupToolbar();
         setupHeatMap();
@@ -159,6 +159,16 @@ public class MappingActivity extends AppCompatActivity {
         LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
         MyGLSurfaceView mGLView = new MyGLSurfaceView(this);
         heatMapView.addView(mGLView);
+
+        // Get heatmap to add data points to
+        getHeatmap(mGLView);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                heatmap.plotHeatMap(getPressure());
+            }
+        });
     }
 
     /**
@@ -221,18 +231,18 @@ public class MappingActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
@@ -396,5 +406,8 @@ public class MappingActivity extends AppCompatActivity {
         setupFirebase();
     }
 
+    private void getHeatmap(MyGLSurfaceView view) {
+        heatmap = view.getRenderer().getmHeatmap();
+    }
 
 }

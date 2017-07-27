@@ -3,6 +3,7 @@ package com.biomap.application.bio_app.Mapping.Heatmap;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -68,7 +69,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         try {
             if (mHeatmap == null) {
                 mHeatmap = new GLHeatmap(width, height, null, null, null);
-                mHeatmap.plotHeatMap();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,4 +120,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mHeatmap.addPoint(x, y, 400, i);
     }
 
+    public GLHeatmap getmHeatmap() {
+        return mHeatmap;
+    }
 }

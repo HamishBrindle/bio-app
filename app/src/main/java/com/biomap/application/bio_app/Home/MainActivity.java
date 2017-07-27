@@ -24,9 +24,10 @@ import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.AccountActivity;
-import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
+import com.biomap.application.bio_app.Mapping.PressureNode;
+import com.biomap.application.bio_app.Mapping.PressureNodeMatrix;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
@@ -38,6 +39,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Calendar;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -94,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // setupFirebase();
-        // bluetoothHelper = new BluetoothHelper(this);
+        //setupFirebase();
+        bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
         setupToolbar();
         setupMenuButtons();
@@ -116,20 +118,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
-                startActivity(debugIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
+                sensorValues = bluetoothHelper.getCharacteristicValues();
 
-
-                /*
-                Map<UUID, byte[]> reversedMap = new TreeMap<>(bluetoothHelper.getCharacteristicValues());
-
-                for (Map.Entry entry : reversedMap.entrySet()) {
+                for (Map.Entry entry : sensorValues.entrySet()) {
                     byte[] bytes = ((byte[]) entry.getValue());
-                    Log.e(TAG, "Print sensor values of " + entry.getKey() + ": [HEX] " + byteToHex(bytes));
+                    Log.e(TAG, "Print sensor values of " + entry.getKey() + ": [HEX] " + byteArrayToHex(bytes));
                 }
-                */
+
+                // processPressureValues();
             }
         });
     }
@@ -140,16 +136,16 @@ public class MainActivity extends AppCompatActivity {
      * @param bytes from characteristic
      * @return String of hex values for the characteristic.
      */
-    private String byteToHex(byte[] bytes) {
+    private String byteArrayToHex(byte[] bytes) {
 
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
+
             sb.append(String.format("%02X ", b));
         }
 
         return sb.toString();
     }
-
 
     /**
      * Initialize user authentication objects and listeners for authentication state changes.
@@ -370,4 +366,24 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         setupFirebase();
     }
+
+    protected void processPressureValues() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PressureNodeMatrix pressureNodeMatrix = new PressureNodeMatrix(sensorValues);
+                pressureNodeMatrix.createMatrix();
+            }
+        }).start();
+
+    }
+
+    protected PressureNode<Integer, Integer>[] createNode(byte[] bytes) {
+
+        return null;
+    }
+
+
+
 }

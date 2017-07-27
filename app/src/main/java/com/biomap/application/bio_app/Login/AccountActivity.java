@@ -35,11 +35,9 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-
         mProfileName = (CustomFontTextView) findViewById(R.id.profile_name);
         setupFirebase();
         setUpButtons();
-
 
     }
 
@@ -58,6 +56,7 @@ public class AccountActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         mUpdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
