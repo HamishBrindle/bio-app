@@ -31,7 +31,7 @@ public class NotificationPublisher extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_logo_svg)
                 .setColor(Color.parseColor("#4c4c4c"))
                 .setContentTitle("It's time to move!")
-                .setContentText("Hey get off your asshole")
+                .setContentText("You should get up and offset the pressure")
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setPriority(Notification.PRIORITY_MAX)
                 .setDefaults(Notification.DEFAULT_VIBRATE)

@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Home;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences SHARED_PREFERENCES;
 
-    private FirebaseDatabase database;
-
     private DatabaseReference myRef;
 
     private DrawerLayout mDrawer;
@@ -67,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothHelper bluetoothHelper;
 
     private Map<UUID, byte[]> sensorValues;
-
-    private ImageButton mAccountSettings;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -87,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.BLUETOOTH},
                 1);
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
@@ -159,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupFirebase() {
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
 
@@ -321,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @TargetApi(Build.VERSION_CODES.M)
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);

@@ -71,7 +71,6 @@ public class AlertsActivity extends AppCompatActivity {
     private AlertNotification alertNotification;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
-    private ImageButton mAccountSettings;
 
 
     @Override
@@ -83,8 +82,8 @@ public class AlertsActivity extends AppCompatActivity {
         ToggleButton mToggleButtonAlarm = (ToggleButton) findViewById(R.id.toggle_button_alarm);
 
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);

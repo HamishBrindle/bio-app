@@ -152,9 +152,11 @@ public class GLHeatmap {
 		return height;
 	}
 
-	public void plotHeatMap() {
+	public void plotHeatMap(int[] input) {
 
-		int[][] pressure = convert2DArray(getPressure());
+		clear();
+
+		int[][] pressure = convert2DArray(input);
 
 		float intensity;
 		float radius = 400;
@@ -183,6 +185,9 @@ public class GLHeatmap {
 
 			}
 		}
+
+		update();
+
 	}
 
 	private int[] getRandomPressure() {

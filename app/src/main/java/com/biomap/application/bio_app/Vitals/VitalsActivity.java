@@ -58,7 +58,6 @@ public class VitalsActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 3;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
-    private ImageButton mAccountSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +66,8 @@ public class VitalsActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: starting.");
 
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);

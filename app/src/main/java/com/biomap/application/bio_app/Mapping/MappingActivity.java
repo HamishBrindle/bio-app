@@ -1,9 +1,9 @@
 package com.biomap.application.bio_app.Mapping;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,9 +30,11 @@ import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
+import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontTextView;
+import com.biomap.application.bio_app.Utility.SerialHelper;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +46,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -62,16 +66,18 @@ public class MappingActivity extends AppCompatActivity {
     DatabaseReference myRef;
     FirebaseDatabase database;
     private DrawerLayout mDrawer;
-    private ImageButton mAccountSettings;
     private CustomFontTextView leftWeightText;
     private CustomFontTextView rightWeightText;
     private ProgressBar leftProgress;
     private ProgressBar rightProgress;
 
+    private GLHeatmap heatmap;
+    private int[] serialInArray;
 
     public MappingActivity() {
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,8 +95,8 @@ public class MappingActivity extends AppCompatActivity {
         rightProgress = (ProgressBar) findViewById(R.id.right_progress);
 
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
@@ -105,7 +111,7 @@ public class MappingActivity extends AppCompatActivity {
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
-        calculateDistribution(getPressure());
+        // calculateDistribution(getPressure());
 
     }
 
@@ -157,6 +163,28 @@ public class MappingActivity extends AppCompatActivity {
         LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
         MyGLSurfaceView mGLView = new MyGLSurfaceView(this);
         heatMapView.addView(mGLView);
+
+        heatmap = mGLView.getRenderer().getHeatmap();
+        SerialHelper serialHelper = new SerialHelper(this);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    if (serialHelper.getRender()) {
+                        Log.d(TAG, "run: setupHeatmap: Attempting to render map.");
+                        ArrayList<Integer> temp = serialHelper.getIntArray();
+                        int size = temp.size();
+                        for (int i = 0; i < size; i++) {
+                            serialInArray[i] = temp.get(i);
+                        }
+                        heatmap.plotHeatMap(serialInArray);
+                        serialHelper.setRender(false);
+                    }
+                }
+            }
+        }).start();
+
     }
 
     /**

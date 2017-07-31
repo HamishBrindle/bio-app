@@ -68,7 +68,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         try {
             if (mHeatmap == null) {
                 mHeatmap = new GLHeatmap(width, height, null, null, null);
-                mHeatmap.plotHeatMap();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,4 +119,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mHeatmap.addPoint(x, y, 400, i);
     }
 
+    public GLHeatmap getHeatmap() {
+        return mHeatmap;
+    }
 }
