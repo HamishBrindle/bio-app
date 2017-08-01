@@ -164,9 +164,6 @@ public class GLHeatmap {
     public void plotHeatMap(int[] input) {
 
         int[][] pressure = convert2DArray(input);
-        clear();
-
-        int[][] pressure = convert2DArray(input);
 
         float intensity;
         float radius = 400;

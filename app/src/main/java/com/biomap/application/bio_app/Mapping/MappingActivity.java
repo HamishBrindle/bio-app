@@ -68,6 +68,7 @@ public class MappingActivity extends AppCompatActivity {
     private ProgressBar leftProgress;
     private ProgressBar rightProgress;
     private GLHeatmap heatmap;
+    private TextView lastUpdated;
 
 
     public MappingActivity() {
@@ -107,8 +108,20 @@ public class MappingActivity extends AppCompatActivity {
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
+        getLastUpdate();
         // calculateDistribution(getPressure());
 
+    }
+
+    /**
+     * Sets the last updated time for the map.
+     */
+    private void getLastUpdate() {
+        TextView lastUpdate = (TextView) findViewById(R.id.last_updated);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        Date date = new Date();
+        String updateTime = "Updated at: " + simpleDateFormat.format(date);
+        lastUpdate.setText(updateTime);
     }
 
     private void setupDateBanner() {

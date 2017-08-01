@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Login;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class AccountActivity extends AppCompatActivity {
     private void setUpButtons() {
         Button signOutBtn = (Button) findViewById(R.id.account_signOut_button);
         Button updateBtn = (Button) findViewById(R.id.account_update_profile);
+        Button contactBtn = (Button) findViewById(R.id.account_contact_btn);
 
         signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +62,14 @@ public class AccountActivity extends AppCompatActivity {
                 Intent profileUpdateIntent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileUpdateIntent);
                 finish();
+            }
+        });
+        contactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.biomap.ca"));
+                startActivity(browserIntent);
+
             }
         });
 
@@ -85,7 +95,7 @@ public class AccountActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String fullName = dataSnapshot.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").getValue().toString();
                         name = fullName.split(" ");
-                        mProfileName.setText(name[0]);
+                        mProfileName.setText(fullName);
 
                     }
 

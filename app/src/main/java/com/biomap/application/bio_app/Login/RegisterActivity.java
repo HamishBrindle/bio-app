@@ -242,6 +242,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     } else {
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Email").setValue(mAuth.getCurrentUser().getEmail());
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mAuth.getCurrentUser().getDisplayName());
+                                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
                                         startActivity(setUpIntent);
 
                                         // Make switching between activities blend via fade-in / fade-out
@@ -510,7 +511,6 @@ public class RegisterActivity extends AppCompatActivity {
 //                                .setDisplayName(mFirstNameView.getText().toString())
 //                                .build();
                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
-                        myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").setValue(false);
 
                     }
                 }

@@ -42,7 +42,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //setupFirebase();
+        setupFirebase();
         bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
         setupToolbar();
@@ -119,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
-                startActivity(debugIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
+//                Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
+//                startActivity(debugIntent);
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                finish();
 
 
                 /*
