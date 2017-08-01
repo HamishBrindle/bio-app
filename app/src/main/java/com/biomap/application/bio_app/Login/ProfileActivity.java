@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 /**
  * A register screen that offers login via email/password.
  */
+@SuppressWarnings({"Convert2Lambda", "ConstantConditions"})
 public class ProfileActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ProfileActivity";
@@ -46,7 +47,6 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private Boolean ulcersDBCheck;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private Intent beginIntent;
     private Intent registerIntent;
     private DatabaseReference myRef;
     private CheckBox mUlcersCheck;
@@ -92,6 +92,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
                     Log.d(TAG, "onAuthStateChanged: user is in profile and sifned in");
                     //User is signed in
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @SuppressWarnings("ConstantConditions")
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.child("Users").hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
@@ -171,7 +172,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
         String weight = mWeightView.getText().toString();
 
         String regex = "^(?!.*[DFIOQUdfioqu])[A-VXYa-vxy][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$";
-        Pattern pattern = Pattern.compile(regex);
+        @SuppressWarnings("unused") Pattern pattern = Pattern.compile(regex);
 
         boolean cancel = false;
         View focusView = null;
@@ -243,6 +244,7 @@ public class ProfileActivity extends AppCompatActivity implements LoaderCallback
     private void update() {
         Log.d(TAG, "update: RUNNING UPDATE");
         FirebaseUser user = mAuth.getCurrentUser();
+        Intent beginIntent;
         if (alreadySetUp) {
             beginIntent = new Intent(this, MainActivity.class);
         } else {

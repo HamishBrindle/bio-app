@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
+@SuppressWarnings("Convert2Lambda")
 public class BeginActivity extends AppCompatActivity {
     private static final String TAG = "BeginActivity";
     private FirebaseDatabase database;
@@ -55,10 +56,12 @@ public class BeginActivity extends AppCompatActivity {
         }
 
         myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                name.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+                String setName = fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1);
+                name.setText(setName);
 
 
             }

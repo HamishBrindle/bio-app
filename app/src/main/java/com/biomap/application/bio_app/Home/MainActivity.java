@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Home;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import com.biomap.application.bio_app.Alerts.AlertsActivity;
 import com.biomap.application.bio_app.Bluetooth.BluetoothHelper;
 import com.biomap.application.bio_app.Connect.ConnectActivity;
 import com.biomap.application.bio_app.Login.AccountActivity;
+import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
 import com.biomap.application.bio_app.Mapping.PressureNode;
@@ -33,13 +35,18 @@ import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -49,6 +56,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
  * <p>
  * Created by Hamish Brindle on 2017-06-13.
  */
+@SuppressWarnings("Convert2Lambda")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -57,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences SHARED_PREFERENCES;
 
-    private FirebaseDatabase database;
-
     private DatabaseReference myRef;
 
     private DrawerLayout mDrawer;
@@ -66,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothHelper bluetoothHelper;
 
     private Map<UUID, byte[]> sensorValues;
-
-    private ImageButton mAccountSettings;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -86,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.BLUETOOTH},
                 1);
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
@@ -96,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //setupFirebase();
-
+        setupFirebase();
         setupDebugButton();
         setupToolbar();
         setupMenuButtons();
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupFirebase() {
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
 
@@ -186,18 +189,20 @@ public class MainActivity extends AppCompatActivity {
             mTimeOfDay.setText(getString(R.string.good_evening_text));
         }
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-//                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressWarnings("ConstantConditions")
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
+                String setName = fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1);
+                mNameOfUser.setText(setName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -284,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");

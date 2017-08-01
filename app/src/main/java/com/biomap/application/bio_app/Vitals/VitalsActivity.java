@@ -52,6 +52,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
  * Created by Hamish Brindle on 2017-06-13.
  */
 
+@SuppressWarnings({"Convert2Lambda", "ConstantConditions"})
 public class VitalsActivity extends AppCompatActivity {
 
     private static final String TAG = "VitalsActivity";
@@ -59,7 +60,6 @@ public class VitalsActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 3;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
-    private ImageButton mAccountSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,8 +68,8 @@ public class VitalsActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: starting.");
 
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
@@ -231,7 +231,8 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+                String setName = fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1);
+                mNameOfUser.setText(setName);
             }
 
             @Override

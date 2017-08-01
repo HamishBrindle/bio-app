@@ -2,13 +2,12 @@ package com.biomap.application.bio_app.Mapping;
 
 import android.util.Log;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 /**
  * Contains matrix of pressure nodes.
- *
+ * <p>
  * Created by Hamish Brindle on 2017-07-26.
  */
 

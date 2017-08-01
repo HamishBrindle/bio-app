@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Login;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,13 +23,10 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 public class AccountActivity extends AppCompatActivity {
 
     private static final String TAG = "AccountActivity";
-    private FirebaseDatabase database;
+    CustomFontTextView mProfileName;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
     private String[] name;
-    private Button mSignOutBtn;
-    private Button mUpdateBtn;
-    CustomFontTextView mProfileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +39,13 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+    @SuppressWarnings("Convert2Lambda")
     private void setUpButtons() {
-        mSignOutBtn = (Button) findViewById(R.id.account_signOut_button);
-        mUpdateBtn = (Button) findViewById(R.id.account_update_profile);
+        Button signOutBtn = (Button) findViewById(R.id.account_signOut_button);
+        Button updateBtn = (Button) findViewById(R.id.account_update_profile);
+        Button contactBtn = (Button) findViewById(R.id.account_contact_btn);
 
-        mSignOutBtn.setOnClickListener(new View.OnClickListener() {
+        signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
@@ -56,13 +56,20 @@ public class AccountActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        mUpdateBtn.setOnClickListener(new View.OnClickListener() {
+        updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent profileUpdateIntent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profileUpdateIntent);
                 finish();
+            }
+        });
+        contactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.biomap.ca"));
+                startActivity(browserIntent);
+
             }
         });
 
@@ -71,7 +78,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private void setupFirebase() {
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -83,11 +90,12 @@ public class AccountActivity extends AppCompatActivity {
                 // User is signed in
                 Log.d(TAG, "onAuthStateChanged.Main:signed_in:" + user.getUid());
                 myRef.addValueEventListener(new ValueEventListener() {
+                    @SuppressWarnings("ConstantConditions")
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String fullName = dataSnapshot.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").getValue().toString();
                         name = fullName.split(" ");
-                        mProfileName.setText(name[0]);
+                        mProfileName.setText(fullName);
 
                     }
 

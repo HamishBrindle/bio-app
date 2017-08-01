@@ -62,6 +62,7 @@ import static com.biomap.application.bio_app.Home.MainActivity.SHARED_PREFERENCE
 /**
  * A login screen that offers login via email/password.
  */
+@SuppressWarnings({"Convert2Lambda", "ConstantConditions"})
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     private static final String TAG = "LoginActivity";
@@ -95,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);
-        Intent registerIntent = new Intent(this, RegisterActivity.class);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         setUpIntent = new Intent(this, ProfileActivity.class);

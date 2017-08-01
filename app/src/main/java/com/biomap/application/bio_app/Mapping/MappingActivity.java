@@ -16,7 +16,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.IntentCompat;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -25,11 +24,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +37,6 @@ import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.Heatmap.MyGLSurfaceView;
 import com.biomap.application.bio_app.Mapping.Heatmap.PressureNode;
-import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Utility.CustomFontTextView;
@@ -178,7 +174,20 @@ public class MappingActivity extends AppCompatActivity {
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
+        getLastUpdate();
+        // calculateDistribution(getPressure());
 
+    }
+
+    /**
+     * Sets the last updated time for the map.
+     */
+    private void getLastUpdate() {
+        TextView lastUpdate = (TextView) findViewById(R.id.last_updated);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        Date date = new Date();
+        String updateTime = "Updated at: " + simpleDateFormat.format(date);
+        lastUpdate.setText(updateTime);
     }
 
     /**
@@ -558,7 +567,7 @@ public class MappingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 heatmap.forceRefresh();
-                calculateDistribution(getPressure());
+                calculateDistribution(sensorValueMatrix);
             }
         });
 
@@ -779,8 +788,16 @@ public class MappingActivity extends AppCompatActivity {
         };
     }
 
-    public void calculateDistribution(int[] dataArray) {
-        int[][] twoDdataArray = convert2DArray(dataArray);
+    public void calculateDistribution(PressureNode[][] dataArray) {
+
+        int[][] twoDdataArray = new int[dataArray.length][dataArray[0].length];
+
+        for (int i = 0; i < dataArray.length; i++) {
+            for (int j = 0; j < dataArray[0].length; j++) {
+                twoDdataArray[i][j] = dataArray[i][j].getPressure();
+            }
+        }
+
         Log.d(TAG, "calculateDistribution: " + twoDdataArray.toString());
         double leftWeight = 0;
         double rightWeight = 0;
