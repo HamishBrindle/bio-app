@@ -14,38 +14,38 @@ import android.view.MotionEvent;
  */
 public class MyGLSurfaceView extends GLSurfaceView {
 
-	private final MyGLRenderer mRenderer;
+    private final MyGLRenderer mRenderer;
 
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-	public MyGLSurfaceView(Context context) {
-		super(context);
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public MyGLSurfaceView(Context context) {
+        super(context);
 
-		// Create an OpenGL ES 2.0 context.
-		setEGLContextClientVersion(2);
+        // Create an OpenGL ES 2.0 context.
+        setEGLContextClientVersion(2);
 
-		// Set the Renderer for drawing on the GLSurfaceView
-		mRenderer = new MyGLRenderer();
+        // Set the Renderer for drawing on the GLSurfaceView
+        mRenderer = new MyGLRenderer();
 
-		// Don't fucking change this unless you know what you're doing.
-		setZOrderOnTop(true);
-		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-		getHolder().setFormat(PixelFormat.RGBA_8888);
-		setRenderer(mRenderer);
+        // Don't fucking change this unless you know what you're doing.
+        setZOrderOnTop(true);
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        getHolder().setFormat(PixelFormat.RGBA_8888);
+        setRenderer(mRenderer);
 
-	}
+    }
 
-	@Override
-	public boolean onTouchEvent(MotionEvent e) {
-		switch (e.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			mRenderer.onTouchEvent(e.getX(), e.getY());
-			requestRender();
-		}
-		return true;
-	}
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mRenderer.onTouchEvent(e.getX(), e.getY());
+                requestRender();
+        }
+        return true;
+    }
 
-	public MyGLRenderer getRenderer() {
-		return mRenderer;
-	}
+    public MyGLRenderer getRenderer() {
+        return mRenderer;
+    }
 
 }

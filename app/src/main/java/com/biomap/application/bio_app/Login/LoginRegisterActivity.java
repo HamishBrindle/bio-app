@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
+@SuppressWarnings("Convert2Lambda")
 public class LoginRegisterActivity extends AppCompatActivity {
     private static final String TAG = "LoginRegisterActivity";
     Button mRegisterButton;

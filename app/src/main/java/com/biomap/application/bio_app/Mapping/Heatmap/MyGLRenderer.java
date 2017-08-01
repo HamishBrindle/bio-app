@@ -1,9 +1,5 @@
 package com.biomap.application.bio_app.Mapping.Heatmap;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
-import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -11,18 +7,40 @@ import android.util.Log;
 
 import com.biomap.application.bio_app.OpenGL.GLHeatmap;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 /**
  * Provides drawing instructions for a GLSurfaceView object.
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String LOG = "MyGLRenderer";
-    private GLHeatmap mHeatmap;
-
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
+    private GLHeatmap mHeatmap;
+
+    /**
+     * Utility method for debugging OpenGL calls. Provide the name of the call
+     * just after making it:
+     * <p>
+     * <pre>
+     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
+     * <p>
+     * If the operation is not successful, the check throws an error.
+     *
+     * @param glOperation - Name of the OpenGL call to check.
+     */
+    public static void checkGlError(String glOperation) {
+        int error;
+        if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
+            Log.e(LOG, glOperation + ": glError " + error);
+            throw new RuntimeException(glOperation + ": glError " + error);
+        }
+    }
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -69,6 +87,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         try {
             if (mHeatmap == null) {
                 mHeatmap = new GLHeatmap(width, height, null, null, null);
+//                mHeatmap.plotHeatMap();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,26 +111,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
 
-    }
-
-    /**
-     * Utility method for debugging OpenGL calls. Provide the name of the call
-     * just after making it:
-     * <p>
-     * <pre>
-     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-     * <p>
-     * If the operation is not successful, the check throws an error.
-     *
-     * @param glOperation - Name of the OpenGL call to check.
-     */
-    public static void checkGlError(String glOperation) {
-        int error;
-        if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
-            Log.e(LOG, glOperation + ": glError " + error);
-            throw new RuntimeException(glOperation + ": glError " + error);
-        }
     }
 
     void onTouchEvent(float x, float y) {

@@ -4,7 +4,7 @@ import android.util.Pair;
 
 /**
  * Pressure sensor node. Holds number of the node and it's corresponding value.
- *
+ * <p>
  * Created by Hamish Brindle on 2017-07-26.
  */
 

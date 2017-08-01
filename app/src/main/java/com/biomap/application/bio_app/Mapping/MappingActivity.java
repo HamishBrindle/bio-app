@@ -107,7 +107,7 @@ public class MappingActivity extends AppCompatActivity {
         setupToolbar();
         setupHeatMap();
         setupBottomNavigationView();
-        calculateDistribution(getPressure());
+        // calculateDistribution(getPressure());
 
     }
 
@@ -163,12 +163,7 @@ public class MappingActivity extends AppCompatActivity {
         // Get heatmap to add data points to
         getHeatmap(mGLView);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                heatmap.plotHeatMap(getPressure());
-            }
-        });
+
     }
 
     /**

@@ -37,14 +37,10 @@ public class BluetoothHelper {
             UUID.fromString("74F6F007-EA13-4881-9E52-36F754875BF5"),
             UUID.fromString("74F6F008-EA13-4881-9E52-36F754875BF5")
     };
-
-    private RxBleClient bleClient;
-
-    private RxBleDevice bleDevice;
-
-    private Context context;
-
     private final Map<UUID, byte[]> characteristicValues = new HashMap<>();
+    private RxBleClient bleClient;
+    private RxBleDevice bleDevice;
+    private Context context;
     private boolean connected;
 
     public BluetoothHelper(Context context) {

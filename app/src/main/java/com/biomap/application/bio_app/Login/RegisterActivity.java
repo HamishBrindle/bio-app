@@ -50,6 +50,7 @@ import static com.biomap.application.bio_app.R.layout.activity_register;
 /**
  * A register screen that offers login via email/password.
  */
+@SuppressWarnings("Convert2Lambda")
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
@@ -241,7 +242,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     } else {
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Email").setValue(mAuth.getCurrentUser().getEmail());
                                         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("Name").setValue(mAuth.getCurrentUser().getDisplayName());
-                                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
                                         startActivity(setUpIntent);
 
                                         // Make switching between activities blend via fade-in / fade-out
@@ -506,6 +506,10 @@ public class RegisterActivity extends AppCompatActivity {
                         String name = mFirstNameView.getText().toString() + " " + mLastNameView.getText().toString();
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Email").setValue(mEmailView.getText().toString());
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(name);
+                        //                        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+//                                .setDisplayName(mFirstNameView.getText().toString())
+//                                .build();
+                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").setValue(false);
 
                     }

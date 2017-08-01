@@ -6,7 +6,7 @@ group = 'com.github.HamishBrindle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.biomap.application.bio_app"
         minSdkVersion 18
