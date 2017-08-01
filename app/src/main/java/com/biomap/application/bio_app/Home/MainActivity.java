@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 1);
 
         // setupFirebase();
-        bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
         setupToolbar();
         setupMenuButtons();
