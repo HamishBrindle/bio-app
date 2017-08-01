@@ -331,7 +331,6 @@ public class MappingActivity extends AppCompatActivity {
                 HeatMap.DataPoint point = new HeatMap.DataPoint(((yPos * rowSize) - rowOffset), ((xPos * colSize) - colOffset), intensity * INTENSITY_MULTIPLIER);
                 heatmap.addData(point);
 
-
             }
         }
 

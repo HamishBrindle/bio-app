@@ -208,6 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
             firebaseAuthWithGoogle(account);
         } else {
             //Still signed out
+            Log.d(TAG, "handleSignInResult: result: " + result.getStatus().getStatusMessage());
             Toast.makeText(this, "Unable to Sign in with Google", Toast.LENGTH_SHORT).show();
         }
     }
