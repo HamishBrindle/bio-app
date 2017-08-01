@@ -15,6 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,9 +61,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import ca.hss.heatmaplib.HeatMap;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -79,6 +83,10 @@ public class MappingActivity extends AppCompatActivity {
     private static final String TAG = "MappingActivity";
     private static final int ACTIVITY_NUM = 0;
     private static final int RECORD_REQUEST_CODE = 1;
+    private static final long DRAW_DELAY = 30;
+    private static final double INTENSITY_MULTIPLIER = 1.5;
+    private static final int MAPPING_RADIUS = 1200;
+
 
     // Bluetooth
     private static RxBleClient rxBleClient;
@@ -110,9 +118,12 @@ public class MappingActivity extends AppCompatActivity {
 
     // UI
     private DrawerLayout mDrawer;
-    private GLHeatmap mHeatMap;
     private boolean calibrated;
     private MyGLSurfaceView mGLView;
+    private HeatMap heatmap;
+    private boolean render;
+
+    Random rand = new Random();
 
     /**
      * Constructor.
@@ -198,8 +209,6 @@ public class MappingActivity extends AppCompatActivity {
             byte[] bytes = ((byte[]) characteristicValues.get(CHAR_UUID[i]));
             for (int j = 0; j < bytes.length; j++) {
                 sensorValueMatrix[j][i] = new PressureNode(bytes[j], j, i);
-                Log.d(TAG, "calibrateSensors: Starting pressure of plot point = " + sensorValueMatrix[j][i].getStartingPressure());
-
             }
         }
 
@@ -223,15 +232,71 @@ public class MappingActivity extends AppCompatActivity {
                 byte[] bytes = ((byte[]) characteristicValues.get(CHAR_UUID[i]));
                 for (int j = 0; j < bytes.length; j++) {
                     sensorValueMatrix[j][i].setPressure(bytes[j] & 0xFF);
-                    Log.d(TAG, "checkValues: Value of plot point = " + sensorValueMatrix[j][i].getPressure());
                 }
             }
-            mHeatMap.plotHeatMap(sensorValueMatrix);
+
+            plotHeatMap(sensorValueMatrix);
+            // randomHeatmap();
 
             // Log.e(TAG, "" + entry.getKey() + ": [HEX] " + byteToHex(bytes));
             characteristicValues.clear();
             // mHeatMap.plotHeatMap();
         }
+    }
+
+    public void plotHeatMap(PressureNode[][] pressure) {
+
+        double intensity;
+        float radius = 300;
+
+        int numOfRow = 11;
+        int numOfCol = pressure[0].length;
+
+        float rowSize = 1.0f / numOfRow;
+        float colSize = 1.0f / numOfCol;
+
+        float rowOffset = rowSize / 2.0f;
+        float colOffset = colSize / 2.0f;
+
+        for (int yPos = 1; yPos < numOfRow; yPos++) {
+            for (int xPos = numOfCol; xPos > 0; xPos--) {
+
+                int curPressure = pressure[xPos - 1][yPos - 1].getPressure();
+
+                if (curPressure < 25)
+                    intensity = 0;
+                else if (curPressure < 30)
+                    intensity = 10;
+                else if (curPressure < 35)
+                    intensity = 20;
+                else if (curPressure < 40)
+                    intensity = 30;
+                else if (curPressure < 45)
+                    intensity = 40;
+                else if (curPressure < 50)
+                    intensity = 50;
+                else if (curPressure < 55)
+                    intensity = 60;
+                else if (curPressure < 60)
+                    intensity = 70;
+                else
+                    intensity = 80;
+
+                try {
+                    Thread.sleep(DRAW_DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                HeatMap.DataPoint point = new HeatMap.DataPoint(((yPos * rowSize) - rowOffset), ((xPos * colSize) - colOffset), intensity * INTENSITY_MULTIPLIER);
+                heatmap.addData(point);
+
+
+            }
+        }
+
+        renderReady();
+
     }
 
     /**
@@ -471,26 +536,35 @@ public class MappingActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupHeatMap() {
-        LinearLayout heatMapView = (LinearLayout) findViewById(R.id.heatmap_parent);
-        MyGLSurfaceView mGLView = new MyGLSurfaceView(this);
-        heatMapView.addView(mGLView);
+        heatmap = (HeatMap) findViewById(R.id.heatmap);
+        heatmap.setMinimum(0.0);
+        heatmap.setMaximum(100.0);
+        heatmap.setRadius(MAPPING_RADIUS);
 
-        calibrated = false;
+        render = false;
+
+        heatmap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                heatmap.forceRefresh();
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    if (mGLView.getRenderer().getmHeatmap() != null) {
-                        mHeatMap = mGLView.getRenderer().getmHeatmap();
-                        Log.d(TAG, "setupHeatMap: mHeat is no longer null.");
+                    if (heatmap != null) {
                         setupBluetooth();
                         break;
                     }
                 }
             }
         }).start();
+    }
 
+    private void renderReady() {
+        Log.e(TAG, "renderReady: Render is ready. Refresh the view...");
     }
 
     /**
