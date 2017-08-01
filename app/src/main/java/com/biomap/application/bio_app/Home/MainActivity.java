@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //setupFirebase();
-        bluetoothHelper = new BluetoothHelper(this);
+
         setupDebugButton();
         setupToolbar();
         setupMenuButtons();
@@ -114,38 +114,8 @@ public class MainActivity extends AppCompatActivity {
         //Remove before deploying
         ImageView mDebugButton = (ImageView) findViewById(R.id.biomap_logo_imageView);
 
-        mDebugButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                sensorValues = bluetoothHelper.getCharacteristicValues();
-
-                for (Map.Entry entry : sensorValues.entrySet()) {
-                    byte[] bytes = ((byte[]) entry.getValue());
-                    Log.e(TAG, "Print sensor values of " + entry.getKey() + ": [HEX] " + byteArrayToHex(bytes));
-                }
-
-                // processPressureValues();
-            }
-        });
     }
 
-    /**
-     * Convert a byte array to a hex string. Used for printing hex values from the micro-controller.
-     *
-     * @param bytes from characteristic
-     * @return String of hex values for the characteristic.
-     */
-    private String byteArrayToHex(byte[] bytes) {
-
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-
-            sb.append(String.format("%02X ", b));
-        }
-
-        return sb.toString();
-    }
 
     /**
      * Initialize user authentication objects and listeners for authentication state changes.
@@ -366,24 +336,4 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         setupFirebase();
     }
-
-    protected void processPressureValues() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PressureNodeMatrix pressureNodeMatrix = new PressureNodeMatrix(sensorValues);
-                pressureNodeMatrix.createMatrix();
-            }
-        }).start();
-
-    }
-
-    protected PressureNode<Integer, Integer>[] createNode(byte[] bytes) {
-
-        return null;
-    }
-
-
-
 }

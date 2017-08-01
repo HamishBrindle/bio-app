@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -27,7 +28,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		mRenderer = new MyGLRenderer();
 
 		// Don't fucking change this unless you know what you're doing.
-		setZOrderOnTop(true);
+		setZOrderOnTop(false);
 		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 		getHolder().setFormat(PixelFormat.RGBA_8888);
 		setRenderer(mRenderer);
@@ -37,9 +38,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		switch (e.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			mRenderer.onTouchEvent(e.getX(), e.getY());
-			requestRender();
+			case MotionEvent.ACTION_DOWN:
+				getRenderer().clear();
+				postInvalidate();
+				requestRender();
 		}
 		return true;
 	}
