@@ -202,12 +202,13 @@ public class RegisterActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             //Signed in Succesfully
-
             Log.d(TAG, "onActivityResult: Success");
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
+
         } else {
             //Still signed out
+            Log.d(TAG, "handleSignInResult: " + result.getStatus().getStatusMessage());
             Toast.makeText(this, "Unable to Sign in with Google", Toast.LENGTH_SHORT).show();
         }
     }
@@ -221,6 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
         final AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
