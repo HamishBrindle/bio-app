@@ -278,7 +278,7 @@
                                     android:lineSpacingMultiplier="1.25"
                                     android:paddingLeft="20dp"
                                     android:paddingRight="20dp"
-                                    android:text="Turn it on, dumby."
+                                    android:text="Turn it on."
                                     android:textColor="@color/colorAccent"
                                     android:textSize="14sp"
                                     app:font="@string/font_name_gotham"

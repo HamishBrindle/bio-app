@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
+    <uses-feature android:name="android.hardware.bluetooth_le"  android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,6 +24,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Home.MainActivity"
+            android:screenOrientation="portrait">
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -31,39 +34,53 @@
         </activity>
         <activity
             android:name=".Login.LoginRegisterActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Mapping.MappingActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Alerts.AlertsActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Vitals.VitalsActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Connect.ConnectActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Login.ProfileActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Login.LoginActivity"
             android:label="@string/title_activity_login"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Login.RegisterActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Utility.AnimationActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".Alerts.NotificationPublisher"
             android:process=":remote"/>
 
-        <activity android:name=".Login.BeginActivity"/>
-        <activity android:name=".Login.AccountActivity">
+        <activity
+            android:name=".Login.BeginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Login.AccountActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -207,11 +207,12 @@
                     <!-- End of Right and Left indicatiors at top -->
 
                     <!-- Heatmap -->
-                    <LinearLayout
-                        android:id="@+id/heatmap_parent"
+                    <ca.hss.heatmaplib.HeatMap
+                        android:id="@+id/heatmap"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:orientation="vertical"/>
+                        android:layout_height="300dp"
+                        app:maxOpacity="255"
+                        app:minOpacity="0" />
 
                     <!-- Start of Time update indicator -->
                     <com.biomap.application.bio_app.Utility.CustomFontTextView
@@ -219,7 +220,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="Updated 7:32pm"
                         android:textColor="@color/colorAccent"
                         app:font="@string/font_name_gotham"
                         app:textStyle="@integer/font_style_book"/>
@@ -250,7 +250,7 @@
                                 android:textColor="@color/colorAccent"
                                 android:textSize="20sp"
                                 app:font="@string/font_name_gotham"
-                                app:textStyle="@integer/font_style_bold"/>
+                                app:textStyle="@integer/font_style_bold" />
 
                             <!-- Start of Charts (LEFT) -->
                             <LinearLayout
@@ -268,7 +268,7 @@
                                     android:textColor="@color/LavenderPurple"
                                     android:textSize="17sp"
                                     app:font="@string/font_name_gotham"
-                                    app:textStyle="@integer/font_style_book"/>
+                                    app:textStyle="@integer/font_style_book" />
 
                                 <!-- Percentage -->
                                 <com.biomap.application.bio_app.Utility.CustomFontTextView
@@ -278,12 +278,12 @@
                                     android:layout_gravity="end"
                                     android:layout_marginRight="20dp"
                                     android:layout_weight="2"
-                                    android:text="44%"
+                                    android:text="0%"
                                     android:textAlignment="textEnd"
                                     android:textColor="@color/colorAccent"
                                     android:textSize="28sp"
                                     app:font="@string/font_name_gotham"
-                                    app:textStyle="@integer/font_style_bold"/>
+                                    app:textStyle="@integer/font_style_bold" />
 
                                 <!-- Progress bar -->
                                 <ProgressBar
@@ -293,9 +293,9 @@
                                     android:layout_height="15dp"
                                     android:layout_gravity="center"
                                     android:layout_weight="2"
-                                    android:progress="44"
+                                    android:progress="0"
                                     android:progressBackgroundTint="@color/colorAccent"
-                                    android:progressTint="@color/LavenderPurple"/>
+                                    android:progressTint="@color/LavenderPurple" />
 
                             </LinearLayout>
                             <!-- End of Charts (LEFT) -->
@@ -322,7 +322,7 @@
                                     android:textColor="@color/LavenderPurple"
                                     android:textSize="17sp"
                                     app:font="@string/font_name_gotham"
-                                    app:textStyle="@integer/font_style_book"/>
+                                    app:textStyle="@integer/font_style_book" />
 
                                 <!-- Percentage -->
                                 <com.biomap.application.bio_app.Utility.CustomFontTextView
@@ -332,12 +332,12 @@
                                     android:layout_gravity="end"
                                     android:layout_marginRight="20dp"
                                     android:layout_weight="2"
-                                    android:text="25%"
+                                    android:text="0%"
                                     android:textAlignment="textEnd"
                                     android:textColor="@color/colorAccent"
                                     android:textSize="28sp"
                                     app:font="@string/font_name_gotham"
-                                    app:textStyle="@integer/font_style_bold"/>
+                                    app:textStyle="@integer/font_style_bold" />
 
                                 <!-- Progress bar -->
                                 <ProgressBar
@@ -347,7 +347,7 @@
                                     android:layout_height="15dp"
                                     android:layout_gravity="center"
                                     android:layout_weight="2"
-                                    android:progress="25"
+                                    android:progress="0"
                                     android:progressBackgroundTint="@color/colorAccent"
                                     android:progressTint="@color/LavenderPurple"/>
 

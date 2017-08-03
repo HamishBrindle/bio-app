@@ -50,6 +50,7 @@ import static com.biomap.application.bio_app.R.layout.activity_register;
 /**
  * A register screen that offers login via email/password.
  */
+@SuppressWarnings("Convert2Lambda")
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
@@ -207,6 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
             firebaseAuthWithGoogle(account);
         } else {
             //Still signed out
+            Log.d(TAG, "handleSignInResult: result: " + result.getStatus().getStatusMessage());
             Toast.makeText(this, "Unable to Sign in with Google", Toast.LENGTH_SHORT).show();
         }
     }
@@ -506,7 +508,10 @@ public class RegisterActivity extends AppCompatActivity {
                         String name = mFirstNameView.getText().toString() + " " + mLastNameView.getText().toString();
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Email").setValue(mEmailView.getText().toString());
                         myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").setValue(name);
-                        myRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("SetUp").setValue(false);
+                        //                        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+//                                .setDisplayName(mFirstNameView.getText().toString())
+//                                .build();
+                        myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("SetUp").setValue(false);
 
                     }
                 }

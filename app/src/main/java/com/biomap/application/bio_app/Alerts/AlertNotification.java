@@ -19,7 +19,7 @@ class AlertNotification {
     private Calendar calendar;
     private PendingIntent mAlarmSender;
     private AlarmManager am;
-    Intent intent;
+    private Intent intent;
 
     /**
      * The constructor of this class, setting up the instance variables.

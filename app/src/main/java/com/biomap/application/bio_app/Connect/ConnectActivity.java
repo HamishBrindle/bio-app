@@ -1,10 +1,13 @@
 package com.biomap.application.bio_app.Connect;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -45,6 +48,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
  * Created by Hamish Brindle on 2017-06-13.
  */
 
+@SuppressWarnings("Convert2Lambda")
 public class ConnectActivity extends AppCompatActivity {
 
     private static final String BIOMAP_WEBPAGE = "http://biomap.ca/";
@@ -53,16 +57,16 @@ public class ConnectActivity extends AppCompatActivity {
     private static final int ACTIVITY_NUM = 4;
     private DrawerLayout mDrawer;
     private DatabaseReference myRef;
-    private ImageButton mAccountSettings;
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
         Log.d(TAG, "onCreate: starting.");
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
@@ -162,10 +166,12 @@ public class ConnectActivity extends AppCompatActivity {
         }
 
         myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+                String setName = fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1);
+                mNameOfUser.setText(setName);
             }
 
             @Override
@@ -262,6 +268,7 @@ public class ConnectActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);

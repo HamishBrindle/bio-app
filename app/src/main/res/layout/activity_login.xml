@@ -163,7 +163,6 @@
                         android:text="Google"
                         android:textAllCaps="true"
                         android:textSize="14sp"
-                        android:textStyle="bold"
                         app:font="@string/font_name_gotham"
                         app:textStyle="@integer/font_style_bold"/>
 

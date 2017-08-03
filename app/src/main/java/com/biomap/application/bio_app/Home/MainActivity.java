@@ -1,6 +1,7 @@
 package com.biomap.application.bio_app.Home;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,8 @@ import com.biomap.application.bio_app.Login.AccountActivity;
 import com.biomap.application.bio_app.Login.BeginActivity;
 import com.biomap.application.bio_app.Login.LoginRegisterActivity;
 import com.biomap.application.bio_app.Mapping.MappingActivity;
+import com.biomap.application.bio_app.Mapping.PressureNode;
+import com.biomap.application.bio_app.Mapping.PressureNodeMatrix;
 import com.biomap.application.bio_app.R;
 import com.biomap.application.bio_app.Utility.BottomNavigationViewHelper;
 import com.biomap.application.bio_app.Vitals.VitalsActivity;
@@ -39,7 +42,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,6 +56,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
  * <p>
  * Created by Hamish Brindle on 2017-06-13.
  */
+@SuppressWarnings("Convert2Lambda")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -58,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences SHARED_PREFERENCES;
 
-    private FirebaseDatabase database;
-
     private DatabaseReference myRef;
 
     private DrawerLayout mDrawer;
@@ -67,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothHelper bluetoothHelper;
 
     private Map<UUID, byte[]> sensorValues;
-
-    private ImageButton mAccountSettings;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -87,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.BLUETOOTH},
                 1);
 
-        mAccountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
-        mAccountSettings.setOnClickListener(new View.OnClickListener() {
+        ImageButton accountSettings = (ImageButton) findViewById(R.id.toolbar_settings);
+        accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
@@ -98,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setupFirebase();
-        // bluetoothHelper = new BluetoothHelper(this);
         setupDebugButton();
         setupToolbar();
         setupMenuButtons();
@@ -115,42 +117,6 @@ public class MainActivity extends AppCompatActivity {
         //Remove before deploying
         ImageView mDebugButton = (ImageView) findViewById(R.id.biomap_logo_imageView);
 
-        mDebugButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent debugIntent = new Intent(getBaseContext(), BeginActivity.class);
-                startActivity(debugIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-
-
-                /*
-                Map<UUID, byte[]> reversedMap = new TreeMap<>(bluetoothHelper.getCharacteristicValues());
-
-                for (Map.Entry entry : reversedMap.entrySet()) {
-                    byte[] bytes = ((byte[]) entry.getValue());
-                    Log.e(TAG, "Print sensor values of " + entry.getKey() + ": [HEX] " + byteToHex(bytes));
-                }
-                */
-            }
-        });
-    }
-
-    /**
-     * Convert a byte array to a hex string. Used for printing hex values from the micro-controller.
-     *
-     * @param bytes from characteristic
-     * @return String of hex values for the characteristic.
-     */
-    private String byteToHex(byte[] bytes) {
-
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X ", b));
-        }
-
-        return sb.toString();
     }
 
 
@@ -159,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupFirebase() {
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         final Intent register_login_intent = new Intent(this, LoginRegisterActivity.class);
 
@@ -224,10 +190,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String[] fullname = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Name").getValue().toString().split(" ");
-                mNameOfUser.setText(fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1));
+                String setName = fullname[0].substring(0, 1).toUpperCase() + fullname[0].substring(1);
+                mNameOfUser.setText(setName);
             }
 
             @Override
@@ -321,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
      * Also customizes the bottom navigation so that the buttons don't physically react to being
      * selected. Without this method, the buttons grow and shrink and shift around. It's gross.
      */
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: Setting-up bottom navigation view.");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);

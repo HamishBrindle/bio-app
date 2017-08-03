@@ -1,115 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.biomap.application.bio_app.Login.AccountActivity">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context="com.biomap.application.bio_app.Home.MainActivity">
+
+    <!-- This DrawerLayout has two children at the root -->
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/drawer_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent">
+
+        <!-- This LinearLayout represents the contents of the screen  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- The ActionBar displayed at the top -->
+            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                               android:id="@+id/toolbar"
+                                               android:layout_width="match_parent"
+                                               android:layout_height="wrap_content"
+                                               android:background="?attr/colorPrimaryDark"
+                                               android:fitsSystemWindows="true"
+                                               android:minHeight="?attr/actionBarSize"
+                                               app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/toolbar_top"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:paddingEnd="16dp"
+                                android:paddingLeft="0dp"
+                                android:paddingRight="16dp"
+                                android:paddingStart="0dp">
+
+                    <ImageButton
+                        android:id="@+id/toolbar_hamburger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_hamburger_svg"/>
+
+                    <ImageView
+                        android:layout_width="140dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="0dp"
+                        app:srcCompat="@drawable/ic_wordmark_white"/>
+
+                    <ImageButton
+                        android:id="@+id/toolbar_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_account_svg"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+            <!-- Profile Header -->
+            <RelativeLayout
+                android:id="@+id/profile_header"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:orientation="vertical">
+
+                <!-- Background Banner -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:alpha="0.05"
+                    app:srcCompat="@drawable/ic_logo_svg"/>
+
+                <!-- Name on Profile -->
+                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Friend"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="35sp"
+                    app:font="@string/font_name_gotham"
+                    app:textStyle="@integer/font_style_book"/>
+
+                <!-- Offloading Points Section -->
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_name"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                android:id="@+id/offload_points_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/ic_offload_point" />
+
+                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Offloading Points"
+                android:textSize="18sp"
+                app:font="@string/font_name_gotham"
+                app:textStyle="@integer/font_style_book" />
+
+                </LinearLayout>
+
+                <com.biomap.application.bio_app.Utility.CustomFontTextView
+                android:id="@+id/offload_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4096"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                app:font="@string/font_name_gotham"
+                app:textStyle="@integer/font_style_book" />
+
+                </LinearLayout>
+                <!-- End of Offloading Points Section -->
+
+            </RelativeLayout>
+            <!-- End of Profile Header -->
 
 
-    <!-- Start of Logo & Wordmark -->
-    <!-- End of Logo & Wordmark -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Account Settings -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/misc_account_header_background"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/account_update_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_account_bottom_border"
+                        android:paddingBottom="10dp"
+                        android:shadowColor="@android:color/transparent"
+                        android:text="Edit Profile Info"
+                        android:textColor="@color/DarkGrey"/>
+
+                    <Button
+                        android:id="@+id/account_contact_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_account_bottom_border"
+                        android:paddingBottom="10dp"
+                        android:shadowColor="@android:color/transparent"
+                        android:text="Contact Us"
+                        android:textColor="@color/DarkGrey"/>
+
+                    <Button
+                        android:id="@+id/account_signOut_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:shadowColor="@android:color/transparent"
+                        android:text="Sign Out"
+                        android:textColor="@color/DarkGrey"/>
+
+                </LinearLayout>
+                <!-- End of Account Settings -->
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- The navigation drawer that comes from the left -->
+        <!-- Note that `android:layout_gravity` needs to be set to 'start' -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nvView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:backgroundTint="@color/colorAccent"
+            app:headerLayout="@layout/layout_nav_drawer_header"
+            app:itemIconTint="@color/DarkGrey"
+            app:itemTextColor="@color/DarkGrey"
+            app:menu="@menu/nav_drawer"/>
+
+    </android.support.v4.widget.DrawerLayout>
 
 
-    <LinearLayout
-        android:id="@+id/greeting_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="287dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
-        app:layout_constraintHorizontal_bias="0.498">
-
-        <com.biomap.application.bio_app.Utility.CustomFontTextView
-            android:id="@+id/helloText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Hello"
-            android:textSize="30sp"
-            app:font="@string/font_name_gotham"
-            app:textStyle="@integer/font_style_book"
-            />
-
-        <com.biomap.application.bio_app.Utility.CustomFontTextView
-            android:id="@+id/profile_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="25dp"
-            android:textSize="30sp"
-            app:font="@string/font_name_gotham"
-            app:textStyle="@integer/font_style_book"
-            />
-
-    </LinearLayout>
-
-    <!--Update Profile Button-->
-    <Button
-        android:id="@+id/account_update_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/button_google"
-        android:text="Update Profile"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/greeting_container"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"/>
-
-    <!--Sign out Button-->
-    <Button
-        android:id="@+id/account_signOut_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_register"
-        android:text="Sign Out"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_update_profile"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"/>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="102dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1">
-
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/logo_login_register_imageview"
-            android:layout_width="@dimen/biomap_register_login_logo_dim"
-            android:layout_height="@dimen/biomap_register_login_logo_dim"
-            android:contentDescription="@string/biomap_logo"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_logo_svg"/>
-
-        <!-- Wordmark -->
-        <ImageView
-            android:id="@+id/logo_text_login_register_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="65dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@string/biomap_text_logo"
-            app:srcCompat="@drawable/ic_wordmark_tagline"/>
-
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -68,7 +68,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         try {
             if (mHeatmap == null) {
                 mHeatmap = new GLHeatmap(width, height, null, null, null);
-                mHeatmap.plotHeatMap();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,6 +117,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float i = 0.5f;
         Log.i(LOG, "intensity=" + i);
         mHeatmap.addPoint(x, y, 400, i);
+    }
+
+    public GLHeatmap getmHeatmap() {
+        return mHeatmap;
+    }
+
+    public void clear() {
+        GLES20.glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+        // Draw background color
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        mHeatmap.clear();
     }
 
 }
